@@ -1,12 +1,12 @@
 {
   "project_name": "Employment QA MVP Rebuild v2",
-  "description": "Student-facing school employment-center Q&A product rebuilt around a Vercel-chatbot-inspired frontend and FastAPI official-first retrieval backend.",
-  "active_branch": "v2-rebuild",
-  "current_goal": "Complete H8 delivery hygiene: commit the verified v2 branch, preserve screenshots and docs, and push once a remote is available.",
+  "description": "Student-facing school employment-center Q&A product with official-first retrieval, now entering full-site launch readiness sprint.",
+  "active_branch": "v2-polish",
+  "current_goal": "Execute full-site launch tasks F1-F8 via harness automation to move from polished MVP to deployable production website.",
   "rules": [
     "Preserve official-information precedence at all times.",
     "Prefer a polished, trustworthy frontend over generic admin-tool visuals.",
-    "Keep admin tooling lightweight and token-based for phase 1.",
+    "Keep admin tooling lightweight and token-based for phase 1 and hide it from public navigation.",
     "Do not reintroduce dual-mode product scope in MVP.",
     "Do not import Auth.js, Postgres, or account/session logic from vercel/chatbot."
   ],
@@ -37,6 +37,29 @@
       "features": [
         "H7",
         "H8"
+      ]
+    },
+    {
+      "name": "M5 - Full Site Hardening",
+      "features": [
+        "F1",
+        "F2"
+      ]
+    },
+    {
+      "name": "M6 - Reliability and Trust",
+      "features": [
+        "F3",
+        "F4",
+        "F5"
+      ]
+    },
+    {
+      "name": "M7 - Launch Delivery",
+      "features": [
+        "F6",
+        "F7",
+        "F8"
       ]
     }
   ],

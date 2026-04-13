@@ -3,8 +3,8 @@
 ## Context
 
 - repo root: `/Users/bran/chat/employment-qa-mvp`
-- active worktree: `/Users/bran/.config/superpowers/worktrees/employment-qa-mvp/v2-rebuild`
-- active branch: `v2-rebuild`
+- active worktree: `/Users/bran/chat/worktrees/employment-qa-mvp/v2-polish`
+- active branch: `v2-polish`
 - reference donor: `/Users/bran/chat/reference-repos/vercel-chatbot`
 
 ## Session: V2 Rebuild Execution (2026-04-13)
@@ -39,3 +39,38 @@
 
 ### Blockers
 - `git remote -v` is empty, so branch push and remote handoff cannot finish yet.
+
+## Session: Full-Site Gap Planning and Harness Sprint Setup (2026-04-13)
+
+### Completed This Session
+- Configured remote:
+  - `origin -> https://github.com/chuxainpei/creer.git`
+- Added public UX polish and removed admin entry from public header on branch `v2-polish`.
+- Added and validated frontend test for no public admin navigation.
+- Cloned additional UI references:
+  - `/Users/bran/chat/reference-repos/chatbot-ui`
+  - `/Users/bran/chat/reference-repos/vercel-ai-chatbot-supabase`
+  - `/Users/bran/chat/reference-repos/lobe-chat`
+  - `/Users/bran/chat/reference-repos/creer` (empty repo)
+- Wrote full-site implementation plan:
+  - `docs/superpowers/plans/2026-04-13-full-site-launch-readiness-design.md`
+- Reset harness backlog with new features `F1-F8` for automated execution.
+
+### Gap Analysis: Remaining Work to Reach a Complete Website
+- Security boundary hardening for admin route discoverability and access gating.
+- Ingestion governance quality (invalid files, duplicate policy, robust upload errors).
+- Source explainability depth (file-level citation snippets in answer cards).
+- Runtime reliability (rate-limit, timeout, retry behavior).
+- Observability (request-id and structured operation logs).
+- CI/CD and deployment hardening (workflow + security/cache proxy config).
+- Launch-level UX completeness (service notice, FAQ/help/contact).
+- Final release evidence and handoff package.
+
+### Verification
+- `cd frontend && npm test -- --runInBand` -> `5 passed, 6 tests`
+- `cd frontend && npm run build` -> success
+
+### Blockers
+- Push attempt failed in current environment:
+  - `git push -u origin v2-polish`
+  - error: `LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to github.com:443`

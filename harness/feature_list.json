@@ -1,6 +1,6 @@
 {
   "project": "Employment QA MVP Rebuild v2",
-  "description": "Execution tracker for the Vercel-chatbot-inspired redesign and official-first retrieval rebuild.",
+  "description": "Execution tracker for MVP completion and full-site launch readiness.",
   "features": [
     {
       "id": "H1",
@@ -104,15 +104,127 @@
       "id": "H8",
       "category": "delivery",
       "priority": 8,
-      "description": "Finalize delivery hygiene: update docs and harness metadata, preserve assets, and push the branch when remote configuration is available.",
+      "description": "Finalize delivery hygiene: docs, references, screenshots, branch commits, and remote configuration.",
       "file": "README.md",
       "steps": [
         "Update README and deployment docs to match the rebuilt architecture.",
-        "Store audit notes and screenshots with the branch artifacts.",
-        "Commit the v2 branch and push after a remote is configured."
+        "Store audit notes and screenshots with branch artifacts.",
+        "Configure remote for the delivery repo and prepare push-ready branch."
+      ],
+      "passes": true,
+      "verification": "git status --short && git log --oneline -1 && git remote -v"
+    },
+    {
+      "id": "F1",
+      "category": "security",
+      "priority": 11,
+      "description": "Harden public/admin boundary so admin is not discoverable from public UX and has route-level gate.",
+      "file": "frontend/middleware.ts",
+      "steps": [
+        "Add failing tests for admin visibility and guard behavior.",
+        "Implement middleware or equivalent route gate for `/admin`.",
+        "Keep admin route accessible only through expected staff flow."
       ],
       "passes": false,
-      "verification": "git status --short && git log --oneline -1 && git remote -v"
+      "verification": "cd frontend && npm test -- --runInBand __tests__/site-header.test.tsx"
+    },
+    {
+      "id": "F2",
+      "category": "ingestion-quality",
+      "priority": 12,
+      "description": "Add file governance: strict validation, duplicate handling, and explicit ingestion errors for admin uploads.",
+      "file": "backend/app/api/v1/endpoints/admin_ingestion.py",
+      "steps": [
+        "Write failing API tests for bad format, empty file, and duplicate file behavior.",
+        "Implement upload validation and duplicate replacement policy with metadata.",
+        "Return structured error messages to improve admin-side diagnosis."
+      ],
+      "passes": false,
+      "verification": "cd backend && . .venv/bin/activate && pytest tests/test_admin_ingestion_api.py tests/test_retrieval_service.py -q"
+    },
+    {
+      "id": "F3",
+      "category": "explainability",
+      "priority": 13,
+      "description": "Expose source evidence (file/snippet) so students can understand why an answer is trustworthy.",
+      "file": "backend/app/api/v1/schemas.py",
+      "steps": [
+        "Write failing tests for evidence fields in ask/stream response contracts.",
+        "Extend backend response schema and retrieval service evidence payload.",
+        "Render evidence section in frontend chat response card."
+      ],
+      "passes": false,
+      "verification": "cd backend && . .venv/bin/activate && pytest tests/test_public_qa_api.py -q && cd ../frontend && npm test -- --runInBand __tests__/chat-shell.test.tsx"
+    },
+    {
+      "id": "F4",
+      "category": "reliability",
+      "priority": 14,
+      "description": "Add lightweight rate limit, timeout, and retry strategy to prevent QA endpoint degradation.",
+      "file": "backend/app/api/v1/endpoints/public_qa.py",
+      "steps": [
+        "Write failing tests for rate-limiting and timeout fallback behavior.",
+        "Implement throttle + timeout guards on public QA endpoints.",
+        "Implement frontend retry/backoff for transient failures."
+      ],
+      "passes": false,
+      "verification": "cd backend && . .venv/bin/activate && pytest tests/test_public_qa_api.py -q"
+    },
+    {
+      "id": "F5",
+      "category": "observability",
+      "priority": 15,
+      "description": "Add request ids and structured operation logs for QA and admin operations.",
+      "file": "backend/app/main.py",
+      "steps": [
+        "Write failing tests for request id propagation.",
+        "Implement middleware and structured logging helper.",
+        "Apply logs to ask/stream/upload/reindex endpoints."
+      ],
+      "passes": false,
+      "verification": "cd backend && . .venv/bin/activate && pytest tests/test_public_qa_api.py -q"
+    },
+    {
+      "id": "F6",
+      "category": "deployment",
+      "priority": 16,
+      "description": "Add full CI and production deployment hardening for repeatable release quality.",
+      "file": ".github/workflows/ci.yml",
+      "steps": [
+        "Add CI workflow for backend tests, frontend tests/build, and compose validation.",
+        "Harden deployment docs and Nginx security/caching config.",
+        "Validate all required commands pass in local equivalent."
+      ],
+      "passes": false,
+      "verification": "cd backend && . .venv/bin/activate && pytest -q && cd ../frontend && npm test -- --runInBand && npm run build && cd .. && docker compose config"
+    },
+    {
+      "id": "F7",
+      "category": "launch-ux",
+      "priority": 17,
+      "description": "Complete launch-level UX content: service notice, usage guide, FAQ/help entry, and support block.",
+      "file": "frontend/src/components/home/EntryModule.tsx",
+      "steps": [
+        "Write failing homepage tests for launch support sections.",
+        "Add service notice and usage guidance blocks to homepage/qa pages.",
+        "Ensure mobile layout and CTA hierarchy stay strong."
+      ],
+      "passes": false,
+      "verification": "cd frontend && npm test -- --runInBand __tests__/home-page.test.tsx && npm run build"
+    },
+    {
+      "id": "F8",
+      "category": "release-handoff",
+      "priority": 18,
+      "description": "Execute end-to-end launch validation and ship release-ready docs/harness state.",
+      "file": "harness/progress.txt",
+      "steps": [
+        "Run full backend/frontend verification suite and smoke checks.",
+        "Capture new release screenshots for `/`, `/qa`, `/admin`.",
+        "Update README and progress logs with launch readiness and known limits."
+      ],
+      "passes": false,
+      "verification": "cd backend && . .venv/bin/activate && pytest -q && cd ../frontend && npm test -- --runInBand && npm run build"
     }
   ]
 }
