@@ -54,3 +54,52 @@ def test_admin_upload_and_reindex_routes() -> None:
     status = client.get("/api/v1/admin/status", headers=headers)
     assert status.status_code == 200
     assert status.json()["ok"] is True
+
+
+def test_admin_rejects_unsupported_official_file_type() -> None:
+    retrieval_service.reset_runtime()
+    headers = {"Authorization": "Bearer admin-dev-token"}
+
+    response = client.post(
+        "/api/v1/admin/upload/official",
+        headers=headers,
+        files={"file": ("notice.exe", BytesIO(b"bad"), "application/octet-stream")},
+    )
+
+    assert response.status_code == 400
+    assert "Unsupported file type" in response.json()["detail"]
+
+
+def test_admin_rejects_empty_graduate_data_file() -> None:
+    retrieval_service.reset_runtime()
+    headers = {"Authorization": "Bearer admin-dev-token"}
+
+    response = client.post(
+        "/api/v1/admin/upload/graduate-data",
+        headers=headers,
+        files={"file": ("graduate.csv", BytesIO(b""), "text/csv")},
+    )
+
+    assert response.status_code == 400
+    assert "Empty file" in response.json()["detail"]
+
+
+def test_admin_duplicate_upload_returns_replaced_flag() -> None:
+    retrieval_service.reset_runtime()
+    headers = {"Authorization": "Bearer admin-dev-token"}
+
+    first = client.post(
+        "/api/v1/admin/upload/official",
+        headers=headers,
+        files={"file": ("notice.txt", BytesIO(b"official notice"), "text/plain")},
+    )
+    second = client.post(
+        "/api/v1/admin/upload/official",
+        headers=headers,
+        files={"file": ("notice.txt", BytesIO(b"updated official notice"), "text/plain")},
+    )
+
+    assert first.status_code == 200
+    assert first.json()["replaced"] is False
+    assert second.status_code == 200
+    assert second.json()["replaced"] is True

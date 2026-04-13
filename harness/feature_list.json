@@ -139,7 +139,7 @@
         "Implement upload validation and duplicate replacement policy with metadata.",
         "Return structured error messages to improve admin-side diagnosis."
       ],
-      "passes": false,
+      "passes": true,
       "verification": "cd backend && . .venv/bin/activate && pytest tests/test_admin_ingestion_api.py tests/test_retrieval_service.py -q"
     },
     {

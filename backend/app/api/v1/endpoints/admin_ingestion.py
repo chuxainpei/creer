@@ -4,11 +4,12 @@ from fastapi import APIRouter, File, Header, HTTPException, UploadFile
 from pydantic import BaseModel
 
 from app.config import ADMIN_TOKEN, GRADUATE_UPLOADS_DIR, OFFICIAL_UPLOADS_DIR, ensure_storage_dirs
-from app.ingestion.graduate_parser import SUPPORTED_GRADUATE_EXTENSIONS
-from app.ingestion.official_docs import SUPPORTED_OFFICIAL_EXTENSIONS
+from app.ingestion.graduate_parser import SUPPORTED_GRADUATE_EXTENSIONS, build_graduate_chunks_from_file
+from app.ingestion.official_docs import SUPPORTED_OFFICIAL_EXTENSIONS, build_official_chunks_from_file
 from app.retrieval.service import retrieval_service
 
 router = APIRouter(prefix="/admin", tags=["admin"])
+MAX_UPLOAD_BYTES = 10 * 1024 * 1024
 
 
 class LoginRequest(BaseModel):
@@ -44,6 +45,42 @@ def _save_upload(file: UploadFile, target_dir: Path, allowed_extensions: set[str
     return target_dir / file_name
 
 
+def _validate_payload_size(data: bytes) -> None:
+    if not data:
+        raise HTTPException(status_code=400, detail="Empty file is not allowed")
+    if len(data) > MAX_UPLOAD_BYTES:
+        raise HTTPException(status_code=400, detail="File exceeds max size limit")
+
+
+def _validate_staged_content(source_kind: str, staged_path: Path) -> None:
+    try:
+        if source_kind == "official":
+            chunks = build_official_chunks_from_file(staged_path)
+        else:
+            chunks = build_graduate_chunks_from_file(staged_path)
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=f"Invalid {source_kind} file: {exc}") from exc
+
+    if not chunks:
+        if source_kind == "official":
+            raise HTTPException(status_code=400, detail="Official document has no readable content")
+        raise HTTPException(status_code=400, detail="Graduate data has no valid records")
+
+
+def _write_with_validation(target_path: Path, data: bytes, source_kind: str) -> bool:
+    replaced = target_path.exists()
+    staged_path = target_path.with_name(f"{target_path.stem}.uploading{target_path.suffix}")
+    staged_path.write_bytes(data)
+
+    try:
+        _validate_staged_content(source_kind=source_kind, staged_path=staged_path)
+        staged_path.replace(target_path)
+        return replaced
+    except Exception:
+        staged_path.unlink(missing_ok=True)
+        raise
+
+
 @router.post("/upload/official")
 async def upload_official(
     file: UploadFile = File(...),
@@ -51,13 +88,15 @@ async def upload_official(
 ) -> dict:
     _validate_admin_token(authorization)
     data = await file.read()
+    _validate_payload_size(data)
     target_path = _save_upload(file, OFFICIAL_UPLOADS_DIR, SUPPORTED_OFFICIAL_EXTENSIONS)
-    target_path.write_bytes(data)
+    replaced = _write_with_validation(target_path=target_path, data=data, source_kind="official")
     return {
         "ok": True,
         "source_type": "official",
         "filename": target_path.name,
         "bytes": len(data),
+        "replaced": replaced,
     }
 
 
@@ -68,13 +107,15 @@ async def upload_graduate_data(
 ) -> dict:
     _validate_admin_token(authorization)
     data = await file.read()
+    _validate_payload_size(data)
     target_path = _save_upload(file, GRADUATE_UPLOADS_DIR, SUPPORTED_GRADUATE_EXTENSIONS)
-    target_path.write_bytes(data)
+    replaced = _write_with_validation(target_path=target_path, data=data, source_kind="graduate-data")
     return {
         "ok": True,
         "source_type": "graduate_reference",
         "filename": target_path.name,
         "bytes": len(data),
+        "replaced": replaced,
     }
 
 

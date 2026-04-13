@@ -98,3 +98,29 @@
 
 ### Blockers
 - None for local development execution.
+
+## Session: F2 Ingestion Quality Gate Execution (2026-04-13)
+
+### Completed Tasks
+- Added failing-first admin ingestion tests:
+  - unsupported official file rejection
+  - empty graduate upload rejection
+  - duplicate official upload returns `replaced` flag
+- Added retrieval test for invalid graduate file skip tracking.
+- Implemented upload governance in admin ingestion endpoint:
+  - empty payload rejection
+  - max-size guard
+  - staged-file validation before persistence
+  - duplicate replacement detection (`replaced: true/false`)
+  - explicit error messages for invalid official/graduate files
+- Marked `F2` as complete; next pending feature is `F3`.
+
+### Verification
+- `cd backend && /Users/bran/.config/superpowers/worktrees/employment-qa-mvp/v2-rebuild/backend/.venv/bin/python -m pytest tests/test_admin_ingestion_api.py tests/test_retrieval_service.py -q` -> `7 passed`
+- `cd backend && /Users/bran/.config/superpowers/worktrees/employment-qa-mvp/v2-rebuild/backend/.venv/bin/python -m pytest -q` -> `14 passed`
+
+### Current Focus
+- `F3`: source evidence explainability contract.
+
+### Blockers
+- None.
