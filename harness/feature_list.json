@@ -1,0 +1,114 @@
+{
+  "project": "Employment QA MVP",
+  "description": "Feature tracker for Tasks 2-8 in the rebuild plan.",
+  "features": [
+    {
+      "id": "feat-02",
+      "category": "foundation",
+      "priority": 2,
+      "description": "Install a fresh Next.js + FastAPI base instead of reusing archived app shells.",
+      "file": "frontend/package.json",
+      "steps": [
+        "Create frontend and backend roots with clean manifests.",
+        "Add frontend scripts for dev/build/lint/test.",
+        "Add backend requirements for FastAPI, retrieval, and ingestion dependencies.",
+        "Document base stack decisions in README.",
+        "Verify manifest files exist and commit."
+      ],
+      "passes": false,
+      "verification": "test -f /Users/bran/chat/employment-qa-mvp/frontend/package.json && test -f /Users/bran/chat/employment-qa-mvp/backend/requirements.txt"
+    },
+    {
+      "id": "feat-03",
+      "category": "contracts",
+      "priority": 3,
+      "description": "Define stable ask-response contracts across backend schemas and frontend types.",
+      "file": "backend/app/api/v1/schemas.py",
+      "steps": [
+        "Write failing tests for AskRequest, SourceTag, and AskResponse.",
+        "Implement backend schema models with official/graduate reference typing.",
+        "Implement matching TypeScript contract types in frontend.",
+        "Run contract tests and commit."
+      ],
+      "passes": false,
+      "verification": "cd /Users/bran/chat/employment-qa-mvp/backend && pytest tests/test_contracts.py -q"
+    },
+    {
+      "id": "feat-04",
+      "category": "retrieval",
+      "priority": 4,
+      "description": "Implement official-first retrieval resolution and source-aware ingestion modules.",
+      "file": "backend/app/retrieval/policy.py",
+      "steps": [
+        "Write failing retrieval policy tests for conflict handling.",
+        "Implement resolve_context with official precedence.",
+        "Port graduate parser into backend/app/ingestion/graduate_parser.py.",
+        "Create backend/app/ingestion/official_docs.py with official source metadata.",
+        "Run policy tests and commit."
+      ],
+      "passes": false,
+      "verification": "cd /Users/bran/chat/employment-qa-mvp/backend && pytest tests/test_policy.py -q"
+    },
+    {
+      "id": "feat-05",
+      "category": "api",
+      "priority": 5,
+      "description": "Build public QA endpoint and lightweight admin ingestion endpoints.",
+      "file": "backend/app/main.py",
+      "steps": [
+        "Write failing API tests for public ask and admin upload routes.",
+        "Implement /api/v1/qa/ask endpoint with AskResponse.",
+        "Implement admin login/upload/reindex endpoints.",
+        "Run API tests and commit."
+      ],
+      "passes": false,
+      "verification": "cd /Users/bran/chat/employment-qa-mvp/backend && pytest tests/test_public_qa_api.py tests/test_admin_ingestion_api.py -q"
+    },
+    {
+      "id": "feat-06",
+      "category": "frontend",
+      "priority": 6,
+      "description": "Ship complete public frontend experience with homepage entry and full QA page.",
+      "file": "frontend/app/qa/page.tsx",
+      "steps": [
+        "Write failing QA page tests for recommended questions and source tag area.",
+        "Build homepage entry module linking to /qa with trust framing.",
+        "Build QA page intro, recommendations, chat shell, source tags, and disclaimer.",
+        "Implement simple askQuestion API call model.",
+        "Run frontend tests and build, then commit."
+      ],
+      "passes": false,
+      "verification": "cd /Users/bran/chat/employment-qa-mvp/frontend && npm test -- --runInBand && npm run build"
+    },
+    {
+      "id": "feat-07",
+      "category": "admin",
+      "priority": 7,
+      "description": "Add minimal admin workflow for login, uploads, reindex, and sync status.",
+      "file": "frontend/app/admin/page.tsx",
+      "steps": [
+        "Write failing admin page UI tests.",
+        "Implement login form and upload panel components.",
+        "Implement reindex trigger and last sync state.",
+        "Run frontend tests and commit."
+      ],
+      "passes": false,
+      "verification": "cd /Users/bran/chat/employment-qa-mvp/frontend && npm test -- --runInBand"
+    },
+    {
+      "id": "feat-08",
+      "category": "deployment",
+      "priority": 8,
+      "description": "Prepare independent deployment with future embed compatibility and docs.",
+      "file": "docs/deployment.md",
+      "steps": [
+        "Add Next.js security header policy with frame-ancestors constraints.",
+        "Write deployment topology and environment documentation.",
+        "Validate docker compose config.",
+        "Commit deployment docs and config updates."
+      ],
+      "passes": false,
+      "verification": "docker compose -f /Users/bran/chat/employment-qa-mvp/docker-compose.yml config"
+    }
+  ]
+}

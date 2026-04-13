@@ -1,0 +1,18 @@
+# Employment QA MVP Progress Log
+
+## Session: Workspace Bootstrap (2026-04-13)
+
+### Completed Tasks
+- Created clean workspace at `/Users/bran/chat/employment-qa-mvp`.
+- Added baseline product constraints in `README.md`.
+- Created harness files: `harness/AGENTS.md`, `harness/task.json`, `harness/feature_list.json`, `harness/progress.txt`.
+- Added initial `docker-compose.yml` scaffold for frontend/backend orchestration.
+
+### Verification
+- `ls -R /Users/bran/chat/employment-qa-mvp/harness`
+
+### Current Focus
+- Next feature is `feat-02` (fresh stack base setup).
+
+### Blockers
+- None.

@@ -1,0 +1,46 @@
+{
+  "project_name": "Employment QA MVP",
+  "description": "Student-facing school employment center Q&A MVP",
+  "current_goal": "Ship a complete frontend MVP with official-first hybrid retrieval",
+  "rules": [
+    "Preserve official-information precedence",
+    "Optimize for a complete frontend presentation before secondary features",
+    "Keep admin tooling lightweight",
+    "Do not reintroduce dual-mode product scope in MVP"
+  ],
+  "milestones": [
+    {
+      "name": "M1 - Stack Base",
+      "features": [
+        "feat-02"
+      ]
+    },
+    {
+      "name": "M2 - Contract and Retrieval",
+      "features": [
+        "feat-03",
+        "feat-04"
+      ]
+    },
+    {
+      "name": "M3 - API and Public Frontend",
+      "features": [
+        "feat-05",
+        "feat-06"
+      ]
+    },
+    {
+      "name": "M4 - Admin and Deployment",
+      "features": [
+        "feat-07",
+        "feat-08"
+      ]
+    }
+  ],
+  "harness_files": [
+    "harness/AGENTS.md",
+    "harness/task.json",
+    "harness/feature_list.json",
+    "harness/progress.txt"
+  ]
+}
