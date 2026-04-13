@@ -1,7 +1,7 @@
 'use client';
 
 import { FormEvent, useMemo, useState, useTransition } from 'react';
-import { LoaderCircle, SendHorizonal, ShieldCheck, Sparkles } from 'lucide-react';
+import { LoaderCircle, SendHorizonal, ShieldCheck, Sparkles, UserRound } from 'lucide-react';
 
 import RecommendedQuestions from '@/src/components/qa/RecommendedQuestions';
 import SourceTags from '@/src/components/qa/SourceTags';
@@ -124,8 +124,8 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
 
   return (
     <div className="grid gap-6 xl:grid-cols-[1.5fr_0.8fr]">
-      <Card className="overflow-hidden border-white/80 bg-white/92">
-        <CardHeader className="border-b border-border/70 bg-white/90">
+      <Card className="surface-grad inset-line overflow-hidden border-white/85">
+        <CardHeader className="border-b border-border/70 bg-white/85">
           <div className="flex flex-wrap items-center gap-3">
             <Badge variant="primary">官方优先</Badge>
             <Badge variant="secondary">流式回答</Badge>
@@ -135,13 +135,25 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
         </CardHeader>
 
         <CardContent className="space-y-5 p-5 sm:p-6">
-          <div className="space-y-4 rounded-[1.5rem] border border-border/60 bg-slate-50/80 p-4 sm:p-5">
+          <div className="space-y-4 rounded-[1.5rem] border border-border/60 bg-white/86 p-4 sm:p-5">
             {messages.map((message) => (
-              <div key={message.id} className={message.role === 'user' ? 'ml-auto max-w-[85%]' : 'max-w-[90%]'}>
+              <div
+                key={message.id}
+                className={message.role === 'user' ? 'ml-auto flex max-w-[88%] items-start gap-3' : 'flex max-w-[90%] items-start gap-3'}
+              >
                 <div
                   className={
                     message.role === 'user'
-                      ? 'rounded-[1.4rem] rounded-br-md bg-primary px-4 py-3 text-sm leading-7 text-primary-foreground'
+                      ? 'order-2 flex h-8 w-8 flex-none items-center justify-center rounded-full bg-primary/95 text-primary-foreground'
+                      : 'flex h-8 w-8 flex-none items-center justify-center rounded-full bg-primary/10 text-primary'
+                  }
+                >
+                  {message.role === 'user' ? <UserRound className="h-4 w-4" /> : <Sparkles className="h-4 w-4" />}
+                </div>
+                <div
+                  className={
+                    message.role === 'user'
+                      ? 'order-1 rounded-[1.4rem] rounded-br-md bg-primary px-4 py-3 text-sm leading-7 text-primary-foreground'
                       : 'rounded-[1.4rem] rounded-bl-md border border-border/70 bg-white px-4 py-3 text-sm leading-7 text-foreground shadow-soft'
                   }
                 >
@@ -153,7 +165,7 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
                   )}
                 </div>
                 {message.role === 'assistant' && message.sourceTags?.length ? (
-                  <div className="mt-3 space-y-2">
+                  <div className="mt-3 space-y-2 pl-0">
                     <SourceTags tags={message.sourceTags} />
                     {message.usedOfficial ? (
                       <p className="text-xs text-muted-foreground">该回答已按官方资料优先策略生成。</p>
@@ -194,7 +206,7 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
 
       <div className="space-y-4">
         <RecommendedQuestions questions={initialPrompts} onPick={(prompt) => void sendQuestion(prompt)} />
-        <Card className="border-white/80 bg-white/88">
+        <Card className="surface-grad border-white/85">
           <CardHeader className="pb-4">
             <CardTitle className="text-base">回答逻辑</CardTitle>
           </CardHeader>

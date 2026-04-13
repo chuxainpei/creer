@@ -12,14 +12,11 @@ const recommendedQuestions = [
 export default function QaPage() {
   return (
     <main className="page-shell py-8 sm:py-10">
-      <section className="mb-6 space-y-4">
+      <section className="surface-grad inset-line mb-6 space-y-4 rounded-[1.7rem] border border-white/80 p-5 shadow-soft sm:p-6">
         <div className="flex flex-wrap items-center gap-3">
-          <span className="rounded-full border border-primary/15 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-            官方优先
-          </span>
-          <span className="rounded-full border border-border bg-white/80 px-3 py-1 text-xs font-semibold text-muted-foreground">
-            可嵌入官网入口
-          </span>
+          <span className="rounded-full border border-primary/15 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">官方优先</span>
+          <span className="rounded-full border border-border bg-white/80 px-3 py-1 text-xs font-semibold text-muted-foreground">可嵌入官网入口</span>
+          <span className="rounded-full border border-warning/20 bg-warning/10 px-3 py-1 text-xs font-semibold text-warning-foreground">学生端公开问答</span>
         </div>
         <div className="space-y-2">
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">就业中心智能问答</h1>

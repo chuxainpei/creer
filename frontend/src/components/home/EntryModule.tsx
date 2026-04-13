@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, BookText, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowRight, BookText, ClipboardCheck, ShieldCheck, Sparkles } from 'lucide-react';
 
 import { Badge } from '@/src/components/ui/badge';
 import { Button } from '@/src/components/ui/button';
@@ -27,17 +27,23 @@ const trustPoints = [
   },
 ];
 
+const quickStats = [
+  { label: '高频场景覆盖', value: '40+' },
+  { label: '官方资料优先级', value: 'P0' },
+  { label: '响应模式', value: '流式回答' },
+];
+
 export default function EntryModule({ hotTopics }: EntryModuleProps) {
   return (
     <main className="page-shell py-10 sm:py-14">
-      <section className="hero-grid overflow-hidden rounded-[2rem] border border-white/70 bg-white/70 px-6 py-8 shadow-panel backdrop-blur md:px-10 md:py-12">
-        <div className="grid gap-8 lg:grid-cols-[1.35fr_0.9fr]">
-          <div className="space-y-6">
+      <section className="hero-grid surface-grad inset-line overflow-hidden rounded-[2rem] border border-white/75 px-6 py-8 shadow-panel backdrop-blur md:px-10 md:py-12">
+        <div className="grid gap-8 lg:grid-cols-[1.3fr_0.95fr]">
+          <div className="fade-up space-y-6">
             <Badge variant="primary" className="w-fit">
               就业服务 AI 助手
             </Badge>
             <div className="space-y-4">
-              <h1 className="max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
+              <h1 className="max-w-3xl text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
                 先看官方结论，再给经验补充的学校就业问答入口
               </h1>
               <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
@@ -59,21 +65,29 @@ export default function EntryModule({ hotTopics }: EntryModuleProps) {
 
             <div className="flex flex-wrap gap-3">
               {hotTopics.map((topic) => (
-                <div
-                  key={topic}
-                  className="rounded-full border border-primary/10 bg-primary/5 px-4 py-2 text-sm font-medium text-primary"
-                >
+                <div key={topic} className="entry-chip">
                   {topic}
                 </div>
               ))}
             </div>
+
+            <div className="grid gap-3 sm:grid-cols-3">
+              {quickStats.map((item) => (
+                <Card key={item.label} className="border-white/90 bg-white/86">
+                  <CardContent className="space-y-1 p-4">
+                    <p className="text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">{item.label}</p>
+                    <p className="text-lg font-semibold text-foreground">{item.value}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
 
-          <div className="grid gap-4">
+          <div className="fade-up grid gap-4">
             {trustPoints.map((point) => {
               const Icon = point.icon;
               return (
-                <Card key={point.title} className="border-white/80 bg-white/85">
+                <Card key={point.title} className="border-white/80 bg-white/90">
                   <CardContent className="flex items-start gap-4 p-5">
                     <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                       <Icon className="h-5 w-5" />
@@ -86,6 +100,20 @@ export default function EntryModule({ hotTopics }: EntryModuleProps) {
                 </Card>
               );
             })}
+
+            <Card className="border-primary/15 bg-primary/5">
+              <CardContent className="flex items-start gap-4 p-5">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-primary shadow-soft">
+                  <ClipboardCheck className="h-5 w-5" />
+                </div>
+                <div className="space-y-2">
+                  <p className="text-base font-semibold text-foreground">面向学校官网嵌入</p>
+                  <p className="text-sm leading-6 text-muted-foreground">
+                    当前可独立部署，后续可作为学校就业中心官网入口模块或内嵌页面接入。
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>

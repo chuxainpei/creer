@@ -9,7 +9,7 @@ interface RecommendedQuestionsProps {
 
 export default function RecommendedQuestions({ questions, onPick }: RecommendedQuestionsProps) {
   return (
-    <Card className="border-white/80 bg-white/90">
+    <Card className="surface-grad border-white/85">
       <CardHeader className="pb-4">
         <CardTitle className="text-base">高频就业主题</CardTitle>
       </CardHeader>
@@ -19,7 +19,7 @@ export default function RecommendedQuestions({ questions, onPick }: RecommendedQ
             key={question}
             type="button"
             onClick={() => onPick?.(question)}
-            className="group flex items-center justify-between rounded-[1.25rem] border border-border/80 bg-secondary/45 px-4 py-3 text-left transition hover:border-primary/20 hover:bg-primary/5"
+            className="group flex items-center justify-between rounded-[1.25rem] border border-border/80 bg-white/85 px-4 py-3 text-left transition hover:-translate-y-0.5 hover:border-primary/20 hover:bg-primary/5"
           >
             <span className="text-sm font-medium text-foreground">{question}</span>
             <ArrowUpRight className="h-4 w-4 text-muted-foreground transition group-hover:text-primary" />

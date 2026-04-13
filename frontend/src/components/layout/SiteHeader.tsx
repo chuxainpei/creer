@@ -2,25 +2,25 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BriefcaseBusiness, LayoutDashboard, MessageSquareText } from 'lucide-react';
+import { ArrowUpRight, BriefcaseBusiness, MessageSquareText } from 'lucide-react';
 
 import { Badge } from '@/src/components/ui/badge';
+import { Button } from '@/src/components/ui/button';
 import { cn } from '@/src/lib/utils';
 
 const navItems = [
   { href: '/', label: '首页', icon: BriefcaseBusiness },
   { href: '/qa', label: '问答中心', icon: MessageSquareText },
-  { href: '/admin', label: '管理后台', icon: LayoutDashboard },
 ];
 
 export default function SiteHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-30 border-b border-white/60 bg-white/75 backdrop-blur-xl">
+    <header className="sticky top-0 z-30 border-b border-white/70 bg-white/80 backdrop-blur-xl">
       <div className="page-shell flex items-center justify-between gap-4 py-4">
         <Link href="/" className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-soft">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/75 text-primary-foreground shadow-soft">
             <BriefcaseBusiness className="h-5 w-5" />
           </div>
           <div>
@@ -51,7 +51,17 @@ export default function SiteHeader() {
           })}
         </nav>
 
-        <Badge variant="primary">官方优先</Badge>
+        <div className="flex items-center gap-2">
+          <Badge variant="primary" className="hidden sm:inline-flex">
+            官方优先
+          </Badge>
+          <Link href="/qa" className="hidden sm:block">
+            <Button size="sm" className="gap-1.5">
+              开始提问
+              <ArrowUpRight className="h-4 w-4" />
+            </Button>
+          </Link>
+        </div>
       </div>
     </header>
   );
