@@ -214,8 +214,8 @@ class RetrievalService:
             "used_official": resolved["used_official"],
         }
 
-    async def stream_answer(self, question: str):
-        result = await self.answer(question)
+    async def stream_answer(self, question: str, precomputed_result: dict | None = None):
+        result = precomputed_result if precomputed_result is not None else await self.answer(question)
         answer = result["answer"]
         for index in range(0, len(answer), 18):
             chunk = answer[index : index + 18]

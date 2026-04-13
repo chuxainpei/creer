@@ -1,5 +1,8 @@
+import asyncio
+
 from fastapi.testclient import TestClient
 
+from app.api.v1.endpoints import public_qa
 from app.config import GRADUATE_UPLOADS_DIR, OFFICIAL_UPLOADS_DIR, ensure_storage_dirs
 from app.main import app
 from app.retrieval.service import retrieval_service
@@ -21,6 +24,12 @@ def _seed_index_sources() -> None:
         encoding="utf-8",
     )
     retrieval_service.rebuild_indexes()
+
+
+def _reset_rate_limit_state() -> None:
+    limiter = getattr(public_qa, "_RATE_LIMIT_STATE", None)
+    if isinstance(limiter, dict):
+        limiter.clear()
 
 
 def test_public_ask_returns_answer_and_tags() -> None:
@@ -47,3 +56,50 @@ def test_public_stream_returns_sse_events() -> None:
     assert "event: metadata" in response.text
     assert "\"evidence\"" in response.text
     assert "event: done" in response.text
+
+
+def test_public_ask_enforces_rate_limit() -> None:
+    _seed_index_sources()
+    _reset_rate_limit_state()
+    original_limit = public_qa.RATE_LIMIT_MAX_REQUESTS
+    original_window = public_qa.RATE_LIMIT_WINDOW_SECONDS
+    setattr(public_qa, "RATE_LIMIT_MAX_REQUESTS", 1)
+    setattr(public_qa, "RATE_LIMIT_WINDOW_SECONDS", 60)
+
+    try:
+        first = client.post("/api/v1/qa/ask", json={"question": "双选会如何报名？"})
+        second = client.post("/api/v1/qa/ask", json={"question": "双选会如何报名？"})
+    finally:
+        setattr(public_qa, "RATE_LIMIT_MAX_REQUESTS", original_limit)
+        setattr(public_qa, "RATE_LIMIT_WINDOW_SECONDS", original_window)
+        _reset_rate_limit_state()
+
+    assert first.status_code == 200
+    assert second.status_code == 429
+    assert "请求过于频繁" in second.json()["detail"]
+
+
+def test_public_ask_returns_504_when_answer_times_out() -> None:
+    _seed_index_sources()
+
+    async def slow_answer(_question: str) -> dict:
+        await asyncio.sleep(0.06)
+        return {
+            "answer": "slow",
+            "source_tags": [],
+            "evidence": [],
+            "used_official": False,
+        }
+
+    original_answer = retrieval_service.answer
+    original_timeout = public_qa.ANSWER_TIMEOUT_SECONDS
+    setattr(public_qa, "ANSWER_TIMEOUT_SECONDS", 0.01)
+    retrieval_service.answer = slow_answer
+    try:
+        response = client.post("/api/v1/qa/ask", json={"question": "双选会如何报名？"})
+    finally:
+        retrieval_service.answer = original_answer
+        setattr(public_qa, "ANSWER_TIMEOUT_SECONDS", original_timeout)
+
+    assert response.status_code == 504
+    assert "处理超时" in response.json()["detail"]

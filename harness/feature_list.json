@@ -167,7 +167,7 @@
         "Implement throttle + timeout guards on public QA endpoints.",
         "Implement frontend retry/backoff for transient failures."
       ],
-      "passes": false,
+      "passes": true,
       "verification": "cd backend && . .venv/bin/activate && pytest tests/test_public_qa_api.py -q"
     },
     {

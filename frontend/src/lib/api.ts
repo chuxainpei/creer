@@ -1,6 +1,8 @@
 import type { AdminStatus, AskResponse, StreamMetadata } from '@/src/lib/types';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000';
+const RETRYABLE_STATUS = new Set([408, 429, 500, 502, 503, 504]);
+const RETRY_BACKOFF_MS = [280, 900];
 
 interface StreamHandlers {
   onDelta: (text: string) => void;
@@ -9,6 +11,38 @@ interface StreamHandlers {
 
 function getApiUrl(path: string) {
   return `${API_BASE}${path}`;
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function fetchWithRetry(path: string, init: RequestInit): Promise<Response> {
+  let attempt = 0;
+  let lastError: Error | null = null;
+
+  while (attempt <= RETRY_BACKOFF_MS.length) {
+    try {
+      const res = await fetch(getApiUrl(path), init);
+      if (res.ok) {
+        return res;
+      }
+
+      if (!RETRYABLE_STATUS.has(res.status) || attempt >= RETRY_BACKOFF_MS.length) {
+        return res;
+      }
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error('网络请求失败');
+      if (attempt >= RETRY_BACKOFF_MS.length) {
+        throw lastError;
+      }
+    }
+
+    await sleep(RETRY_BACKOFF_MS[attempt]);
+    attempt += 1;
+  }
+
+  throw lastError ?? new Error('请求失败');
 }
 
 function parseEventBlock(block: string): { event: string; data: unknown } | null {
@@ -33,7 +67,7 @@ function parseEventBlock(block: string): { event: string; data: unknown } | null
 }
 
 export async function askQuestion(question: string): Promise<AskResponse> {
-  const res = await fetch(getApiUrl('/api/v1/qa/ask'), {
+  const res = await fetchWithRetry('/api/v1/qa/ask', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ question }),
@@ -47,7 +81,7 @@ export async function askQuestion(question: string): Promise<AskResponse> {
 }
 
 export async function streamQuestion(question: string, handlers: StreamHandlers): Promise<void> {
-  const res = await fetch(getApiUrl('/api/v1/qa/stream'), {
+  const res = await fetchWithRetry('/api/v1/qa/stream', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ question }),

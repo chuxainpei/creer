@@ -149,3 +149,28 @@
 
 ### Blockers
 - None.
+
+## Session: F4 Reliability Guardrails Execution (2026-04-13)
+
+### Completed Tasks
+- Added failing-first reliability tests for:
+  - public ask rate-limit response (`429`)
+  - public ask timeout fallback (`504`)
+- Implemented backend guardrails in public QA endpoints:
+  - in-memory per-client lightweight rate limiting for `/api/v1/qa/ask` and `/api/v1/qa/stream`
+  - timeout guard for answer generation before response/stream dispatch
+  - consistent Chinese error details for overload and timeout scenarios
+- Extended retrieval stream path to accept a precomputed answer result, so stream endpoint can enforce timeout before opening SSE.
+- Added frontend transient retry/backoff transport helper for ask/stream requests (`408/429/5xx` retryable statuses).
+- Marked `F4` as complete; next pending feature is `F5`.
+
+### Verification
+- `cd backend && /Users/bran/.config/superpowers/worktrees/employment-qa-mvp/v2-rebuild/backend/.venv/bin/python -m pytest tests/test_public_qa_api.py -q` -> `4 passed`
+- `cd backend && /Users/bran/.config/superpowers/worktrees/employment-qa-mvp/v2-rebuild/backend/.venv/bin/python -m pytest tests/test_retrieval_service.py -q` -> `2 passed`
+- `cd frontend && npm test -- --runInBand` -> `9 passed`
+
+### Current Focus
+- `F5`: request-id propagation and structured operation logs.
+
+### Blockers
+- None.
