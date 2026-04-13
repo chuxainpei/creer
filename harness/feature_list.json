@@ -1,114 +1,118 @@
 {
-  "project": "Employment QA MVP",
-  "description": "Feature tracker for Tasks 2-8 in the rebuild plan.",
+  "project": "Employment QA MVP Rebuild v2",
+  "description": "Execution tracker for the Vercel-chatbot-inspired redesign and official-first retrieval rebuild.",
   "features": [
     {
-      "id": "feat-02",
-      "category": "foundation",
+      "id": "H1",
+      "category": "reference",
+      "priority": 1,
+      "description": "Clone and audit `vercel/chatbot`, then record what is transplanted versus explicitly discarded.",
+      "file": "docs/reference-audit.md",
+      "steps": [
+        "Clone `vercel/chatbot` into a read-only reference directory.",
+        "Inspect app shell, chat layout, empty states, cards, and dashboard patterns.",
+        "Write a transplant audit that records what is reused and what is intentionally excluded."
+      ],
+      "passes": true,
+      "verification": "test -d /Users/bran/chat/reference-repos/vercel-chatbot && test -f docs/reference-audit.md"
+    },
+    {
+      "id": "H2",
+      "category": "frontend-foundation",
       "priority": 2,
-      "description": "Install a fresh Next.js + FastAPI base instead of reusing archived app shells.",
-      "file": "frontend/package.json",
+      "description": "Replace the minimal shell with a unified Tailwind and shadcn-style component system shared by `/`, `/qa`, and `/admin`.",
+      "file": "frontend/app/globals.css",
       "steps": [
-        "Create frontend and backend roots with clean manifests.",
-        "Add frontend scripts for dev/build/lint/test.",
-        "Add backend requirements for FastAPI, retrieval, and ingestion dependencies.",
-        "Document base stack decisions in README.",
-        "Verify manifest files exist and commit."
+        "Install Tailwind and component primitives.",
+        "Rebuild the shared app shell, typography system, and color tokens.",
+        "Apply the new visual system across public and admin routes."
       ],
       "passes": true,
-      "verification": "test -f /Users/bran/chat/employment-qa-mvp/frontend/package.json && test -f /Users/bran/chat/employment-qa-mvp/backend/requirements.txt"
+      "verification": "cd frontend && npm test -- --runInBand && npm run build"
     },
     {
-      "id": "feat-03",
-      "category": "contracts",
+      "id": "H3",
+      "category": "public-ux",
       "priority": 3,
-      "description": "Define stable ask-response contracts across backend schemas and frontend types.",
-      "file": "backend/app/api/v1/schemas.py",
+      "description": "Rebuild the homepage and public QA experience with starter prompts, chat history, and concise source labels.",
+      "file": "frontend/src/components/qa/ChatShell.tsx",
       "steps": [
-        "Write failing tests for AskRequest, SourceTag, and AskResponse.",
-        "Implement backend schema models with official/graduate reference typing.",
-        "Implement matching TypeScript contract types in frontend.",
-        "Run contract tests and commit."
+        "Design a trust-first homepage with employment topics and CTA.",
+        "Implement a real multi-message chat layout with loading and error states.",
+        "Render concise official and graduate source tags with the final answer."
       ],
       "passes": true,
-      "verification": "cd /Users/bran/chat/employment-qa-mvp/backend && pytest tests/test_contracts.py -q"
+      "verification": "cd frontend && npm test -- --runInBand && npm run build"
     },
     {
-      "id": "feat-04",
-      "category": "retrieval",
+      "id": "H4",
+      "category": "api-contract",
       "priority": 4,
-      "description": "Implement official-first retrieval resolution and source-aware ingestion modules.",
-      "file": "backend/app/retrieval/policy.py",
+      "description": "Add streaming QA transport while keeping the existing non-streaming fallback contract intact.",
+      "file": "backend/app/api/v1/endpoints/public_qa.py",
       "steps": [
-        "Write failing retrieval policy tests for conflict handling.",
-        "Implement resolve_context with official precedence.",
-        "Port graduate parser into backend/app/ingestion/graduate_parser.py.",
-        "Create backend/app/ingestion/official_docs.py with official source metadata.",
-        "Run policy tests and commit."
+        "Add `POST /api/v1/qa/stream` with `text/event-stream` output.",
+        "Implement frontend stream parsing with delta and metadata events.",
+        "Keep `/api/v1/qa/ask` available as the compatibility path."
       ],
       "passes": true,
-      "verification": "cd /Users/bran/chat/employment-qa-mvp/backend && pytest tests/test_policy.py -q"
+      "verification": "cd backend && . .venv/bin/activate && pytest tests/test_public_qa_api.py -q"
     },
     {
-      "id": "feat-05",
-      "category": "api",
+      "id": "H5",
+      "category": "retrieval",
       "priority": 5,
-      "description": "Build public QA endpoint and lightweight admin ingestion endpoints.",
-      "file": "backend/app/main.py",
+      "description": "Replace mock answers with real official-doc and graduate-data retrieval, preserving strict official-first behavior.",
+      "file": "backend/app/retrieval/service.py",
       "steps": [
-        "Write failing API tests for public ask and admin upload routes.",
-        "Implement /api/v1/qa/ask endpoint with AskResponse.",
-        "Implement admin login/upload/reindex endpoints.",
-        "Run API tests and commit."
+        "Implement real parsing for official docs and graduate data uploads.",
+        "Store searchable chunks in a local persisted retrieval index.",
+        "Compose answers and source labels from resolved official-first context."
       ],
       "passes": true,
-      "verification": "cd /Users/bran/chat/employment-qa-mvp/backend && pytest tests/test_public_qa_api.py tests/test_admin_ingestion_api.py -q"
+      "verification": "cd backend && . .venv/bin/activate && pytest tests/test_policy.py tests/test_retrieval_service.py -q"
     },
     {
-      "id": "feat-06",
-      "category": "frontend",
-      "priority": 6,
-      "description": "Ship complete public frontend experience with homepage entry and full QA page.",
-      "file": "frontend/app/qa/page.tsx",
-      "steps": [
-        "Write failing QA page tests for recommended questions and source tag area.",
-        "Build homepage entry module linking to /qa with trust framing.",
-        "Build QA page intro, recommendations, chat shell, source tags, and disclaimer.",
-        "Implement simple askQuestion API call model.",
-        "Run frontend tests and build, then commit."
-      ],
-      "passes": true,
-      "verification": "cd /Users/bran/chat/employment-qa-mvp/frontend && npm test -- --runInBand && npm run build"
-    },
-    {
-      "id": "feat-07",
+      "id": "H6",
       "category": "admin",
-      "priority": 7,
-      "description": "Add minimal admin workflow for login, uploads, reindex, and sync status.",
+      "priority": 6,
+      "description": "Rebuild `/admin` as a polished token-based console for uploads, reindexing, and sync visibility.",
       "file": "frontend/app/admin/page.tsx",
       "steps": [
-        "Write failing admin page UI tests.",
-        "Implement login form and upload panel components.",
-        "Implement reindex trigger and last sync state.",
-        "Run frontend tests and commit."
+        "Implement token login and protected admin actions.",
+        "Expose official file upload, graduate upload, reindex, and status cards.",
+        "Keep validation and feedback clear enough for future staff handoff."
       ],
       "passes": true,
-      "verification": "cd /Users/bran/chat/employment-qa-mvp/frontend && npm test -- --runInBand"
+      "verification": "cd frontend && npm test -- --runInBand"
     },
     {
-      "id": "feat-08",
-      "category": "deployment",
-      "priority": 8,
-      "description": "Prepare independent deployment with future embed compatibility and docs.",
-      "file": "docs/deployment.md",
+      "id": "H7",
+      "category": "verification",
+      "priority": 7,
+      "description": "Refresh tests, builds, compose validation, and visual captures for the rebuilt product.",
+      "file": "harness/progress.txt",
       "steps": [
-        "Add Next.js security header policy with frame-ancestors constraints.",
-        "Write deployment topology and environment documentation.",
-        "Validate docker compose config.",
-        "Commit deployment docs and config updates."
+        "Run backend pytest suite.",
+        "Run frontend tests and production build.",
+        "Validate docker compose and capture fresh screenshots for `/`, `/qa`, and `/admin`."
       ],
       "passes": true,
-      "verification": "docker compose -f /Users/bran/chat/employment-qa-mvp/docker-compose.yml config"
+      "verification": "cd backend && . .venv/bin/activate && pytest -q && cd ../frontend && npm test -- --runInBand && npm run build && cd .. && docker compose config"
+    },
+    {
+      "id": "H8",
+      "category": "delivery",
+      "priority": 8,
+      "description": "Finalize delivery hygiene: update docs and harness metadata, preserve assets, and push the branch when remote configuration is available.",
+      "file": "README.md",
+      "steps": [
+        "Update README and deployment docs to match the rebuilt architecture.",
+        "Store audit notes and screenshots with the branch artifacts.",
+        "Commit the v2 branch and push after a remote is configured."
+      ],
+      "passes": false,
+      "verification": "git status --short && git log --oneline -1 && git remote -v"
     }
   ]
 }

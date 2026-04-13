@@ -1,99 +1,216 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useMemo, useState, useTransition } from 'react';
+import { LoaderCircle, SendHorizonal, ShieldCheck, Sparkles } from 'lucide-react';
 
-import { askQuestion } from '@/src/lib/api';
-import type { AskResponse } from '@/src/lib/types';
+import RecommendedQuestions from '@/src/components/qa/RecommendedQuestions';
+import SourceTags from '@/src/components/qa/SourceTags';
+import { Badge } from '@/src/components/ui/badge';
+import { Button } from '@/src/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/src/components/ui/card';
+import { Textarea } from '@/src/components/ui/textarea';
+import { askQuestion, streamQuestion } from '@/src/lib/api';
+import type { ChatMessage } from '@/src/lib/types';
 
 interface ChatShellProps {
-  initialQuestion: string;
+  initialPrompts: string[];
 }
 
-export default function ChatShell({ initialQuestion }: ChatShellProps) {
-  const [question, setQuestion] = useState(initialQuestion);
-  const [answer, setAnswer] = useState('');
-  const [loading, setLoading] = useState(false);
+const WELCOME_MESSAGE: ChatMessage = {
+  id: 'welcome',
+  role: 'assistant',
+  content:
+    '可以直接提问三方协议、双选会、求职补贴、档案去向、简历投递等问题。我会优先返回学校就业中心官方资料，再在不冲突时补充经验参考。',
+  status: 'done',
+  sourceTags: [{ label: '官方优先', source_type: 'official' }],
+  usedOfficial: true,
+};
+
+export default function ChatShell({ initialPrompts }: ChatShellProps) {
+  const [question, setQuestion] = useState('');
+  const [messages, setMessages] = useState<ChatMessage[]>([WELCOME_MESSAGE]);
+  const [isPending, startTransition] = useTransition();
   const [error, setError] = useState('');
 
-  const submit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!question.trim()) {
+  const helperTags = useMemo(
+    () => [
+      { label: '官方优先', source_type: 'official' as const },
+      { label: '经验补充', source_type: 'graduate_reference' as const },
+    ],
+    [],
+  );
+
+  async function sendQuestion(nextQuestion: string) {
+    const trimmedQuestion = nextQuestion.trim();
+    if (!trimmedQuestion) {
       return;
     }
 
-    setLoading(true);
     setError('');
+    setQuestion('');
+    const assistantId = `assistant-${Date.now()}`;
+    const nextMessages: ChatMessage[] = [
+      { id: `user-${Date.now()}`, role: 'user', content: trimmedQuestion, status: 'done' },
+      { id: assistantId, role: 'assistant', content: '', status: 'streaming', sourceTags: [] },
+    ];
+
+    startTransition(() => {
+      setMessages((current) => [...current, ...nextMessages]);
+    });
 
     try {
-      const res: AskResponse = await askQuestion(question.trim());
-      setAnswer(res.answer);
+      await streamQuestion(trimmedQuestion, {
+        onDelta: (chunk) => {
+          setMessages((current) =>
+            current.map((message) =>
+              message.id === assistantId
+                ? { ...message, content: `${message.content}${chunk}`, status: 'streaming' }
+                : message,
+            ),
+          );
+        },
+        onMetadata: (metadata) => {
+          setMessages((current) =>
+            current.map((message) =>
+              message.id === assistantId
+                ? {
+                    ...message,
+                    status: 'done',
+                    sourceTags: metadata.source_tags,
+                    usedOfficial: metadata.used_official,
+                  }
+                : message,
+            ),
+          );
+        },
+      });
     } catch (err) {
-      setError(err instanceof Error ? err.message : '请求失败');
-    } finally {
-      setLoading(false);
+      try {
+        const fallback = await askQuestion(trimmedQuestion);
+        setMessages((current) =>
+          current.map((message) =>
+            message.id === assistantId
+              ? {
+                  ...message,
+                  content: fallback.answer,
+                  status: 'done',
+                  sourceTags: fallback.source_tags,
+                  usedOfficial: fallback.used_official,
+                }
+              : message,
+          ),
+        );
+      } catch (fallbackError) {
+        setMessages((current) =>
+          current.map((message) =>
+            message.id === assistantId
+              ? {
+                  ...message,
+                  content: '当前无法完成问答请求，请稍后重试。',
+                  status: 'error',
+                }
+              : message,
+          ),
+        );
+        setError(fallbackError instanceof Error ? fallbackError.message : '请求失败');
+      }
     }
+  }
+
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    await sendQuestion(question);
   };
 
   return (
-    <section className="card" style={{ padding: '1rem' }}>
-      <h3 style={{ margin: '0.2rem 0 0.7rem', fontSize: '1rem' }}>就业问答</h3>
-      <form onSubmit={submit}>
-        <textarea
-          value={question}
-          onChange={(event) => setQuestion(event.target.value)}
-          rows={4}
-          placeholder="例如：双选会如何报名？"
-          style={{
-            width: '100%',
-            borderRadius: '12px',
-            border: '1px solid var(--line)',
-            padding: '0.7rem 0.8rem',
-            resize: 'vertical',
-            font: 'inherit',
-            color: 'var(--ink)',
-            background: '#fff',
-          }}
-        />
-        <div style={{ marginTop: '0.7rem', display: 'flex', justifyContent: 'space-between', gap: '0.8rem' }}>
-          <span style={{ color: 'var(--soft-ink)', fontSize: '0.82rem' }}>
-            回答默认优先官方通知和办事指南。
-          </span>
-          <button
-            type="submit"
-            disabled={loading}
-            style={{
-              border: 0,
-              borderRadius: '10px',
-              background: 'var(--primary)',
-              color: '#fff',
-              padding: '0.48rem 0.95rem',
-              fontWeight: 700,
-              cursor: loading ? 'not-allowed' : 'pointer',
-            }}
-          >
-            {loading ? '生成中...' : '发送问题'}
-          </button>
-        </div>
-      </form>
+    <div className="grid gap-6 xl:grid-cols-[1.5fr_0.8fr]">
+      <Card className="overflow-hidden border-white/80 bg-white/92">
+        <CardHeader className="border-b border-border/70 bg-white/90">
+          <div className="flex flex-wrap items-center gap-3">
+            <Badge variant="primary">官方优先</Badge>
+            <Badge variant="secondary">流式回答</Badge>
+          </div>
+          <CardTitle className="text-2xl">就业中心智能问答</CardTitle>
+          <CardDescription>先输出学校就业中心当前资料，再在不冲突时补充往届经验参考。</CardDescription>
+        </CardHeader>
 
-      {error ? (
-        <p style={{ marginTop: '0.8rem', color: '#b42318', fontSize: '0.85rem' }}>{error}</p>
-      ) : null}
+        <CardContent className="space-y-5 p-5 sm:p-6">
+          <div className="space-y-4 rounded-[1.5rem] border border-border/60 bg-slate-50/80 p-4 sm:p-5">
+            {messages.map((message) => (
+              <div key={message.id} className={message.role === 'user' ? 'ml-auto max-w-[85%]' : 'max-w-[90%]'}>
+                <div
+                  className={
+                    message.role === 'user'
+                      ? 'rounded-[1.4rem] rounded-br-md bg-primary px-4 py-3 text-sm leading-7 text-primary-foreground'
+                      : 'rounded-[1.4rem] rounded-bl-md border border-border/70 bg-white px-4 py-3 text-sm leading-7 text-foreground shadow-soft'
+                  }
+                >
+                  {message.content || (
+                    <span className="inline-flex items-center gap-2 text-muted-foreground">
+                      <LoaderCircle className="h-4 w-4 animate-spin" />
+                      正在整理回答…
+                    </span>
+                  )}
+                </div>
+                {message.role === 'assistant' && message.sourceTags?.length ? (
+                  <div className="mt-3 space-y-2">
+                    <SourceTags tags={message.sourceTags} />
+                    {message.usedOfficial ? (
+                      <p className="text-xs text-muted-foreground">该回答已按官方资料优先策略生成。</p>
+                    ) : null}
+                  </div>
+                ) : null}
+              </div>
+            ))}
+          </div>
 
-      <div
-        style={{
-          marginTop: '0.9rem',
-          minHeight: '104px',
-          borderRadius: '12px',
-          border: '1px solid var(--line)',
-          padding: '0.75rem',
-          background: '#fff',
-          color: answer ? 'var(--ink)' : 'var(--soft-ink)',
-          lineHeight: 1.6,
-        }}
-      >
-        {answer || '回答区域：提交问题后显示官方优先答案。'}
+          {error ? (
+            <div className="rounded-2xl border border-danger/20 bg-danger/5 px-4 py-3 text-sm text-danger">
+              {error}
+            </div>
+          ) : null}
+
+          <form onSubmit={submit} className="space-y-4">
+            <label className="sr-only" htmlFor="question-input">
+              输入问题
+            </label>
+            <Textarea
+              id="question-input"
+              value={question}
+              onChange={(event) => setQuestion(event.target.value)}
+              placeholder="例如：三方协议怎么提交？双选会报名流程是什么？"
+              rows={4}
+            />
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm text-muted-foreground">涉及流程、材料、时间和政策时，系统默认优先返回官方资料。</p>
+              <Button type="submit" className="gap-2 self-start sm:self-auto" disabled={isPending}>
+                {isPending ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <SendHorizonal className="h-4 w-4" />}
+                发送问题
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+
+      <div className="space-y-4">
+        <RecommendedQuestions questions={initialPrompts} onPick={(prompt) => void sendQuestion(prompt)} />
+        <Card className="border-white/80 bg-white/88">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-base">回答逻辑</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4 text-sm text-muted-foreground">
+            <div className="flex items-start gap-3">
+              <ShieldCheck className="mt-0.5 h-4 w-4 text-primary" />
+              <p>官方资料与经验参考冲突时，只输出官方结论。</p>
+            </div>
+            <div className="flex items-start gap-3">
+              <Sparkles className="mt-0.5 h-4 w-4 text-warning" />
+              <p>经验参考只在官方资料未覆盖时补充，不替代正式办理要求。</p>
+            </div>
+            <SourceTags tags={helperTags} />
+          </CardContent>
+        </Card>
       </div>
-    </section>
+    </div>
   );
 }

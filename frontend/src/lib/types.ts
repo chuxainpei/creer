@@ -14,3 +14,30 @@ export interface AskResponse {
   source_tags: SourceTag[];
   used_official: boolean;
 }
+
+export interface StreamMetadata {
+  source_tags: SourceTag[];
+  used_official: boolean;
+}
+
+export type MessageRole = 'user' | 'assistant';
+export type MessageStatus = 'streaming' | 'done' | 'error';
+
+export interface ChatMessage {
+  id: string;
+  role: MessageRole;
+  content: string;
+  status: MessageStatus;
+  sourceTags?: SourceTag[];
+  usedOfficial?: boolean;
+}
+
+export interface AdminStatus {
+  ok: boolean;
+  official_files: number;
+  graduate_files: number;
+  official_chunks: number;
+  graduate_chunks: number;
+  last_reindexed: string | null;
+  skipped_files: Array<{ file: string; reason: string }>;
+}

@@ -1,27 +1,31 @@
+import { ArrowUpRight } from 'lucide-react';
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card';
+
 interface RecommendedQuestionsProps {
   questions: string[];
+  onPick?: (question: string) => void;
 }
 
-export default function RecommendedQuestions({ questions }: RecommendedQuestionsProps) {
+export default function RecommendedQuestions({ questions, onPick }: RecommendedQuestionsProps) {
   return (
-    <section className="card" style={{ padding: '1rem' }}>
-      <h3 style={{ margin: '0.2rem 0 0.9rem', fontSize: '1rem' }}>推荐问题</h3>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-        {questions.map((item) => (
-          <span
-            key={item}
-            style={{
-              border: '1px solid var(--line)',
-              background: 'var(--muted)',
-              borderRadius: '999px',
-              padding: '0.3rem 0.7rem',
-              fontSize: '0.85rem',
-            }}
+    <Card className="border-white/80 bg-white/90">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-base">高频就业主题</CardTitle>
+      </CardHeader>
+      <CardContent className="grid gap-3 sm:grid-cols-2">
+        {questions.map((question) => (
+          <button
+            key={question}
+            type="button"
+            onClick={() => onPick?.(question)}
+            className="group flex items-center justify-between rounded-[1.25rem] border border-border/80 bg-secondary/45 px-4 py-3 text-left transition hover:border-primary/20 hover:bg-primary/5"
           >
-            {item}
-          </span>
+            <span className="text-sm font-medium text-foreground">{question}</span>
+            <ArrowUpRight className="h-4 w-4 text-muted-foreground transition group-hover:text-primary" />
+          </button>
         ))}
-      </div>
-    </section>
+      </CardContent>
+    </Card>
   );
 }

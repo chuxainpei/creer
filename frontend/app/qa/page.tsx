@@ -1,37 +1,35 @@
 import ChatShell from '@/src/components/qa/ChatShell';
-import RecommendedQuestions from '@/src/components/qa/RecommendedQuestions';
-import SourceTags from '@/src/components/qa/SourceTags';
-import type { SourceTag } from '@/src/lib/types';
 
-const recommendedQuestions = ['三方协议', '双选会', '简历优化', '档案去向', '求职补贴', '公务员/选调'];
-
-const defaultTags: SourceTag[] = [
-  { label: '官方通知', source_type: 'official' },
-  { label: '办事指南', source_type: 'official' },
-  { label: '往届去向参考', source_type: 'graduate_reference' },
+const recommendedQuestions = [
+  '三方协议怎么办',
+  '双选会报名流程',
+  '简历优化怎么准备',
+  '档案去向怎么确认',
+  '求职补贴什么时候申请',
+  '公务员/选调要关注什么',
 ];
 
 export default function QaPage() {
   return (
-    <main className="shell" style={{ padding: '2.4rem 0 3.2rem' }}>
-      <section style={{ marginBottom: '1rem' }}>
-        <h1 style={{ margin: '0 0 0.5rem', fontSize: '1.75rem' }}>就业问答中心</h1>
-        <p style={{ margin: 0, color: 'var(--soft-ink)', lineHeight: 1.65 }}>
-          回答以学校就业中心官方内容为第一依据。若官方信息覆盖不足，系统会明确标注“经验参考”并避免替代官方结论。
-        </p>
+    <main className="page-shell py-8 sm:py-10">
+      <section className="mb-6 space-y-4">
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="rounded-full border border-primary/15 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+            官方优先
+          </span>
+          <span className="rounded-full border border-border bg-white/80 px-3 py-1 text-xs font-semibold text-muted-foreground">
+            可嵌入官网入口
+          </span>
+        </div>
+        <div className="space-y-2">
+          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">就业中心智能问答</h1>
+          <p className="max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base">
+            回答优先依据学校就业中心官方资料生成；若官方资料未完全覆盖，才会附加经验参考，并明确说明它不能替代正式要求。
+          </p>
+        </div>
       </section>
 
-      <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: '1fr' }}>
-        <RecommendedQuestions questions={recommendedQuestions} />
-        <ChatShell initialQuestion="双选会如何报名？" />
-        <SourceTags tags={defaultTags} />
-      </div>
-
-      <section className="card" style={{ marginTop: '1rem', padding: '1rem' }}>
-        <p style={{ margin: 0, color: 'var(--soft-ink)', fontSize: '0.86rem', lineHeight: 1.6 }}>
-          声明：本页面用于就业咨询辅助，具体办理时间、材料和流程请以就业中心官网及学院通知为准。
-        </p>
-      </section>
+      <ChatShell initialPrompts={recommendedQuestions} />
     </main>
   );
 }

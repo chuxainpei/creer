@@ -1,15 +1,135 @@
-import type { AskResponse } from '@/src/lib/types';
+import type { AdminStatus, AskResponse, StreamMetadata } from '@/src/lib/types';
+
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000';
+
+interface StreamHandlers {
+  onDelta: (text: string) => void;
+  onMetadata: (metadata: StreamMetadata) => void;
+}
+
+function getApiUrl(path: string) {
+  return `${API_BASE}${path}`;
+}
+
+function parseEventBlock(block: string): { event: string; data: unknown } | null {
+  const lines = block
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean);
+  if (!lines.length) {
+    return null;
+  }
+
+  const event = lines.find((line) => line.startsWith('event:'))?.replace('event:', '').trim() || 'message';
+  const dataLine = lines.find((line) => line.startsWith('data:'));
+  if (!dataLine) {
+    return null;
+  }
+
+  return {
+    event,
+    data: JSON.parse(dataLine.replace('data:', '').trim()),
+  };
+}
 
 export async function askQuestion(question: string): Promise<AskResponse> {
-  const res = await fetch('/api/qa/ask', {
+  const res = await fetch(getApiUrl('/api/v1/qa/ask'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ question }),
   });
 
   if (!res.ok) {
-    throw new Error('Failed to ask question');
+    throw new Error('问答请求失败');
   }
 
   return res.json();
+}
+
+export async function streamQuestion(question: string, handlers: StreamHandlers): Promise<void> {
+  const res = await fetch(getApiUrl('/api/v1/qa/stream'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ question }),
+  });
+
+  if (!res.ok || !res.body) {
+    throw new Error('流式问答不可用');
+  }
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+
+  while (true) {
+    const { value, done } = await reader.read();
+    buffer += decoder.decode(value || new Uint8Array(), { stream: !done });
+
+    let boundaryIndex = buffer.indexOf('\n\n');
+    while (boundaryIndex !== -1) {
+      const block = buffer.slice(0, boundaryIndex);
+      buffer = buffer.slice(boundaryIndex + 2);
+      const parsed = parseEventBlock(block);
+      if (parsed?.event === 'delta' && parsed.data && typeof parsed.data === 'object' && 'text' in parsed.data) {
+        handlers.onDelta(String(parsed.data.text));
+      }
+      if (parsed?.event === 'metadata') {
+        handlers.onMetadata(parsed.data as StreamMetadata);
+      }
+      boundaryIndex = buffer.indexOf('\n\n');
+    }
+
+    if (done) {
+      break;
+    }
+  }
+}
+
+async function adminRequest<T>(path: string, token: string, init?: RequestInit): Promise<T> {
+  const res = await fetch(getApiUrl(path), {
+    ...init,
+    headers: {
+      ...(init?.headers || {}),
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error('后台请求失败');
+  }
+
+  return res.json();
+}
+
+export async function loginAdmin(token: string): Promise<{ ok: boolean; access_token: string }> {
+  const res = await fetch(getApiUrl('/api/v1/admin/login'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token }),
+  });
+
+  if (!res.ok) {
+    throw new Error('登录失败');
+  }
+
+  return res.json();
+}
+
+export function getAdminStatus(token: string) {
+  return adminRequest<AdminStatus>('/api/v1/admin/status', token);
+}
+
+export function reindexAdmin(token: string) {
+  return adminRequest<AdminStatus & { status: string }>('/api/v1/admin/reindex', token, {
+    method: 'POST',
+  });
+}
+
+export async function uploadAdminFile(path: string, token: string, file: File) {
+  const formData = new FormData();
+  formData.append('file', file);
+  return adminRequest<{ ok: boolean; filename: string; bytes: number }>(path, token, {
+    method: 'POST',
+    body: formData,
+  });
 }

@@ -2,9 +2,9 @@ fastapi
 uvicorn[standard]
 pydantic
 httpx
-chromadb
-sentence-transformers
 pandas
 openpyxl
 python-multipart
+pypdf
+python-docx
 pytest

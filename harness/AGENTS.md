@@ -1,23 +1,23 @@
-# AGENTS.md - Employment QA MVP Harness
+# AGENTS.md - Employment QA MVP Rebuild v2 Harness
+
+Context:
+- active implementation branch: `v2-rebuild`
+- active isolated worktree: `/Users/bran/.config/superpowers/worktrees/employment-qa-mvp/v2-rebuild`
+- reference UI donor: `/Users/bran/chat/reference-repos/vercel-chatbot`
 
 Session workflow:
-- restore context from harness files first
-- work one feature at a time
-- verify before marking complete
-- keep frontend quality at MVP-demo level, not admin-tool level
-- treat official-content precedence as a non-negotiable product rule
+1. Read `README.md`
+2. Read `docs/reference-audit.md`
+3. Read `harness/task.json`
+4. Read `harness/feature_list.json`
+5. Read `harness/progress.txt`
+6. Pick the highest-priority feature where `passes` is `false`
+7. Execute and verify
+8. Append progress and keep branch state clean
 
-Execution order:
-1. Read `harness/task.json`
-2. Read `harness/feature_list.json`
-3. Read `harness/progress.txt`
-4. Pick highest-priority feature where `passes` is `false`
-5. Execute and verify
-6. Update status and append progress
-
-Hard rules:
-- Only change `passes` from `false` to `true` in `harness/feature_list.json` during execution sessions.
-- Do not reorder or rewrite feature definitions.
-- Commit each completed feature separately.
-- Push after each feature commit.
-- If blocked, write blocker details in `harness/progress.txt` and stop.
+Non-negotiable rules:
+- official content precedence wins whenever evidence conflicts
+- public UX quality matters as much as API correctness
+- do not reintroduce auth/database complexity from the reference repo
+- do not claim completion without command-based verification
+- if remote push is blocked, record the blocker instead of pretending delivery is finished

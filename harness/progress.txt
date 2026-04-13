@@ -1,207 +1,41 @@
-# Employment QA MVP Progress Log
+# Employment QA MVP Rebuild v2 Progress Log
 
-## Session: Workspace Bootstrap (2026-04-13)
+## Context
 
-### Completed Tasks
-- Created clean workspace at `/Users/bran/chat/employment-qa-mvp`.
-- Added baseline product constraints in `README.md`.
-- Created harness files: `harness/AGENTS.md`, `harness/task.json`, `harness/feature_list.json`, `harness/progress.txt`.
-- Added initial `docker-compose.yml` scaffold for frontend/backend orchestration.
+- repo root: `/Users/bran/chat/employment-qa-mvp`
+- active worktree: `/Users/bran/.config/superpowers/worktrees/employment-qa-mvp/v2-rebuild`
+- active branch: `v2-rebuild`
+- reference donor: `/Users/bran/chat/reference-repos/vercel-chatbot`
 
-### Verification
-- `ls -R /Users/bran/chat/employment-qa-mvp/harness`
+## Session: V2 Rebuild Execution (2026-04-13)
 
-### Current Focus
-- Next feature is `feat-02` (fresh stack base setup).
+### Completed Features
+- `H1` complete: cloned and audited `vercel/chatbot`, then documented transplant versus discard decisions in `docs/reference-audit.md`.
+- `H2` complete: replaced the minimal shell with a Tailwind + shadcn-style design system and shared product shell.
+- `H3` complete: rebuilt `/` and `/qa` into a real product flow with starter prompts, multi-message chat, streaming output, and concise source tags.
+- `H4` complete: added `POST /api/v1/qa/stream` while keeping `POST /api/v1/qa/ask` as the compatibility fallback.
+- `H5` complete: replaced mock retrieval with real official-doc and graduate-data ingestion plus official-first answer composition.
+- `H6` complete: rebuilt `/admin` into a token-based console for uploads, reindexing, and sync visibility.
+- `H7` complete: refreshed backend tests, frontend tests, frontend build, docker compose validation, and visual captures.
 
-### Blockers
-- None.
-
-## Session: Fresh Stack Base (2026-04-13)
-
-### Completed Tasks
-- Created `/Users/bran/chat/employment-qa-mvp/frontend/package.json` with Next.js scripts (`dev`, `build`, `lint`, `test`).
-- Created `/Users/bran/chat/employment-qa-mvp/backend/requirements.txt` with FastAPI and retrieval dependencies.
-- Verified required manifest files exist.
-- Committed feature changes with message: `chore: add clean nextjs and fastapi skeleton`.
-- Marked `feat-02` as complete in `harness/feature_list.json`.
+### Important Implementation Notes
+- The backend retrieval layer now uses `backend/app/retrieval/store.py`, a local persisted vector-like store built for stable MVP behavior.
+- This deliberately supersedes the earlier placeholder/mock answer path.
+- Official-source precedence remains absolute. Graduate data only appears as `经验参考`, and only when it does not conflict with official content.
 
 ### Verification
-- `test -f /Users/bran/chat/employment-qa-mvp/frontend/package.json && test -f /Users/bran/chat/employment-qa-mvp/backend/requirements.txt`
-- `git -C /Users/bran/chat/employment-qa-mvp log -1 --oneline`
+- `cd backend && . .venv/bin/activate && pytest -q` -> `10 passed`
+- `cd frontend && npm test -- --runInBand` -> `4 passed, 5 tests`
+- `cd frontend && npm run build` -> success with `/`, `/qa`, `/admin`
+- `docker compose config` -> valid output
+
+### Visual Capture Assets
+- `docs/screenshots/home.png`
+- `docs/screenshots/qa.png`
+- `docs/screenshots/admin.png`
 
 ### Current Focus
-- Next feature is `feat-03` (shared ask-response contract).
+- `H8`: finish delivery hygiene by committing the verified branch state and pushing once a remote is configured.
 
 ### Blockers
-- Push is pending because no remote is configured yet.
-
-## Session: Shared Contract Lock (2026-04-13)
-
-### Completed Tasks
-- Added failing contract tests in `backend/tests/test_contracts.py`.
-- Implemented backend contracts in `backend/app/api/v1/schemas.py` and `backend/app/domain/contracts.py`.
-- Added matching frontend contract types in `frontend/src/lib/types.ts`.
-- Added package init files under `backend/app/` so imports resolve cleanly.
-- Added `.gitignore` and removed accidental Python cache artifacts from git tracking.
-- Marked `feat-03` as complete in `harness/feature_list.json`.
-
-### Verification
-- Pre-implementation failure observed:
-  - `.venv/bin/python -m pytest tests/test_contracts.py -q` -> `ModuleNotFoundError: No module named 'app.api.v1.schemas'`
-- Post-implementation success:
-  - `.venv/bin/python -m pytest tests/test_contracts.py -q` -> `3 passed`
-
-### Commits
-- `feat: define stable public ask-response contract`
-- `chore: ignore python cache artifacts`
-
-### Current Focus
-- Next feature is `feat-04` (official-first retrieval policy + ingestion modules).
-
-### Blockers
-- Push is still pending due missing remote configuration.
-
-## Session: Deployment and Embed Readiness (2026-04-13)
-
-### Completed Tasks
-- Added deployment CSP and header policy in `frontend/next.config.js`.
-- Added reverse proxy template in `deploy/nginx.conf`.
-- Added deployment runbook in `docs/deployment.md`.
-- Updated root project overview in `README.md` with independent launch and embed notes.
-- Marked `feat-08` as complete in `harness/feature_list.json`.
-
-### Verification
-- `docker compose -f /Users/bran/chat/employment-qa-mvp/docker-compose.yml config` -> valid output (with non-blocking warning about obsolete `version`).
-- `cd /Users/bran/chat/employment-qa-mvp/frontend && npm run build` -> success.
-
-### Commits
-- `docs: add deployment plan for independent site and future embed`
-
-### Current Focus
-- All planned features (`feat-02` to `feat-08`) are complete.
-
-### Blockers
-- Push is still pending due missing remote configuration.
-
-## Session: Minimal Admin Workflow UI (2026-04-13)
-
-### Completed Tasks
-- Added failing admin UI test: `frontend/__tests__/admin-page.test.tsx`.
-- Implemented admin page and lightweight workflow components:
-  - `frontend/app/admin/page.tsx`
-  - `frontend/src/components/admin/LoginForm.tsx`
-  - `frontend/src/components/admin/UploadPanel.tsx`
-- Added upload actions for official docs and graduate data, with reindex trigger and last sync status.
-- Marked `feat-07` as complete in `harness/feature_list.json`.
-
-### Verification
-- Initial failure: `npm test -- --runInBand` failed because `app/admin/page` was missing.
-- Post-implementation:
-  - `npm test -- --runInBand` -> `3 passed`
-  - `npm run build` -> success with route `/admin`
-
-### Commits
-- `feat: add lightweight admin workflow for content updates`
-
-### Current Focus
-- Next feature is `feat-08` (deployment config and docs).
-
-### Blockers
-- Push is still pending due missing remote configuration.
-
-## Session: Complete Public Frontend Experience (2026-04-13)
-
-### Completed Tasks
-- Added failing QA page test file: `frontend/__tests__/qa-page.test.tsx`.
-- Implemented homepage entry flow and trust framing:
-  - `frontend/app/page.tsx`
-  - `frontend/src/components/home/EntryModule.tsx`
-- Implemented full QA page and components:
-  - `frontend/app/qa/page.tsx`
-  - `frontend/src/components/qa/RecommendedQuestions.tsx`
-  - `frontend/src/components/qa/ChatShell.tsx`
-  - `frontend/src/components/qa/SourceTags.tsx`
-  - `frontend/src/lib/api.ts`
-- Added Next.js frontend scaffolding for testing/build:
-  - `frontend/app/layout.tsx`
-  - `frontend/app/globals.css`
-  - `frontend/tsconfig.json`
-  - `frontend/jest.config.js`
-  - `frontend/jest.setup.ts`
-  - `frontend/next-env.d.ts`
-- Marked `feat-06` as complete in `harness/feature_list.json`.
-
-### Verification
-- Initial failure: `npm test -- --runInBand` -> `jest: command not found`.
-- Post-implementation:
-  - `npm test -- --runInBand` -> `2 passed`
-  - `npm run build` -> build success with routes `/` and `/qa`
-
-### Commits
-- `feat: ship complete frontend for employment qa mvp`
-
-### Current Focus
-- Next feature is `feat-07` (minimal admin workflow UI).
-
-### Blockers
-- Push is still pending due missing remote configuration.
-
-## Session: Public QA and Admin Ingestion APIs (2026-04-13)
-
-### Completed Tasks
-- Added failing API tests:
-  - `backend/tests/test_public_qa_api.py`
-  - `backend/tests/test_admin_ingestion_api.py`
-- Implemented public ask endpoint:
-  - `backend/app/api/v1/endpoints/public_qa.py`
-- Implemented lightweight admin endpoints:
-  - `backend/app/api/v1/endpoints/admin_ingestion.py`
-- Wired service entrypoint:
-  - `backend/app/main.py`
-- Marked `feat-05` as complete in `harness/feature_list.json`.
-
-### Verification
-- Initial expected failure: `.venv/bin/python -m pytest tests/test_public_qa_api.py tests/test_admin_ingestion_api.py -q` failed due missing `fastapi`.
-- After dependency install and implementation:
-  - `.venv/bin/python -m pytest tests/test_public_qa_api.py tests/test_admin_ingestion_api.py -q` -> `3 passed`
-  - `.venv/bin/python -m pytest tests -q` -> `8 passed`
-
-### Commits
-- `feat: add public qa and lightweight admin ingestion apis`
-
-### Current Focus
-- Next feature is `feat-06` (complete public frontend experience).
-
-### Blockers
-- Push is still pending due missing remote configuration.
-
-## Session: Official-First Retrieval Foundation (2026-04-13)
-
-### Completed Tasks
-- Added failing policy tests in `backend/tests/test_policy.py`.
-- Implemented official-first conflict resolution in `backend/app/retrieval/policy.py`.
-- Added retrieval scaffolding models and service:
-  - `backend/app/retrieval/models.py`
-  - `backend/app/retrieval/service.py`
-- Added ingestion modules with source tagging:
-  - `backend/app/ingestion/graduate_parser.py`
-  - `backend/app/ingestion/official_docs.py`
-- Marked `feat-04` as complete in `harness/feature_list.json`.
-
-### Verification
-- Pre-implementation failure:
-  - `.venv/bin/python -m pytest tests/test_policy.py -q` -> `ModuleNotFoundError`
-- Post-implementation pass:
-  - `.venv/bin/python -m pytest tests/test_policy.py -q` -> `2 passed`
-- Regression pass:
-  - `.venv/bin/python -m pytest tests/test_contracts.py tests/test_policy.py -q` -> `5 passed`
-
-### Commits
-- `feat: add official-first retrieval policy`
-
-### Current Focus
-- Next feature is `feat-05` (public QA API + lightweight admin ingestion API).
-
-### Blockers
-- Push is still pending due missing remote configuration.
+- `git remote -v` is empty, so branch push and remote handoff cannot finish yet.

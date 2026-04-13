@@ -15,6 +15,7 @@ def resolve_context(official_hits: list[dict], graduate_hits: list[dict]) -> dic
     graduate_texts = [hit["text"] for hit in graduate_hits if hit.get("text")]
 
     context_parts: list[str] = []
+    included_graduate: list[str] = []
 
     if official_texts:
         context_parts.append("官方信息:\n" + "\n".join(official_texts))
@@ -25,13 +26,17 @@ def resolve_context(official_hits: list[dict], graduate_hits: list[dict]) -> dic
                 non_conflicting.append(g_text)
 
         if non_conflicting:
+            included_graduate = non_conflicting
             context_parts.append(
                 "经验参考（仅供参考，不可替代官方口径）:\n" + "\n".join(non_conflicting)
             )
     elif graduate_texts:
+        included_graduate = graduate_texts
         context_parts.append("经验参考:\n" + "\n".join(graduate_texts))
 
     return {
         "context": "\n\n".join(context_parts),
         "used_official": bool(official_texts),
+        "official_texts": official_texts,
+        "graduate_texts": included_graduate,
     }
