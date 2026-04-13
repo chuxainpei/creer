@@ -35,3 +35,29 @@
 
 ### Blockers
 - Push is pending because no remote is configured yet.
+
+## Session: Shared Contract Lock (2026-04-13)
+
+### Completed Tasks
+- Added failing contract tests in `backend/tests/test_contracts.py`.
+- Implemented backend contracts in `backend/app/api/v1/schemas.py` and `backend/app/domain/contracts.py`.
+- Added matching frontend contract types in `frontend/src/lib/types.ts`.
+- Added package init files under `backend/app/` so imports resolve cleanly.
+- Added `.gitignore` and removed accidental Python cache artifacts from git tracking.
+- Marked `feat-03` as complete in `harness/feature_list.json`.
+
+### Verification
+- Pre-implementation failure observed:
+  - `.venv/bin/python -m pytest tests/test_contracts.py -q` -> `ModuleNotFoundError: No module named 'app.api.v1.schemas'`
+- Post-implementation success:
+  - `.venv/bin/python -m pytest tests/test_contracts.py -q` -> `3 passed`
+
+### Commits
+- `feat: define stable public ask-response contract`
+- `chore: ignore python cache artifacts`
+
+### Current Focus
+- Next feature is `feat-04` (official-first retrieval policy + ingestion modules).
+
+### Blockers
+- Push is still pending due missing remote configuration.

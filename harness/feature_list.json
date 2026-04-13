@@ -30,7 +30,7 @@
         "Implement matching TypeScript contract types in frontend.",
         "Run contract tests and commit."
       ],
-      "passes": false,
+      "passes": true,
       "verification": "cd /Users/bran/chat/employment-qa-mvp/backend && pytest tests/test_contracts.py -q"
     },
     {
