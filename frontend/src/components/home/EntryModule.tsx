@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, BookText, ClipboardCheck, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowRight, BookText, CircleHelp, ClipboardCheck, LifeBuoy, Megaphone, ShieldCheck, Sparkles } from 'lucide-react';
 
 import { Badge } from '@/src/components/ui/badge';
 import { Button } from '@/src/components/ui/button';
@@ -116,6 +116,79 @@ export default function EntryModule({ hotTopics }: EntryModuleProps) {
             </Card>
           </div>
         </div>
+      </section>
+
+      <section className="mt-6 grid gap-4 lg:grid-cols-2">
+        <Card className="surface-grad border-white/85">
+          <CardContent className="space-y-4 p-5 sm:p-6">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                <Megaphone className="h-4 w-4" />
+              </div>
+              <h2 className="text-lg font-semibold">服务公告</h2>
+            </div>
+            <div className="space-y-2 text-sm leading-7 text-muted-foreground">
+              <p>服务时间：每日 07:00-23:00（系统维护窗口会提前公告）。</p>
+              <p>适用对象：本校在读学生、应届毕业生，回答默认按学校就业中心资料优先生成。</p>
+              <p>风险提醒：最终办理要求以学校就业中心官网与学院通知为准。</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="surface-grad border-white/85">
+          <CardContent className="space-y-4 p-5 sm:p-6">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                <BookText className="h-4 w-4" />
+              </div>
+              <h2 className="text-lg font-semibold">使用指南</h2>
+            </div>
+            <ol className="space-y-2 text-sm leading-7 text-muted-foreground">
+              <li>1. 先描述你的场景：年级、专业、目标事项（如三方协议、补贴、档案）。</li>
+              <li>2. 查看回答下方的来源标签和证据片段，优先执行官方口径。</li>
+              <li>3. 若答案涉及时间节点，请在办理前再核对一次最新公告。</li>
+            </ol>
+          </CardContent>
+        </Card>
+
+        <Card className="surface-grad border-white/85">
+          <CardContent className="space-y-4 p-5 sm:p-6">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                <CircleHelp className="h-4 w-4" />
+              </div>
+              <h2 className="text-lg font-semibold">常见问题</h2>
+            </div>
+            <div className="space-y-3 text-sm leading-7 text-muted-foreground">
+              <p>
+                <span className="font-medium text-foreground">Q:</span> 为什么有时只显示官方信息？
+                <br />
+                <span className="font-medium text-foreground">A:</span> 当官方与经验冲突时，系统会只输出官方结论。
+              </p>
+              <p>
+                <span className="font-medium text-foreground">Q:</span> 经验参考能直接照做吗？
+                <br />
+                <span className="font-medium text-foreground">A:</span> 不能。经验仅供辅助，办理动作请按学校正式通知执行。
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="surface-grad border-white/85">
+          <CardContent className="space-y-4 p-5 sm:p-6">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                <LifeBuoy className="h-4 w-4" />
+              </div>
+              <h2 className="text-lg font-semibold">支持与反馈</h2>
+            </div>
+            <div className="space-y-2 text-sm leading-7 text-muted-foreground">
+              <p>如发现回答与最新公告不一致，请在就业中心反馈通道提交问题截图与问题描述。</p>
+              <p>建议反馈信息：问题原文、答案截图、你所在学院/专业、公告链接或文件名称。</p>
+              <p>我们会优先处理“政策冲突”和“办理时间误差”类问题。</p>
+            </div>
+          </CardContent>
+        </Card>
       </section>
     </main>
   );

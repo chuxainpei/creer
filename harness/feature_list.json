@@ -209,7 +209,7 @@
         "Add service notice and usage guidance blocks to homepage/qa pages.",
         "Ensure mobile layout and CTA hierarchy stay strong."
       ],
-      "passes": false,
+      "passes": true,
       "verification": "cd frontend && npm test -- --runInBand __tests__/home-page.test.tsx && npm run build"
     },
     {

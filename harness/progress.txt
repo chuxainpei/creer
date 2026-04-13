@@ -228,3 +228,22 @@
 
 ### Blockers
 - None.
+
+## Session: F7 Launch UX Content Completion (2026-04-13)
+
+### Completed Tasks
+- Added failing-first homepage launch-content assertions (`服务公告`, `使用指南`, `常见问题`, `支持与反馈`).
+- Reworked homepage launch blocks in `EntryModule` with complete, student-facing guidance content and clear support language.
+- Added QA-page companion notice/help/support cards to keep message consistency after进入问答页.
+- Marked `F7` as complete; next pending feature is `F8`.
+
+### Verification
+- `cd frontend && npm test -- --runInBand __tests__/home-page.test.tsx` -> `1 passed`
+- `cd frontend && npm test -- --runInBand` -> `9 passed`
+- `cd frontend && npm run build` -> success
+
+### Current Focus
+- `F8`: final release evidence (full verification, fresh screenshots, README/progress handoff).
+
+### Blockers
+- None.

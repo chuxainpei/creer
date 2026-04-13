@@ -26,6 +26,21 @@ export default function QaPage() {
         </div>
       </section>
 
+      <section className="mb-6 grid gap-4 lg:grid-cols-3">
+        <div className="rounded-[1.2rem] border border-white/85 bg-white/85 p-4">
+          <p className="text-sm font-semibold text-foreground">服务公告</p>
+          <p className="mt-2 text-xs leading-6 text-muted-foreground">高峰期可能出现排队重试，建议在关键办理日前提前咨询并核对最新公告。</p>
+        </div>
+        <div className="rounded-[1.2rem] border border-white/85 bg-white/85 p-4">
+          <p className="text-sm font-semibold text-foreground">使用指南</p>
+          <p className="mt-2 text-xs leading-6 text-muted-foreground">优先提问具体事项 + 时间条件，回答下方会显示来源标签与证据片段。</p>
+        </div>
+        <div className="rounded-[1.2rem] border border-white/85 bg-white/85 p-4">
+          <p className="text-sm font-semibold text-foreground">支持与反馈</p>
+          <p className="mt-2 text-xs leading-6 text-muted-foreground">如遇冲突信息，请向就业中心提交问题截图和公告依据，我们会尽快修正。</p>
+        </div>
+      </section>
+
       <ChatShell initialPrompts={recommendedQuestions} />
     </main>
   );
