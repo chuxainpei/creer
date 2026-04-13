@@ -51,7 +51,7 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
     const assistantId = `assistant-${Date.now()}`;
     const nextMessages: ChatMessage[] = [
       { id: `user-${Date.now()}`, role: 'user', content: trimmedQuestion, status: 'done' },
-      { id: assistantId, role: 'assistant', content: '', status: 'streaming', sourceTags: [] },
+      { id: assistantId, role: 'assistant', content: '', status: 'streaming', sourceTags: [], evidence: [] },
     ];
 
     startTransition(() => {
@@ -77,6 +77,7 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
                     ...message,
                     status: 'done',
                     sourceTags: metadata.source_tags,
+                    evidence: metadata.evidence,
                     usedOfficial: metadata.used_official,
                   }
                 : message,
@@ -95,6 +96,7 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
                   content: fallback.answer,
                   status: 'done',
                   sourceTags: fallback.source_tags,
+                  evidence: fallback.evidence,
                   usedOfficial: fallback.used_official,
                 }
               : message,
@@ -169,6 +171,19 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
                     <SourceTags tags={message.sourceTags} />
                     {message.usedOfficial ? (
                       <p className="text-xs text-muted-foreground">该回答已按官方资料优先策略生成。</p>
+                    ) : null}
+                    {message.evidence?.length ? (
+                      <div className="space-y-2 rounded-2xl border border-border/70 bg-muted/35 p-3">
+                        <p className="text-xs font-semibold tracking-wide text-muted-foreground">来源证据</p>
+                        <div className="space-y-2">
+                          {message.evidence.map((item) => (
+                            <div key={`${item.source_type}-${item.source_name}-${item.snippet}`} className="space-y-1">
+                              <p className="text-xs font-medium text-foreground">{item.source_name}</p>
+                              <p className="text-xs leading-6 text-muted-foreground">{item.snippet}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     ) : null}
                   </div>
                 ) : null}

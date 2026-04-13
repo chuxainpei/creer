@@ -11,19 +11,24 @@ def _is_conflicting(official_text: str, graduate_text: str) -> bool:
 
 
 def resolve_context(official_hits: list[dict], graduate_hits: list[dict]) -> dict:
-    official_texts = [hit["text"] for hit in official_hits if hit.get("text")]
-    graduate_texts = [hit["text"] for hit in graduate_hits if hit.get("text")]
+    official_selected_hits = [hit for hit in official_hits if hit.get("text")]
+    graduate_candidates = [hit for hit in graduate_hits if hit.get("text")]
+    official_texts = [hit["text"] for hit in official_selected_hits]
+    graduate_texts = [hit["text"] for hit in graduate_candidates]
 
     context_parts: list[str] = []
     included_graduate: list[str] = []
+    included_graduate_hits: list[dict] = []
 
     if official_texts:
         context_parts.append("官方信息:\n" + "\n".join(official_texts))
 
-        non_conflicting = []
-        for g_text in graduate_texts:
+        non_conflicting: list[str] = []
+        for graduate_hit in graduate_candidates:
+            g_text = graduate_hit["text"]
             if not any(_is_conflicting(o_text, g_text) for o_text in official_texts):
                 non_conflicting.append(g_text)
+                included_graduate_hits.append(graduate_hit)
 
         if non_conflicting:
             included_graduate = non_conflicting
@@ -32,6 +37,7 @@ def resolve_context(official_hits: list[dict], graduate_hits: list[dict]) -> dic
             )
     elif graduate_texts:
         included_graduate = graduate_texts
+        included_graduate_hits = graduate_candidates
         context_parts.append("经验参考:\n" + "\n".join(graduate_texts))
 
     return {
@@ -39,4 +45,6 @@ def resolve_context(official_hits: list[dict], graduate_hits: list[dict]) -> dic
         "used_official": bool(official_texts),
         "official_texts": official_texts,
         "graduate_texts": included_graduate,
+        "official_hits": official_selected_hits,
+        "graduate_hits": included_graduate_hits,
     }

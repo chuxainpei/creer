@@ -5,6 +5,12 @@ export interface SourceTag {
   source_type: SourceType;
 }
 
+export interface SourceEvidence {
+  source_type: SourceType;
+  source_name: string;
+  snippet: string;
+}
+
 export interface AskRequest {
   question: string;
 }
@@ -12,11 +18,13 @@ export interface AskRequest {
 export interface AskResponse {
   answer: string;
   source_tags: SourceTag[];
+  evidence: SourceEvidence[];
   used_official: boolean;
 }
 
 export interface StreamMetadata {
   source_tags: SourceTag[];
+  evidence: SourceEvidence[];
   used_official: boolean;
 }
 
@@ -29,6 +37,7 @@ export interface ChatMessage {
   content: string;
   status: MessageStatus;
   sourceTags?: SourceTag[];
+  evidence?: SourceEvidence[];
   usedOfficial?: boolean;
 }
 

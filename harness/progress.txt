@@ -124,3 +124,28 @@
 
 ### Blockers
 - None.
+
+## Session: F3 Explainability Evidence Contract Execution (2026-04-13)
+
+### Completed Tasks
+- Added failing-first tests to require source evidence in both contracts:
+  - `POST /api/v1/qa/ask` must return `evidence[]` with `source_name` and `snippet`
+  - `POST /api/v1/qa/stream` metadata event must include `evidence`
+- Extended backend response model and retrieval pipeline:
+  - new response schema field `evidence`
+  - context policy now returns selected `official_hits` and conflict-filtered `graduate_hits`
+  - retrieval service builds student-facing evidence entries with source name + snippet
+- Extended frontend chat model and rendering:
+  - stream metadata and fallback ask responses now carry `evidence`
+  - assistant message card now shows `来源证据` section under source tags
+- Marked `F3` as complete; next pending feature is `F4`.
+
+### Verification
+- `cd backend && /Users/bran/.config/superpowers/worktrees/employment-qa-mvp/v2-rebuild/backend/.venv/bin/python -m pytest tests/test_public_qa_api.py -q` -> `2 passed`
+- `cd frontend && npm test -- --runInBand __tests__/chat-shell.test.tsx` -> `1 passed`
+
+### Current Focus
+- `F4`: lightweight rate-limit, timeout, and retry resilience.
+
+### Blockers
+- None.

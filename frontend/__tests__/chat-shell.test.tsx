@@ -15,6 +15,13 @@ test('streams assistant output and final source tags', async () => {
     handlers.onMetadata({
       source_tags: [{ label: '官方资料', source_type: 'official' }],
       used_official: true,
+      evidence: [
+        {
+          source_type: 'official',
+          source_name: '双选会指南',
+          snippet: '双选会报名需登录学校就业系统，按公告时间完成报名与材料提交。',
+        },
+      ],
     });
   });
 
@@ -29,4 +36,6 @@ test('streams assistant output and final source tags', async () => {
     expect(screen.getByText(/请在系统内提交三方协议/)).toBeInTheDocument();
   });
   expect(screen.getByText('官方资料')).toBeInTheDocument();
+  expect(screen.getByText('双选会指南')).toBeInTheDocument();
+  expect(screen.getByText(/按公告时间完成报名与材料提交/)).toBeInTheDocument();
 });

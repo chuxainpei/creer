@@ -153,7 +153,7 @@
         "Extend backend response schema and retrieval service evidence payload.",
         "Render evidence section in frontend chat response card."
       ],
-      "passes": false,
+      "passes": true,
       "verification": "cd backend && . .venv/bin/activate && pytest tests/test_public_qa_api.py -q && cd ../frontend && npm test -- --runInBand __tests__/chat-shell.test.tsx"
     },
     {

@@ -41,6 +41,13 @@ def _event(event: str, payload: dict) -> str:
     return f"event: {event}\ndata: {json.dumps(payload, ensure_ascii=False)}\n\n"
 
 
+def _clean_snippet(text: str, limit: int = 120) -> str:
+    compact = " ".join(text.split())
+    if len(compact) <= limit:
+        return compact
+    return f"{compact[:limit].rstrip()}..."
+
+
 class RetrievalService:
     def __init__(self) -> None:
         self._init_stores()
@@ -141,6 +148,54 @@ class RetrievalService:
 
         return "暂未检索到匹配资料，请补充专业、业务名称或时间条件后再试。"
 
+    def _build_evidence(self, resolved: dict, limit: int = 4) -> list[dict]:
+        evidence: list[dict] = []
+        seen: set[tuple[str, str, str]] = set()
+
+        def append_evidence(hit: dict) -> None:
+            metadata = hit.get("metadata", {}) if isinstance(hit, dict) else {}
+            source_type = str(metadata.get("source_type") or "official")
+
+            if source_type == "official":
+                title = str(metadata.get("title") or "官方资料")
+                channel = str(metadata.get("channel") or "").strip()
+                source_name = f"{channel} · {title}" if channel else title
+            else:
+                year = metadata.get("year")
+                major = str(metadata.get("major") or "").strip()
+                institution = str(metadata.get("institution_company") or "").strip()
+                parts = [part for part in [f"{year}届" if year else "", major, institution] if part]
+                source_name = " / ".join(parts) if parts else "毕业去向数据"
+
+            snippet = _clean_snippet(str(hit.get("text", "")))
+            if not snippet:
+                return
+
+            signature = (source_type, source_name, snippet)
+            if signature in seen:
+                return
+            seen.add(signature)
+
+            evidence.append(
+                {
+                    "source_type": "official" if source_type == "official" else "graduate_reference",
+                    "source_name": source_name,
+                    "snippet": snippet,
+                }
+            )
+
+        for hit in resolved.get("official_hits", []):
+            append_evidence(hit)
+            if len(evidence) >= limit:
+                return evidence
+
+        for hit in resolved.get("graduate_hits", []):
+            append_evidence(hit)
+            if len(evidence) >= limit:
+                return evidence
+
+        return evidence
+
     async def answer(self, question: str) -> dict:
         self._ensure_index_bootstrap()
         official_hits = [
@@ -155,6 +210,7 @@ class RetrievalService:
         return {
             "answer": self._compose_answer(resolved),
             "source_tags": self._build_source_tags(resolved),
+            "evidence": self._build_evidence(resolved),
             "used_official": resolved["used_official"],
         }
 
@@ -170,6 +226,7 @@ class RetrievalService:
             "metadata",
             {
                 "source_tags": result["source_tags"],
+                "evidence": result["evidence"],
                 "used_official": result["used_official"],
             },
         )
