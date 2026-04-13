@@ -62,6 +62,35 @@
 ### Blockers
 - Push is still pending due missing remote configuration.
 
+## Session: Public QA and Admin Ingestion APIs (2026-04-13)
+
+### Completed Tasks
+- Added failing API tests:
+  - `backend/tests/test_public_qa_api.py`
+  - `backend/tests/test_admin_ingestion_api.py`
+- Implemented public ask endpoint:
+  - `backend/app/api/v1/endpoints/public_qa.py`
+- Implemented lightweight admin endpoints:
+  - `backend/app/api/v1/endpoints/admin_ingestion.py`
+- Wired service entrypoint:
+  - `backend/app/main.py`
+- Marked `feat-05` as complete in `harness/feature_list.json`.
+
+### Verification
+- Initial expected failure: `.venv/bin/python -m pytest tests/test_public_qa_api.py tests/test_admin_ingestion_api.py -q` failed due missing `fastapi`.
+- After dependency install and implementation:
+  - `.venv/bin/python -m pytest tests/test_public_qa_api.py tests/test_admin_ingestion_api.py -q` -> `3 passed`
+  - `.venv/bin/python -m pytest tests -q` -> `8 passed`
+
+### Commits
+- `feat: add public qa and lightweight admin ingestion apis`
+
+### Current Focus
+- Next feature is `feat-06` (complete public frontend experience).
+
+### Blockers
+- Push is still pending due missing remote configuration.
+
 ## Session: Official-First Retrieval Foundation (2026-04-13)
 
 ### Completed Tasks
