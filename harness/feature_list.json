@@ -77,7 +77,7 @@
         "Implement simple askQuestion API call model.",
         "Run frontend tests and build, then commit."
       ],
-      "passes": false,
+      "passes": true,
       "verification": "cd /Users/bran/chat/employment-qa-mvp/frontend && npm test -- --runInBand && npm run build"
     },
     {

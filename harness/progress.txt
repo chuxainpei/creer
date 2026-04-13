@@ -62,6 +62,43 @@
 ### Blockers
 - Push is still pending due missing remote configuration.
 
+## Session: Complete Public Frontend Experience (2026-04-13)
+
+### Completed Tasks
+- Added failing QA page test file: `frontend/__tests__/qa-page.test.tsx`.
+- Implemented homepage entry flow and trust framing:
+  - `frontend/app/page.tsx`
+  - `frontend/src/components/home/EntryModule.tsx`
+- Implemented full QA page and components:
+  - `frontend/app/qa/page.tsx`
+  - `frontend/src/components/qa/RecommendedQuestions.tsx`
+  - `frontend/src/components/qa/ChatShell.tsx`
+  - `frontend/src/components/qa/SourceTags.tsx`
+  - `frontend/src/lib/api.ts`
+- Added Next.js frontend scaffolding for testing/build:
+  - `frontend/app/layout.tsx`
+  - `frontend/app/globals.css`
+  - `frontend/tsconfig.json`
+  - `frontend/jest.config.js`
+  - `frontend/jest.setup.ts`
+  - `frontend/next-env.d.ts`
+- Marked `feat-06` as complete in `harness/feature_list.json`.
+
+### Verification
+- Initial failure: `npm test -- --runInBand` -> `jest: command not found`.
+- Post-implementation:
+  - `npm test -- --runInBand` -> `2 passed`
+  - `npm run build` -> build success with routes `/` and `/qa`
+
+### Commits
+- `feat: ship complete frontend for employment qa mvp`
+
+### Current Focus
+- Next feature is `feat-07` (minimal admin workflow UI).
+
+### Blockers
+- Push is still pending due missing remote configuration.
+
 ## Session: Public QA and Admin Ingestion APIs (2026-04-13)
 
 ### Completed Tasks
