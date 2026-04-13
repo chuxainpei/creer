@@ -6,6 +6,7 @@ from pydantic import BaseModel
 from app.config import ADMIN_TOKEN, GRADUATE_UPLOADS_DIR, OFFICIAL_UPLOADS_DIR, ensure_storage_dirs
 from app.ingestion.graduate_parser import SUPPORTED_GRADUATE_EXTENSIONS, build_graduate_chunks_from_file
 from app.ingestion.official_docs import SUPPORTED_OFFICIAL_EXTENSIONS, build_official_chunks_from_file
+from app.observability import log_operation
 from app.retrieval.service import retrieval_service
 
 router = APIRouter(prefix="/admin", tags=["admin"])
@@ -91,6 +92,12 @@ async def upload_official(
     _validate_payload_size(data)
     target_path = _save_upload(file, OFFICIAL_UPLOADS_DIR, SUPPORTED_OFFICIAL_EXTENSIONS)
     replaced = _write_with_validation(target_path=target_path, data=data, source_kind="official")
+    log_operation(
+        "admin.upload.official.success",
+        filename=target_path.name,
+        bytes=len(data),
+        replaced=replaced,
+    )
     return {
         "ok": True,
         "source_type": "official",
@@ -110,6 +117,12 @@ async def upload_graduate_data(
     _validate_payload_size(data)
     target_path = _save_upload(file, GRADUATE_UPLOADS_DIR, SUPPORTED_GRADUATE_EXTENSIONS)
     replaced = _write_with_validation(target_path=target_path, data=data, source_kind="graduate-data")
+    log_operation(
+        "admin.upload.graduate.success",
+        filename=target_path.name,
+        bytes=len(data),
+        replaced=replaced,
+    )
     return {
         "ok": True,
         "source_type": "graduate_reference",
@@ -123,6 +136,13 @@ async def upload_graduate_data(
 async def reindex(authorization: str | None = Header(default=None)) -> dict:
     _validate_admin_token(authorization)
     status = retrieval_service.rebuild_indexes()
+    log_operation(
+        "admin.reindex.completed",
+        official_files=status["official_files"],
+        graduate_files=status["graduate_files"],
+        official_chunks=status["official_chunks"],
+        graduate_chunks=status["graduate_chunks"],
+    )
     return {"ok": True, "status": "reindex_completed", **status}
 
 

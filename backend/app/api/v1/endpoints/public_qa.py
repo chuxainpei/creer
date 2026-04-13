@@ -6,6 +6,7 @@ from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import StreamingResponse
 
 from app.api.v1.schemas import AskRequest, AskResponse
+from app.observability import log_operation
 from app.retrieval.service import retrieval_service
 
 
@@ -52,15 +53,47 @@ async def _answer_with_timeout(question: str) -> dict:
 
 @router.post("/ask", response_model=AskResponse)
 async def ask_question(payload: AskRequest, request: Request) -> AskResponse:
-    _enforce_rate_limit(request)
-    result = await _answer_with_timeout(payload.question)
+    try:
+        _enforce_rate_limit(request)
+        result = await _answer_with_timeout(payload.question)
+    except HTTPException as exc:
+        log_operation(
+            "qa.ask.failed",
+            status_code=exc.status_code,
+            detail=str(exc.detail),
+            question_length=len(payload.question),
+        )
+        raise
+
+    log_operation(
+        "qa.ask.success",
+        used_official=result["used_official"],
+        source_tags=len(result["source_tags"]),
+        evidence=len(result.get("evidence", [])),
+    )
     return AskResponse(**result)
 
 
 @router.post("/stream")
 async def stream_question(payload: AskRequest, request: Request) -> StreamingResponse:
-    _enforce_rate_limit(request)
-    result = await _answer_with_timeout(payload.question)
+    try:
+        _enforce_rate_limit(request)
+        result = await _answer_with_timeout(payload.question)
+    except HTTPException as exc:
+        log_operation(
+            "qa.stream.failed",
+            status_code=exc.status_code,
+            detail=str(exc.detail),
+            question_length=len(payload.question),
+        )
+        raise
+
+    log_operation(
+        "qa.stream.opened",
+        used_official=result["used_official"],
+        source_tags=len(result["source_tags"]),
+        evidence=len(result.get("evidence", [])),
+    )
     return StreamingResponse(
         retrieval_service.stream_answer(payload.question, precomputed_result=result),
         media_type="text/event-stream",

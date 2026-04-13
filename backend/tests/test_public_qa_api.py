@@ -103,3 +103,24 @@ def test_public_ask_returns_504_when_answer_times_out() -> None:
 
     assert response.status_code == 504
     assert "处理超时" in response.json()["detail"]
+
+
+def test_request_id_is_propagated_for_ask_and_stream() -> None:
+    _seed_index_sources()
+    request_id = "qa-request-123"
+
+    ask_response = client.post(
+        "/api/v1/qa/ask",
+        headers={"x-request-id": request_id},
+        json={"question": "双选会如何报名？"},
+    )
+    stream_response = client.post(
+        "/api/v1/qa/stream",
+        headers={"x-request-id": request_id},
+        json={"question": "双选会如何报名？"},
+    )
+
+    assert ask_response.status_code == 200
+    assert stream_response.status_code == 200
+    assert ask_response.headers.get("x-request-id") == request_id
+    assert stream_response.headers.get("x-request-id") == request_id

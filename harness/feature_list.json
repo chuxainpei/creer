@@ -181,7 +181,7 @@
         "Implement middleware and structured logging helper.",
         "Apply logs to ask/stream/upload/reindex endpoints."
       ],
-      "passes": false,
+      "passes": true,
       "verification": "cd backend && . .venv/bin/activate && pytest tests/test_public_qa_api.py -q"
     },
     {

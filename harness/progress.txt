@@ -174,3 +174,29 @@
 
 ### Blockers
 - None.
+
+## Session: F5 Observability Request-ID + Structured Logs (2026-04-13)
+
+### Completed Tasks
+- Added failing-first request-id propagation test for `POST /api/v1/qa/ask` and `POST /api/v1/qa/stream`.
+- Implemented request-id middleware in FastAPI:
+  - accept incoming `x-request-id` or generate a server id
+  - bind request id to request context and return it in response headers
+- Added structured logging helper (`app/observability.py`) and applied it to core operations:
+  - `qa.ask.success|failed`
+  - `qa.stream.opened|failed`
+  - `admin.upload.official.success`
+  - `admin.upload.graduate.success`
+  - `admin.reindex.completed`
+- Marked `F5` as complete; next pending feature is `F6`.
+
+### Verification
+- `cd backend && /Users/bran/.config/superpowers/worktrees/employment-qa-mvp/v2-rebuild/backend/.venv/bin/python -m pytest tests/test_public_qa_api.py -q` -> `5 passed`
+- `cd backend && /Users/bran/.config/superpowers/worktrees/employment-qa-mvp/v2-rebuild/backend/.venv/bin/python -m pytest tests/test_admin_ingestion_api.py tests/test_retrieval_service.py -q` -> `7 passed`
+- `cd frontend && npm test -- --runInBand` -> `9 passed`
+
+### Current Focus
+- `F6`: CI workflow + deployment hardening baseline.
+
+### Blockers
+- None.
