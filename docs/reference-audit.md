@@ -4,6 +4,7 @@ Reference clones:
 - `/Users/bran/chat/reference-repos/vercel-chatbot`
 - `/Users/bran/chat/reference-repos/chatbot-ui`
 - `/Users/bran/chat/reference-repos/vercel-ai-chatbot-supabase`
+- `/Users/bran/chat/reference-repos/lobe-chat`
 - `/Users/bran/chat/reference-repos/creer` (empty repository as of 2026-04-13)
 
 Why these were used:
@@ -11,6 +12,7 @@ Why these were used:
 - `vercel/chatbot` has strong patterns for app shell rhythm, chat composition, empty states, loading states, and dashboard-like cards
 - `chatbot-ui` provides stronger multi-message bubble spacing and interaction hierarchy for dense chat pages
 - `vercel-ai-chatbot-supabase` provides practical shadcn/tailwind layout patterns and chat panel structure
+- `lobe-chat` provides high-density AI-product information architecture and premium visual layering references
 - the product still needed to stay school-specific and backend-independent, so only the visual and interaction logic was transplanted
 
 ## Transplanted Ideas
@@ -23,6 +25,7 @@ Why these were used:
 - polished admin-console layout patterns instead of raw forms
 - higher contrast conversational bubbles and clearer user/assistant identity
 - more layered hero composition and visual depth on public pages
+- stronger spatial rhythm between trust labels, prompts, and answer panels
 
 ## Deliberately Discarded
 
@@ -30,6 +33,7 @@ Why these were used:
 - Postgres and chat-history persistence
 - Vercel AI SDK route handlers
 - Supabase auth/storage coupling
+- lobe-chat monorepo infra and plugin/agent stack (too heavy for MVP)
 - model switching and personal conversation history
 - any product copy that implies a general-purpose AI assistant
 - public navigation entry to admin console
