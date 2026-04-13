@@ -9,6 +9,18 @@ This branch rebuilds the earlier MVP around a stronger product shell:
 - official materials and graduate destination data in one retrieval flow
 - absolute official-first behavior when evidence conflicts
 
+## Launch Readiness
+
+Release baseline is now complete for `F1-F8` launch tasks:
+- public/admin boundary hardening (`/admin` route gate + hidden public entry)
+- ingestion governance (format validation, duplicate replacement, structured errors)
+- explainability (answer-level source evidence with snippet + source name)
+- reliability guardrails (rate limit, timeout, frontend retry/backoff)
+- observability (request-id middleware + structured operation logs)
+- CI/deploy baseline (GitHub Actions + hardened Nginx proxy config)
+- launch UX completion (service notice, usage guide, FAQ/help, support blocks)
+- release evidence package (full verification + refreshed screenshots)
+
 ## Architecture
 
 - `frontend/`: Next.js 14 + TypeScript + Tailwind CSS + shadcn-style UI primitives
@@ -18,7 +30,7 @@ This branch rebuilds the earlier MVP around a stronger product shell:
 - `backend/app/retrieval/policy.py`: enforces official-first resolution
 - `backend/app/retrieval/store.py`: local persisted vector-like index for MVP reliability
 
-The UI direction is intentionally based on `vercel/chatbot` patterns, but adapted for a school employment-center product instead of importing its auth, database, or multi-user chat stack. The transplant notes live in [docs/reference-audit.md](/Users/bran/.config/superpowers/worktrees/employment-qa-mvp/v2-rebuild/docs/reference-audit.md).
+The UI direction is intentionally based on `vercel/chatbot` patterns, but adapted for a school employment-center product instead of importing its auth, database, or multi-user chat stack. The transplant notes live in [docs/reference-audit.md](docs/reference-audit.md).
 
 ## Public Product Scope
 
@@ -69,8 +81,23 @@ cd frontend && npm run build
 docker compose config
 ```
 
+## Release Artifacts
+
+- latest screenshots:
+  - `docs/screenshots/home.png`
+  - `docs/screenshots/qa.png`
+  - `docs/screenshots/admin.png`
+- CI workflow: `.github/workflows/ci.yml`
+- deployment hardening notes: `docs/deployment.md`
+
 ## Deployment Notes
 
 - independent deployment comes first; the school homepage links into this product
 - future iframe/embed support is controlled by `frame-ancestors` in `frontend/next.config.js`
-- full topology and ops notes live in [docs/deployment.md](/Users/bran/.config/superpowers/worktrees/employment-qa-mvp/v2-rebuild/docs/deployment.md)
+- full topology and ops notes live in [docs/deployment.md](docs/deployment.md)
+
+## Known Limitations (v1)
+
+- no student account system and no cross-session history
+- admin relies on token gate + token login (no RBAC)
+- source ingestion is file-upload based only (no URL crawling / pasted-rich-text pipeline)

@@ -247,3 +247,26 @@
 
 ### Blockers
 - None.
+
+## Session: F8 Release Evidence + Handoff Finalization (2026-04-13)
+
+### Completed Tasks
+- Executed full launch verification suite (backend/frontend/build/compose).
+- Refreshed release screenshots:
+  - `docs/screenshots/home.png`
+  - `docs/screenshots/qa.png`
+  - `docs/screenshots/admin.png`
+- Updated `README.md` with launch readiness status, release artifacts, and known limitations.
+- Marked `F8` as complete. Harness backlog `F1-F8` is now fully passed.
+
+### Verification
+- `cd backend && /Users/bran/.config/superpowers/worktrees/employment-qa-mvp/v2-rebuild/backend/.venv/bin/python -m pytest -q` -> `17 passed`
+- `cd frontend && npm test -- --runInBand` -> `9 passed`
+- `cd frontend && npm run build` -> success
+- `docker compose config` -> valid output
+
+### Current Focus
+- Delivery complete for current harness scope. Next cycle can start from post-launch feedback backlog.
+
+### Blockers
+- None.

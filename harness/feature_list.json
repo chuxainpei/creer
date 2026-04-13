@@ -223,7 +223,7 @@
         "Capture new release screenshots for `/`, `/qa`, `/admin`.",
         "Update README and progress logs with launch readiness and known limits."
       ],
-      "passes": false,
+      "passes": true,
       "verification": "cd backend && . .venv/bin/activate && pytest -q && cd ../frontend && npm test -- --runInBand && npm run build"
     }
   ]
