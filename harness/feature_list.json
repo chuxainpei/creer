@@ -15,7 +15,7 @@
         "Document base stack decisions in README.",
         "Verify manifest files exist and commit."
       ],
-      "passes": false,
+      "passes": true,
       "verification": "test -f /Users/bran/chat/employment-qa-mvp/frontend/package.json && test -f /Users/bran/chat/employment-qa-mvp/backend/requirements.txt"
     },
     {

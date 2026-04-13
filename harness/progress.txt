@@ -16,3 +16,22 @@
 
 ### Blockers
 - None.
+
+## Session: Fresh Stack Base (2026-04-13)
+
+### Completed Tasks
+- Created `/Users/bran/chat/employment-qa-mvp/frontend/package.json` with Next.js scripts (`dev`, `build`, `lint`, `test`).
+- Created `/Users/bran/chat/employment-qa-mvp/backend/requirements.txt` with FastAPI and retrieval dependencies.
+- Verified required manifest files exist.
+- Committed feature changes with message: `chore: add clean nextjs and fastapi skeleton`.
+- Marked `feat-02` as complete in `harness/feature_list.json`.
+
+### Verification
+- `test -f /Users/bran/chat/employment-qa-mvp/frontend/package.json && test -f /Users/bran/chat/employment-qa-mvp/backend/requirements.txt`
+- `git -C /Users/bran/chat/employment-qa-mvp log -1 --oneline`
+
+### Current Focus
+- Next feature is `feat-03` (shared ask-response contract).
+
+### Blockers
+- Push is pending because no remote is configured yet.
