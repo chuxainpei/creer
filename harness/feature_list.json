@@ -125,7 +125,7 @@
         "Implement middleware or equivalent route gate for `/admin`.",
         "Keep admin route accessible only through expected staff flow."
       ],
-      "passes": false,
+      "passes": true,
       "verification": "cd frontend && npm test -- --runInBand __tests__/site-header.test.tsx"
     },
     {

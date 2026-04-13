@@ -74,3 +74,27 @@
 - Push attempt failed in current environment:
   - `git push -u origin v2-polish`
   - error: `LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to github.com:443`
+
+## Session: F1 Security Boundary Execution (2026-04-13)
+
+### Completed Tasks
+- Verified push blocker root cause moved from SSL to GitHub credential mode; switched remote to SSH and pushed `v2-polish` successfully.
+- Implemented admin route gate:
+  - added `frontend/middleware.ts` to protect `/admin` with cookie + entry-token handshake
+  - added `frontend/src/lib/admin-gate.ts` for deterministic access-decision logic
+- Added failing-first tests and made them pass:
+  - `frontend/__tests__/admin-gate.test.ts`
+  - existing `frontend/__tests__/site-header.test.tsx` remains green
+- Marked `F1` as complete; next pending feature is `F2`.
+
+### Verification
+- `cd frontend && npm test -- --runInBand __tests__/admin-gate.test.ts __tests__/site-header.test.tsx` -> `2 passed`
+- `cd frontend && npm test -- --runInBand` -> `6 passed, 9 tests`
+- `cd frontend && npm run build` -> success, middleware compiled
+- `git -C /Users/bran/chat/worktrees/employment-qa-mvp/v2-polish push -u origin v2-polish` -> pushed and tracking set
+
+### Current Focus
+- `F2`: ingestion quality gate (invalid file, empty file, duplicate policy).
+
+### Blockers
+- None for local development execution.
