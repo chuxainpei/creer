@@ -92,7 +92,7 @@
         "Implement reindex trigger and last sync state.",
         "Run frontend tests and commit."
       ],
-      "passes": false,
+      "passes": true,
       "verification": "cd /Users/bran/chat/employment-qa-mvp/frontend && npm test -- --runInBand"
     },
     {
