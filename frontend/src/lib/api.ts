@@ -1,6 +1,8 @@
 import type { AdminStatus, AskResponse, StreamMetadata } from '@/src/lib/types';
+import { buildDemoAskResponse } from '@/src/lib/demo-mock';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000';
+const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE === '1';
 const RETRYABLE_STATUS = new Set([408, 429, 500, 502, 503, 504]);
 const RETRY_BACKOFF_MS = [280, 900];
 
@@ -67,20 +69,41 @@ function parseEventBlock(block: string): { event: string; data: unknown } | null
 }
 
 export async function askQuestion(question: string): Promise<AskResponse> {
-  const res = await fetchWithRetry('/api/v1/qa/ask', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ question }),
-  });
+  try {
+    const res = await fetchWithRetry('/api/v1/qa/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question }),
+    });
 
-  if (!res.ok) {
-    throw new Error('问答请求失败');
+    if (!res.ok) {
+      if (DEMO_MODE) {
+        return buildDemoAskResponse(question);
+      }
+      throw new Error('问答请求失败');
+    }
+
+    return res.json();
+  } catch (error) {
+    if (DEMO_MODE) {
+      return buildDemoAskResponse(question);
+    }
+    throw error;
   }
-
-  return res.json();
 }
 
 export async function streamQuestion(question: string, handlers: StreamHandlers): Promise<void> {
+  if (DEMO_MODE) {
+    const fallback = await askQuestion(question);
+    handlers.onDelta(fallback.answer);
+    handlers.onMetadata({
+      source_tags: fallback.source_tags,
+      evidence: fallback.evidence,
+      used_official: fallback.used_official,
+    });
+    return;
+  }
+
   const res = await fetchWithRetry('/api/v1/qa/stream', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -91,30 +114,36 @@ export async function streamQuestion(question: string, handlers: StreamHandlers)
     throw new Error('流式问答不可用');
   }
 
-  const reader = res.body.getReader();
-  const decoder = new TextDecoder();
-  let buffer = '';
+  try {
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
 
-  while (true) {
-    const { value, done } = await reader.read();
-    buffer += decoder.decode(value || new Uint8Array(), { stream: !done });
+    while (true) {
+      const { value, done } = await reader.read();
+      buffer += decoder.decode(value || new Uint8Array(), { stream: !done });
 
-    let boundaryIndex = buffer.indexOf('\n\n');
-    while (boundaryIndex !== -1) {
-      const block = buffer.slice(0, boundaryIndex);
-      buffer = buffer.slice(boundaryIndex + 2);
-      const parsed = parseEventBlock(block);
-      if (parsed?.event === 'delta' && parsed.data && typeof parsed.data === 'object' && 'text' in parsed.data) {
-        handlers.onDelta(String(parsed.data.text));
+      let boundaryIndex = buffer.indexOf('\n\n');
+      while (boundaryIndex !== -1) {
+        const block = buffer.slice(0, boundaryIndex);
+        buffer = buffer.slice(boundaryIndex + 2);
+        const parsed = parseEventBlock(block);
+        if (parsed?.event === 'delta' && parsed.data && typeof parsed.data === 'object' && 'text' in parsed.data) {
+          handlers.onDelta(String(parsed.data.text));
+        }
+        if (parsed?.event === 'metadata') {
+          handlers.onMetadata(parsed.data as StreamMetadata);
+        }
+        boundaryIndex = buffer.indexOf('\n\n');
       }
-      if (parsed?.event === 'metadata') {
-        handlers.onMetadata(parsed.data as StreamMetadata);
+
+      if (done) {
+        break;
       }
-      boundaryIndex = buffer.indexOf('\n\n');
     }
-
-    if (done) {
-      break;
+  } catch (error) {
+    if (!DEMO_MODE) {
+      throw error;
     }
   }
 }

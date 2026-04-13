@@ -1,0 +1,84 @@
+name: Deploy Demo To GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - demo
+      - v2-polish
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-demo
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Resolve demo base path and api url
+        run: |
+          REPO_NAME="${GITHUB_REPOSITORY#*/}"
+          OWNER_NAME="${GITHUB_REPOSITORY%/*}"
+
+          if [[ "$REPO_NAME" == "${OWNER_NAME}.github.io" ]]; then
+            BASE_PATH=""
+          else
+            BASE_PATH="/$REPO_NAME"
+          fi
+
+          DEMO_API_BASE_URL="${{ vars.DEMO_API_BASE_URL }}"
+          if [[ -z "$DEMO_API_BASE_URL" ]]; then
+            DEMO_API_BASE_URL="https://demo-api.example.com"
+          fi
+
+          echo "DEMO_BASE_PATH=$BASE_PATH" >> "$GITHUB_ENV"
+          echo "DEMO_API_BASE_URL=$DEMO_API_BASE_URL" >> "$GITHUB_ENV"
+
+      - name: Build static demo export
+        env:
+          NEXT_PUBLIC_DEMO_MODE: "1"
+          NEXT_PUBLIC_BASE_PATH: ${{ env.DEMO_BASE_PATH }}
+          NEXT_PUBLIC_API_BASE_URL: ${{ env.DEMO_API_BASE_URL }}
+        run: |
+          cd frontend
+          npm run export
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

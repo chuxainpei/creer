@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 const schoolDomain = process.env.SCHOOL_DOMAIN;
+const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === '1';
+const configuredBasePath = process.env.NEXT_PUBLIC_BASE_PATH?.trim() || '';
+const normalizedBasePath =
+  configuredBasePath && configuredBasePath !== '/'
+    ? configuredBasePath.startsWith('/')
+      ? configuredBasePath
+      : `/${configuredBasePath}`
+    : '';
 
 const frameAncestors = schoolDomain
   ? `frame-ancestors 'self' https://${schoolDomain}`
@@ -20,15 +28,23 @@ const securityHeaders = [
   },
 ];
 
-const nextConfig = {
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers: securityHeaders,
+const nextConfig = isDemoMode
+  ? {
+      output: 'export',
+      images: { unoptimized: true },
+      trailingSlash: true,
+      basePath: normalizedBasePath,
+      assetPrefix: normalizedBasePath || undefined,
+    }
+  : {
+      async headers() {
+        return [
+          {
+            source: '/:path*',
+            headers: securityHeaders,
+          },
+        ];
       },
-    ];
-  },
-};
+    };
 
 module.exports = nextConfig;

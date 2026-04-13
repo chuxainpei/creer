@@ -67,6 +67,8 @@ Frontend defaults to `http://127.0.0.1:3000`.
 ## Environment Variables
 
 - `NEXT_PUBLIC_API_BASE_URL`: frontend API origin
+- `NEXT_PUBLIC_DEMO_MODE`: set `1` for GitHub Pages demo export mode
+- `NEXT_PUBLIC_BASE_PATH`: optional project-page prefix (example: `/creer`)
 - `ADMIN_TOKEN`: backend admin token, default `admin-dev-token`
 - `EMPLOYMENT_QA_STORAGE_DIR`: optional override for uploaded files and built indexes
 - `FRONTEND_ORIGINS`: comma-separated allowed CORS origins for the backend
@@ -80,6 +82,26 @@ cd frontend && npm test -- --runInBand
 cd frontend && npm run build
 docker compose config
 ```
+
+## GitHub Pages Demo (No Server)
+
+- Frontend supports static demo export with API fallback.
+- Run demo export locally:
+
+```bash
+cd frontend
+NEXT_PUBLIC_DEMO_MODE=1 \
+NEXT_PUBLIC_API_BASE_URL=https://<your-demo-api-domain> \
+NEXT_PUBLIC_BASE_PATH=/creer \
+npm run export
+```
+
+- Static files are generated in `frontend/out`.
+- In demo mode:
+  - `/admin` shows a disabled notice page (no upload/reindex operations)
+  - chat requests prefer remote API and auto-fallback to local mock responses if API is unavailable
+- GitHub Actions workflow `.github/workflows/pages-demo.yml` can publish to Pages automatically.
+- Temporary API deployment guide: [docs/demo-deployment.md](docs/demo-deployment.md)
 
 ## Release Artifacts
 

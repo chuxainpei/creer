@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:demo": "NEXT_PUBLIC_DEMO_MODE=1 next build",
+    "export": "bash ./scripts/export-demo.sh",
     "lint": "next lint",
     "test": "jest"
   },
