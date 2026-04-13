@@ -200,3 +200,31 @@
 
 ### Blockers
 - None.
+
+## Session: F6 CI + Deployment Hardening Baseline (2026-04-13)
+
+### Completed Tasks
+- Added CI workflow at `.github/workflows/ci.yml` to run:
+  - backend pytest
+  - frontend jest
+  - frontend production build
+  - `docker compose config`
+- Hardened `deploy/nginx.conf`:
+  - added security headers (`X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`)
+  - configured SSE route `/api/v1/qa/stream` with `proxy_buffering off` + timeout + no-store cache
+  - configured immutable static cache for `/_next/static/`
+  - set no-store cache for API proxy routes
+- Updated `docs/deployment.md` with CI baseline and Nginx hardening notes.
+- Marked `F6` as complete; next pending feature is `F7`.
+
+### Verification
+- `cd backend && /Users/bran/.config/superpowers/worktrees/employment-qa-mvp/v2-rebuild/backend/.venv/bin/python -m pytest -q` -> `17 passed`
+- `cd frontend && npm test -- --runInBand` -> `9 passed`
+- `cd frontend && npm run build` -> success
+- `docker compose config` -> valid output
+
+### Current Focus
+- `F7`: launch UX content completion (notice/help/FAQ/support blocks).
+
+### Blockers
+- None.

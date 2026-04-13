@@ -35,3 +35,27 @@
 3. Run frontend tests and build: `cd frontend && npm test -- --runInBand && npm run build`.
 4. Validate compose config: `docker compose config`.
 5. Deploy and smoke-test `/`, `/qa`, `/admin`, `/api/v1/qa/ask`, and `/api/v1/qa/stream`.
+
+## CI Baseline
+
+- GitHub Actions workflow: `.github/workflows/ci.yml`
+- Trigger: push (`main`, `v2-polish`) and pull request
+- Required checks:
+  - backend pytest
+  - frontend jest
+  - frontend production build
+  - `docker compose config`
+
+## Nginx Hardening Notes
+
+- `deploy/nginx.conf` now includes baseline security headers:
+  - `X-Content-Type-Options`
+  - `X-Frame-Options`
+  - `Referrer-Policy`
+  - `Permissions-Policy`
+- SSE route `/api/v1/qa/stream` is configured with:
+  - `proxy_http_version 1.1`
+  - `proxy_buffering off`
+  - `proxy_read_timeout 90s`
+  - `Cache-Control: no-store`
+- Static assets `/_next/static/` are configured for immutable cache (`7d`) to improve frontend load performance.
