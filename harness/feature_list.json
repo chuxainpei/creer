@@ -46,7 +46,7 @@
         "Create backend/app/ingestion/official_docs.py with official source metadata.",
         "Run policy tests and commit."
       ],
-      "passes": false,
+      "passes": true,
       "verification": "cd /Users/bran/chat/employment-qa-mvp/backend && pytest tests/test_policy.py -q"
     },
     {

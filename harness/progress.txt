@@ -61,3 +61,33 @@
 
 ### Blockers
 - Push is still pending due missing remote configuration.
+
+## Session: Official-First Retrieval Foundation (2026-04-13)
+
+### Completed Tasks
+- Added failing policy tests in `backend/tests/test_policy.py`.
+- Implemented official-first conflict resolution in `backend/app/retrieval/policy.py`.
+- Added retrieval scaffolding models and service:
+  - `backend/app/retrieval/models.py`
+  - `backend/app/retrieval/service.py`
+- Added ingestion modules with source tagging:
+  - `backend/app/ingestion/graduate_parser.py`
+  - `backend/app/ingestion/official_docs.py`
+- Marked `feat-04` as complete in `harness/feature_list.json`.
+
+### Verification
+- Pre-implementation failure:
+  - `.venv/bin/python -m pytest tests/test_policy.py -q` -> `ModuleNotFoundError`
+- Post-implementation pass:
+  - `.venv/bin/python -m pytest tests/test_policy.py -q` -> `2 passed`
+- Regression pass:
+  - `.venv/bin/python -m pytest tests/test_contracts.py tests/test_policy.py -q` -> `5 passed`
+
+### Commits
+- `feat: add official-first retrieval policy`
+
+### Current Focus
+- Next feature is `feat-05` (public QA API + lightweight admin ingestion API).
+
+### Blockers
+- Push is still pending due missing remote configuration.
