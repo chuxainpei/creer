@@ -1,5 +1,15 @@
 import Link from 'next/link';
-import { ArrowRight, BookText, BriefcaseBusiness, CircleAlert, ClipboardCheck, Radar, ShieldCheck, Sparkles } from 'lucide-react';
+import {
+  ArrowRight,
+  BookText,
+  BriefcaseBusiness,
+  CircleAlert,
+  ClipboardCheck,
+  Radar,
+  ShieldCheck,
+  Sparkles,
+  Workflow,
+} from 'lucide-react';
 
 import { Badge } from '@/src/components/ui/badge';
 import { Button } from '@/src/components/ui/button';
@@ -11,60 +21,61 @@ interface EntryModuleProps {
 
 const trustPoints = [
   {
-    title: '决策结构化输出',
-    description: '每次回答默认包含结论、推荐项、风险提示和下一步动作。',
-    icon: ClipboardCheck,
+    title: '结论先行的输出结构',
+    description: '回答优先交付可执行结论，再展开推荐项与下一步动作。',
+    icon: Workflow,
   },
   {
-    title: '来源可信度层',
-    description: '同屏展示官方优先、经验补充和规则引擎标签，减少黑盒感。',
+    title: '可解释的可信度层',
+    description: '同屏展示官方优先、经验补充与规则引擎，让判断过程透明。',
     icon: ShieldCheck,
   },
   {
-    title: '升学/就业双场景',
-    description: '同一交互壳体承载两类问题，适合比赛里连续演示不同案例。',
+    title: '双场景一体化承载',
+    description: '同一界面支持升学与就业，适合评审现场连贯展示多个案例。',
     icon: Radar,
   },
 ];
 
 const quickStats = [
-  { label: '推荐模式', value: '结论 + 排序' },
-  { label: '场景覆盖', value: '升学 / 就业' },
-  { label: '演示状态', value: 'Live 可交互' },
+  { label: '回答范式', value: '结论 + 排序 + 风险' },
+  { label: '覆盖场景', value: '升学 / 求职双域' },
+  { label: '状态', value: '实时可演示' },
 ];
 
 export default function EntryModule({ hotTopics }: EntryModuleProps) {
   return (
     <main className="page-shell py-10 sm:py-14">
-      <section className="hero-grid surface-grad inset-line overflow-hidden rounded-[2rem] border border-white/75 px-6 py-8 shadow-panel backdrop-blur md:px-10 md:py-12">
-        <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr]">
-          <div className="fade-up space-y-6">
-            <Badge variant="primary" className="w-fit">
-              2026 参赛版 · Industrial
-            </Badge>
+      <section className="hero-grid float-in overflow-hidden rounded-[2rem] px-6 py-8 md:px-10 md:py-12">
+        <div className="grid gap-8 lg:grid-cols-[1.25fr_0.95fr]">
+          <div className="space-y-6">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="command-chip">UI/UX PRO MAX 方案</span>
+              <span className="rounded-full border border-accent/25 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-accent-foreground">
+                竞赛路演版
+              </span>
+            </div>
             <div className="space-y-4">
-              <h1 className="display-type max-w-3xl text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
-                把升学与就业问题，
+              <h1 className="display-type max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl">
+                把“聊天回答”
                 <br />
-                变成可执行的推荐清单
+                升级成“决策驾驶舱”
               </h1>
               <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-                这不是“聊天玩具”，而是可演示的决策界面：先给结论，再给推荐项与风险提示，并把可信度依据一起展示出来。
+                通过结构化结论、推荐排序、行动建议和来源可信度，现场直接展示产品真实感，而不是仅展示模型会答题。
               </p>
             </div>
-
             <div className="flex flex-wrap gap-3">
               <Link href="/qa">
-                <Button size="lg" className="gap-2">
-                  进入决策台
+                <Button size="lg" className="gap-2 bg-primary text-primary-foreground hover:bg-primary/92">
+                  进入决策驾驶舱
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
               <Badge variant="secondary" className="px-4 py-3 text-sm">
-                全中文叙事 + 工业视觉
+                万能回答 + 可解释证据
               </Badge>
             </div>
-
             <div className="flex flex-wrap gap-3">
               {hotTopics.map((topic) => (
                 <div key={topic} className="entry-chip">
@@ -72,26 +83,25 @@ export default function EntryModule({ hotTopics }: EntryModuleProps) {
                 </div>
               ))}
             </div>
-
             <div className="grid gap-3 sm:grid-cols-3">
               {quickStats.map((item) => (
-                <Card key={item.label} className="border-white/90 bg-white/90">
+                <Card key={item.label} className="border-white/90 bg-white/88">
                   <CardContent className="space-y-1 p-4">
-                    <p className="text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">{item.label}</p>
-                    <p className="text-lg font-semibold text-foreground">{item.value}</p>
+                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{item.label}</p>
+                    <p className="text-base font-semibold text-foreground">{item.value}</p>
                   </CardContent>
                 </Card>
               ))}
             </div>
           </div>
 
-          <div className="fade-up grid gap-4">
+          <div className="grid gap-4">
             {trustPoints.map((point) => {
               const Icon = point.icon;
               return (
-                <Card key={point.title} className="border-white/85 bg-white/92">
+                <Card key={point.title} className="neo-panel">
                   <CardContent className="flex items-start gap-4 p-5">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                       <Icon className="h-5 w-5" />
                     </div>
                     <div className="space-y-2">
@@ -103,16 +113,16 @@ export default function EntryModule({ hotTopics }: EntryModuleProps) {
               );
             })}
 
-            <Card className="border-primary/15 bg-primary/5">
+            <Card className="neo-panel border-accent/20 bg-gradient-to-br from-accent/10 to-white/85">
               <CardContent className="space-y-3 p-5">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-primary shadow-soft">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-accent shadow-soft">
                     <CircleAlert className="h-4 w-4" />
                   </div>
-                  <p className="text-base font-semibold text-foreground">评审演示建议</p>
+                  <p className="text-base font-semibold text-foreground">评审演示顺序建议</p>
                 </div>
                 <p className="text-sm leading-6 text-muted-foreground">
-                  建议先演示一个院校推荐问题，再切换到岗位推荐问题，突出同一系统对两类决策任务的承载能力。
+                  先演示院校推荐，再切到岗位推荐，最后展示来源和风险提示，三步就能说明“可落地产品能力”。
                 </p>
               </CardContent>
             </Card>
@@ -121,64 +131,61 @@ export default function EntryModule({ hotTopics }: EntryModuleProps) {
       </section>
 
       <section className="mt-6 grid gap-4 lg:grid-cols-2">
-        <Card className="surface-grad border-white/85">
+        <Card className="neo-panel">
           <CardContent className="space-y-4 p-5 sm:p-6">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                 <BookText className="h-4 w-4" />
               </div>
-              <h2 className="display-type text-lg font-semibold">演示逻辑</h2>
+              <h2 className="display-type text-lg font-semibold">演示主线</h2>
             </div>
             <ol className="space-y-2 text-sm leading-7 text-muted-foreground">
-              <li>1. 提出一个推荐类问题（院校/岗位）。</li>
-              <li>2. 展示系统如何给出“推荐排序 + 风险提示”。</li>
-              <li>3. 强调来源和可信度层如何降低决策不确定性。</li>
+              <li>1. 提一个推荐类问题，快速拿到结论。</li>
+              <li>2. 展示推荐排序与行动建议的可执行性。</li>
+              <li>3. 通过来源与可信度模块证明答案可解释。</li>
             </ol>
           </CardContent>
         </Card>
 
-        <Card className="surface-grad border-white/85">
+        <Card className="neo-panel">
           <CardContent className="space-y-4 p-5 sm:p-6">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                 <BriefcaseBusiness className="h-4 w-4" />
               </div>
-              <h2 className="display-type text-lg font-semibold">产品定位</h2>
+              <h2 className="display-type text-lg font-semibold">产品价值</h2>
             </div>
-            <div className="space-y-2 text-sm leading-7 text-muted-foreground">
-              <p>定位不是替代老师/导师，而是用结构化方式帮助学生更快完成决策分层和行动拆解。</p>
-              <p>在比赛场景中，它展示的是“可信赖的 AI 产品形态”，而不是单次问答准确率本身。</p>
-            </div>
+            <p className="text-sm leading-7 text-muted-foreground">
+              这个系统的价值不是替代导师，而是把复杂决策拆成“结论-路径-风险”三段，让学生在短时间内获得清晰行动方案。
+            </p>
           </CardContent>
         </Card>
 
-        <Card className="surface-grad border-white/85">
+        <Card className="neo-panel">
           <CardContent className="space-y-4 p-5 sm:p-6">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                 <ShieldCheck className="h-4 w-4" />
               </div>
-              <h2 className="display-type text-lg font-semibold">可信度声明</h2>
+              <h2 className="display-type text-lg font-semibold">可信度边界</h2>
             </div>
-            <div className="space-y-2 text-sm leading-7 text-muted-foreground">
-              <p>系统默认官方口径优先，经验信息仅用于补充视角。</p>
-              <p>演示内容用于呈现产品能力，正式办理请以最新公告为准。</p>
-            </div>
+            <p className="text-sm leading-7 text-muted-foreground">
+              系统默认官方信息优先，经验信息只作补充，演示用于体现产品能力，正式办理请以最新公告为准。
+            </p>
           </CardContent>
         </Card>
 
-        <Card className="surface-grad border-white/85">
+        <Card className="neo-panel">
           <CardContent className="space-y-4 p-5 sm:p-6">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                 <Sparkles className="h-4 w-4" />
               </div>
-              <h2 className="display-type text-lg font-semibold">下一步扩展</h2>
+              <h2 className="display-type text-lg font-semibold">后续升级路线</h2>
             </div>
-            <div className="space-y-2 text-sm leading-7 text-muted-foreground">
-              <p>后续可接入真实知识库和角色化推荐模板，把演示版升级为可试点版本。</p>
-              <p>当前版本重点保障路演稳定性和观感一致性。</p>
-            </div>
+            <p className="text-sm leading-7 text-muted-foreground">
+              后续可接入真实知识库和用户画像分层推荐，把赛场演示版平滑升级为院校或就业服务的试点产品。
+            </p>
           </CardContent>
         </Card>
       </section>

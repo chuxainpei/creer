@@ -9,7 +9,7 @@ interface RecommendedQuestionsProps {
 
 export default function RecommendedQuestions({ questions, onPick }: RecommendedQuestionsProps) {
   return (
-    <Card className="surface-grad border-white/85">
+    <Card className="neo-panel">
       <CardHeader className="pb-4">
         <CardTitle className="text-base">高频决策问题</CardTitle>
       </CardHeader>

@@ -142,15 +142,15 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
 
   return (
     <div className="grid gap-6 xl:grid-cols-[1.45fr_0.9fr]">
-      <Card className="surface-grad inset-line overflow-hidden border-white/85">
-        <CardHeader className="border-b border-border/70 bg-white/88">
+      <Card className="neo-panel overflow-hidden">
+        <CardHeader className="border-b border-border/70 bg-white/84">
           <div className="flex flex-wrap items-center gap-3">
-            <Badge variant="primary">参赛演示</Badge>
+            <span className="command-chip">决策驾驶舱</span>
             <Badge variant="secondary">万能回答引擎</Badge>
             <Badge variant="secondary">推荐排序</Badge>
           </div>
-          <CardTitle className="display-type text-2xl sm:text-3xl">升学与就业决策台</CardTitle>
-          <CardDescription>先输出结论，再给推荐项、行动步骤和可信度提示，尽量接近真实产品的决策体验。</CardDescription>
+          <CardTitle className="display-type text-2xl sm:text-3xl">升学与就业决策驾驶舱</CardTitle>
+          <CardDescription>先输出结论，再给推荐项、行动步骤和可信度提示，最大化评审时的产品真实感。</CardDescription>
         </CardHeader>
 
         <CardContent className="space-y-5 p-5 sm:p-6">
@@ -167,7 +167,7 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
                   <div
                     className={
                       message.role === 'user'
-                        ? 'order-2 flex h-8 w-8 flex-none items-center justify-center rounded-full bg-primary text-primary-foreground'
+                        ? 'order-2 flex h-8 w-8 flex-none items-center justify-center rounded-full bg-accent text-accent-foreground'
                         : 'flex h-8 w-8 flex-none items-center justify-center rounded-full bg-primary/12 text-primary'
                     }
                   >
@@ -176,7 +176,7 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
                   <div
                     className={
                       message.role === 'user'
-                        ? 'order-1 rounded-[1.4rem] rounded-br-md bg-primary px-4 py-3 text-sm leading-7 text-primary-foreground'
+                        ? 'order-1 rounded-[1.4rem] rounded-br-md bg-accent px-4 py-3 text-sm leading-7 text-accent-foreground'
                         : 'rounded-[1.4rem] rounded-bl-md border border-border/70 bg-white px-4 py-3 text-sm leading-7 text-foreground shadow-soft'
                     }
                   >
@@ -194,7 +194,7 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
                     <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">推荐方案</p>
                     <div className="grid gap-3 sm:grid-cols-2">
                       {message.recommendations.map((item) => (
-                        <div key={item.id} className="rounded-2xl border border-border/70 bg-muted/25 p-3">
+                        <div key={item.id} className="rounded-2xl border border-border/70 bg-gradient-to-b from-white to-muted/35 p-3">
                           <div className="flex items-center justify-between gap-2">
                             <p className="text-sm font-semibold text-foreground">{item.title}</p>
                             <span className={`rounded-full border px-2 py-0.5 text-[11px] font-semibold ${confidenceTone[item.confidence]}`}>
@@ -260,7 +260,11 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
             />
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm text-muted-foreground">推荐类问题更容易看到完整演示：结论 + 推荐项 + 可信度说明。</p>
-              <Button type="submit" className="gap-2 self-start sm:self-auto" disabled={isPending}>
+              <Button
+                type="submit"
+                className="gap-2 self-start bg-primary text-primary-foreground hover:bg-primary/90 sm:self-auto"
+                disabled={isPending}
+              >
                 {isPending ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <SendHorizonal className="h-4 w-4" />}
                 发送问题
               </Button>
@@ -271,7 +275,7 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
 
       <div className="space-y-4">
         <RecommendedQuestions questions={initialPrompts} onPick={(prompt) => void sendQuestion(prompt)} />
-        <Card className="surface-grad border-white/85">
+        <Card className="neo-panel">
           <CardHeader className="pb-4">
             <CardTitle className="text-base">回答逻辑</CardTitle>
           </CardHeader>
