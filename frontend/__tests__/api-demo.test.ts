@@ -22,6 +22,19 @@ describe('demo mode api fallback', () => {
     expect(result.used_official).toBe(true);
   });
 
+  test('askQuestion falls back to local mock data when api fails in local dev mode', async () => {
+    process.env.NEXT_PUBLIC_DEMO_MODE = '0';
+    process.env.NEXT_PUBLIC_API_BASE_URL = 'http://127.0.0.1:8000';
+    global.fetch = jest.fn().mockRejectedValue(new Error('network down')) as typeof fetch;
+
+    const { askQuestion } = await import('@/src/lib/api');
+    const result = await askQuestion('本地演示时接口异常怎么办？');
+
+    expect(result.answer.length).toBeGreaterThan(0);
+    expect(result.recommendations.length).toBeGreaterThan(0);
+    expect(result.used_official).toBe(true);
+  });
+
   test('streamQuestion emits synthesized answer metadata when api fails in demo mode', async () => {
     process.env.NEXT_PUBLIC_DEMO_MODE = '1';
     process.env.NEXT_PUBLIC_API_BASE_URL = 'https://demo-api.example.com';

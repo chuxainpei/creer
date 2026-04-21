@@ -3,6 +3,9 @@ import { buildDemoAskResponse } from '@/src/lib/demo-mock';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000';
 const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE === '1';
+const LOCAL_DEV_FALLBACK =
+  process.env.NODE_ENV !== 'production' && /(127\.0\.0\.1|localhost)/.test(API_BASE);
+const ALLOW_MOCK_FALLBACK = DEMO_MODE || LOCAL_DEV_FALLBACK;
 const RETRYABLE_STATUS = new Set([408, 429, 500, 502, 503, 504]);
 const RETRY_BACKOFF_MS = [280, 900];
 
@@ -77,7 +80,7 @@ export async function askQuestion(question: string): Promise<AskResponse> {
     });
 
     if (!res.ok) {
-      if (DEMO_MODE) {
+      if (ALLOW_MOCK_FALLBACK) {
         return buildDemoAskResponse(question);
       }
       throw new Error('问答请求失败');
@@ -85,7 +88,7 @@ export async function askQuestion(question: string): Promise<AskResponse> {
 
     return res.json();
   } catch (error) {
-    if (DEMO_MODE) {
+    if (ALLOW_MOCK_FALLBACK) {
       return buildDemoAskResponse(question);
     }
     throw error;
