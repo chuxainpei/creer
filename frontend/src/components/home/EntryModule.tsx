@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, BookText, CircleHelp, ClipboardCheck, LifeBuoy, Megaphone, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowRight, BookText, BriefcaseBusiness, CircleAlert, ClipboardCheck, Radar, ShieldCheck, Sparkles } from 'lucide-react';
 
 import { Badge } from '@/src/components/ui/badge';
 import { Button } from '@/src/components/ui/button';
@@ -11,55 +11,57 @@ interface EntryModuleProps {
 
 const trustPoints = [
   {
-    title: '官方优先',
-    description: '涉及材料、流程、时间和政策时，回答默认优先引用学校就业中心资料。',
+    title: '决策结构化输出',
+    description: '每次回答默认包含结论、推荐项、风险提示和下一步动作。',
+    icon: ClipboardCheck,
+  },
+  {
+    title: '来源可信度层',
+    description: '同屏展示官方优先、经验补充和规则引擎标签，减少黑盒感。',
     icon: ShieldCheck,
   },
   {
-    title: '经验补充',
-    description: '官方信息未覆盖时，再补充往届去向参考，并明确标注它只是辅助判断。',
-    icon: Sparkles,
-  },
-  {
-    title: '首页即入口',
-    description: '适合挂在学校官网入口模块里，学生点击即可进入独立问答页。',
-    icon: BookText,
+    title: '升学/就业双场景',
+    description: '同一交互壳体承载两类问题，适合比赛里连续演示不同案例。',
+    icon: Radar,
   },
 ];
 
 const quickStats = [
-  { label: '高频场景覆盖', value: '40+' },
-  { label: '官方资料优先级', value: 'P0' },
-  { label: '响应模式', value: '流式回答' },
+  { label: '推荐模式', value: '结论 + 排序' },
+  { label: '场景覆盖', value: '升学 / 就业' },
+  { label: '演示状态', value: 'Live 可交互' },
 ];
 
 export default function EntryModule({ hotTopics }: EntryModuleProps) {
   return (
     <main className="page-shell py-10 sm:py-14">
       <section className="hero-grid surface-grad inset-line overflow-hidden rounded-[2rem] border border-white/75 px-6 py-8 shadow-panel backdrop-blur md:px-10 md:py-12">
-        <div className="grid gap-8 lg:grid-cols-[1.3fr_0.95fr]">
+        <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr]">
           <div className="fade-up space-y-6">
             <Badge variant="primary" className="w-fit">
-              就业服务 AI 助手
+              2026 参赛版 · Industrial
             </Badge>
             <div className="space-y-4">
-              <h1 className="max-w-3xl text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
-                先看官方结论，再给经验补充的学校就业问答入口
+              <h1 className="display-type max-w-3xl text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+                把升学与就业问题，
+                <br />
+                变成可执行的推荐清单
               </h1>
               <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-                面向学生提供可信、可理解、可快速行动的就业问答体验。重点覆盖三方协议、双选会、档案去向、求职补贴、简历优化等高频问题。
+                这不是“聊天玩具”，而是可演示的决策界面：先给结论，再给推荐项与风险提示，并把可信度依据一起展示出来。
               </p>
             </div>
 
             <div className="flex flex-wrap gap-3">
               <Link href="/qa">
                 <Button size="lg" className="gap-2">
-                  进入问答中心
+                  进入决策台
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
               <Badge variant="secondary" className="px-4 py-3 text-sm">
-                学校官方 + AI 可信感
+                全中文叙事 + 工业视觉
               </Badge>
             </div>
 
@@ -73,7 +75,7 @@ export default function EntryModule({ hotTopics }: EntryModuleProps) {
 
             <div className="grid gap-3 sm:grid-cols-3">
               {quickStats.map((item) => (
-                <Card key={item.label} className="border-white/90 bg-white/86">
+                <Card key={item.label} className="border-white/90 bg-white/90">
                   <CardContent className="space-y-1 p-4">
                     <p className="text-xs font-medium uppercase tracking-[0.12em] text-muted-foreground">{item.label}</p>
                     <p className="text-lg font-semibold text-foreground">{item.value}</p>
@@ -87,7 +89,7 @@ export default function EntryModule({ hotTopics }: EntryModuleProps) {
             {trustPoints.map((point) => {
               const Icon = point.icon;
               return (
-                <Card key={point.title} className="border-white/80 bg-white/90">
+                <Card key={point.title} className="border-white/85 bg-white/92">
                   <CardContent className="flex items-start gap-4 p-5">
                     <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                       <Icon className="h-5 w-5" />
@@ -102,16 +104,16 @@ export default function EntryModule({ hotTopics }: EntryModuleProps) {
             })}
 
             <Card className="border-primary/15 bg-primary/5">
-              <CardContent className="flex items-start gap-4 p-5">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-primary shadow-soft">
-                  <ClipboardCheck className="h-5 w-5" />
+              <CardContent className="space-y-3 p-5">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-primary shadow-soft">
+                    <CircleAlert className="h-4 w-4" />
+                  </div>
+                  <p className="text-base font-semibold text-foreground">评审演示建议</p>
                 </div>
-                <div className="space-y-2">
-                  <p className="text-base font-semibold text-foreground">面向学校官网嵌入</p>
-                  <p className="text-sm leading-6 text-muted-foreground">
-                    当前可独立部署，后续可作为学校就业中心官网入口模块或内嵌页面接入。
-                  </p>
-                </div>
+                <p className="text-sm leading-6 text-muted-foreground">
+                  建议先演示一个院校推荐问题，再切换到岗位推荐问题，突出同一系统对两类决策任务的承载能力。
+                </p>
               </CardContent>
             </Card>
           </div>
@@ -123,30 +125,14 @@ export default function EntryModule({ hotTopics }: EntryModuleProps) {
           <CardContent className="space-y-4 p-5 sm:p-6">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                <Megaphone className="h-4 w-4" />
-              </div>
-              <h2 className="text-lg font-semibold">服务公告</h2>
-            </div>
-            <div className="space-y-2 text-sm leading-7 text-muted-foreground">
-              <p>服务时间：每日 07:00-23:00（系统维护窗口会提前公告）。</p>
-              <p>适用对象：本校在读学生、应届毕业生，回答默认按学校就业中心资料优先生成。</p>
-              <p>风险提醒：最终办理要求以学校就业中心官网与学院通知为准。</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="surface-grad border-white/85">
-          <CardContent className="space-y-4 p-5 sm:p-6">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                 <BookText className="h-4 w-4" />
               </div>
-              <h2 className="text-lg font-semibold">使用指南</h2>
+              <h2 className="display-type text-lg font-semibold">演示逻辑</h2>
             </div>
             <ol className="space-y-2 text-sm leading-7 text-muted-foreground">
-              <li>1. 先描述你的场景：年级、专业、目标事项（如三方协议、补贴、档案）。</li>
-              <li>2. 查看回答下方的来源标签和证据片段，优先执行官方口径。</li>
-              <li>3. 若答案涉及时间节点，请在办理前再核对一次最新公告。</li>
+              <li>1. 提出一个推荐类问题（院校/岗位）。</li>
+              <li>2. 展示系统如何给出“推荐排序 + 风险提示”。</li>
+              <li>3. 强调来源和可信度层如何降低决策不确定性。</li>
             </ol>
           </CardContent>
         </Card>
@@ -155,21 +141,13 @@ export default function EntryModule({ hotTopics }: EntryModuleProps) {
           <CardContent className="space-y-4 p-5 sm:p-6">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                <CircleHelp className="h-4 w-4" />
+                <BriefcaseBusiness className="h-4 w-4" />
               </div>
-              <h2 className="text-lg font-semibold">常见问题</h2>
+              <h2 className="display-type text-lg font-semibold">产品定位</h2>
             </div>
-            <div className="space-y-3 text-sm leading-7 text-muted-foreground">
-              <p>
-                <span className="font-medium text-foreground">Q:</span> 为什么有时只显示官方信息？
-                <br />
-                <span className="font-medium text-foreground">A:</span> 当官方与经验冲突时，系统会只输出官方结论。
-              </p>
-              <p>
-                <span className="font-medium text-foreground">Q:</span> 经验参考能直接照做吗？
-                <br />
-                <span className="font-medium text-foreground">A:</span> 不能。经验仅供辅助，办理动作请按学校正式通知执行。
-              </p>
+            <div className="space-y-2 text-sm leading-7 text-muted-foreground">
+              <p>定位不是替代老师/导师，而是用结构化方式帮助学生更快完成决策分层和行动拆解。</p>
+              <p>在比赛场景中，它展示的是“可信赖的 AI 产品形态”，而不是单次问答准确率本身。</p>
             </div>
           </CardContent>
         </Card>
@@ -178,14 +156,28 @@ export default function EntryModule({ hotTopics }: EntryModuleProps) {
           <CardContent className="space-y-4 p-5 sm:p-6">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                <LifeBuoy className="h-4 w-4" />
+                <ShieldCheck className="h-4 w-4" />
               </div>
-              <h2 className="text-lg font-semibold">支持与反馈</h2>
+              <h2 className="display-type text-lg font-semibold">可信度声明</h2>
             </div>
             <div className="space-y-2 text-sm leading-7 text-muted-foreground">
-              <p>如发现回答与最新公告不一致，请在就业中心反馈通道提交问题截图与问题描述。</p>
-              <p>建议反馈信息：问题原文、答案截图、你所在学院/专业、公告链接或文件名称。</p>
-              <p>我们会优先处理“政策冲突”和“办理时间误差”类问题。</p>
+              <p>系统默认官方口径优先，经验信息仅用于补充视角。</p>
+              <p>演示内容用于呈现产品能力，正式办理请以最新公告为准。</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="surface-grad border-white/85">
+          <CardContent className="space-y-4 p-5 sm:p-6">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                <Sparkles className="h-4 w-4" />
+              </div>
+              <h2 className="display-type text-lg font-semibold">下一步扩展</h2>
+            </div>
+            <div className="space-y-2 text-sm leading-7 text-muted-foreground">
+              <p>后续可接入真实知识库和角色化推荐模板，把演示版升级为可试点版本。</p>
+              <p>当前版本重点保障路演稳定性和观感一致性。</p>
             </div>
           </CardContent>
         </Card>

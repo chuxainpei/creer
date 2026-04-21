@@ -100,6 +100,9 @@ export async function streamQuestion(question: string, handlers: StreamHandlers)
       source_tags: fallback.source_tags,
       evidence: fallback.evidence,
       used_official: fallback.used_official,
+      recommendations: fallback.recommendations,
+      credibility: fallback.credibility,
+      response_mode: fallback.response_mode,
     });
     return;
   }

@@ -24,8 +24,8 @@ export default function SiteHeader() {
             <BriefcaseBusiness className="h-5 w-5" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-foreground">就业中心智能问答</p>
-            <p className="text-xs text-muted-foreground">学校官方 + AI 可信服务</p>
+            <p className="display-type text-sm font-semibold text-foreground">升学与就业决策台</p>
+            <p className="text-xs text-muted-foreground">参赛演示 · Industrial UI</p>
           </div>
         </Link>
 
@@ -53,11 +53,11 @@ export default function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <Badge variant="primary" className="hidden sm:inline-flex">
-            官方优先
+            结论 + 推荐
           </Badge>
           <Link href="/qa" className="hidden sm:block">
             <Button size="sm" className="gap-1.5">
-              开始提问
+              开始演示
               <ArrowUpRight className="h-4 w-4" />
             </Button>
           </Link>

@@ -11,7 +11,7 @@ export default function RecommendedQuestions({ questions, onPick }: RecommendedQ
   return (
     <Card className="surface-grad border-white/85">
       <CardHeader className="pb-4">
-        <CardTitle className="text-base">高频就业主题</CardTitle>
+        <CardTitle className="text-base">高频决策问题</CardTitle>
       </CardHeader>
       <CardContent className="grid gap-3 sm:grid-cols-2">
         {questions.map((question) => (

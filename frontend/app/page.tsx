@@ -1,6 +1,6 @@
 import EntryModule from '@/src/components/home/EntryModule';
 
-const hotTopics = ['三方协议怎么办', '双选会报名入口', '简历优化建议', '档案去向查询', '求职补贴申请', '公务员/选调提醒'];
+const hotTopics = ['院校推荐怎么分层', '岗位方向怎么取舍', '秋招时间线怎么排', '简历投递策略', '转方向补能力清单', '风险点提前识别'];
 
 export default function HomePage() {
   return <EntryModule hotTopics={hotTopics} />;

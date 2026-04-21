@@ -5,21 +5,23 @@
 @layer base {
   :root {
     color-scheme: light;
-    --background: 214 56% 98%;
-    --foreground: 219 43% 11%;
+    --font-display: 'Avenir Next Condensed', 'DIN Alternate', 'Segoe UI', sans-serif;
+    --font-cn: 'PingFang SC', 'Hiragino Sans GB', 'Source Han Sans SC', 'Microsoft YaHei', sans-serif;
+    --background: 210 30% 97%;
+    --foreground: 216 38% 11%;
     --card: 0 0% 100%;
-    --card-foreground: 219 43% 11%;
-    --primary: 214 68% 30%;
+    --card-foreground: 216 38% 11%;
+    --primary: 209 66% 29%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 213 39% 95%;
-    --secondary-foreground: 217 27% 22%;
-    --muted: 213 35% 94%;
-    --muted-foreground: 218 16% 37%;
-    --accent: 35 92% 91%;
-    --accent-foreground: 31 84% 24%;
-    --border: 214 26% 85%;
-    --input: 214 26% 85%;
-    --ring: 214 68% 30%;
+    --secondary: 210 32% 93%;
+    --secondary-foreground: 214 22% 24%;
+    --muted: 210 30% 93%;
+    --muted-foreground: 214 16% 36%;
+    --accent: 28 84% 90%;
+    --accent-foreground: 24 74% 24%;
+    --border: 212 22% 82%;
+    --input: 212 22% 82%;
+    --ring: 209 66% 29%;
     --success: 152 46% 37%;
     --success-foreground: 0 0% 100%;
     --warning: 36 91% 47%;
@@ -39,8 +41,7 @@
 
   body {
     @apply min-h-screen bg-background bg-school-glow text-foreground antialiased;
-    font-family: 'Avenir Next', 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Source Han Sans SC', 'Microsoft YaHei',
-      sans-serif;
+    font-family: var(--font-cn), 'PingFang SC', 'Hiragino Sans GB', 'Source Han Sans SC', 'Microsoft YaHei', sans-serif;
     margin: 0;
     position: relative;
     overflow-x: hidden;
@@ -52,8 +53,8 @@
     inset: 0;
     pointer-events: none;
     background-image:
-      radial-gradient(circle at 6% 12%, rgba(31, 111, 235, 0.18), transparent 26%),
-      radial-gradient(circle at 95% 20%, rgba(245, 158, 11, 0.14), transparent 22%);
+      radial-gradient(circle at 5% 10%, rgba(39, 111, 179, 0.2), transparent 28%),
+      radial-gradient(circle at 96% 18%, rgba(213, 143, 69, 0.18), transparent 22%);
     z-index: -2;
   }
 
@@ -64,7 +65,7 @@
     pointer-events: none;
     background-image: linear-gradient(to right, rgba(15, 23, 42, 0.035) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(15, 23, 42, 0.035) 1px, transparent 1px);
-    background-size: 34px 34px;
+    background-size: 32px 32px;
     mask-image: radial-gradient(circle at center, black 45%, transparent 100%);
     z-index: -1;
   }
@@ -81,11 +82,13 @@
   }
 
   .hero-grid {
-    background-image: linear-gradient(125deg, rgba(255, 255, 255, 0.9), rgba(243, 247, 255, 0.9));
+    background-image:
+      linear-gradient(134deg, rgba(255, 255, 255, 0.95), rgba(233, 241, 249, 0.92)),
+      radial-gradient(circle at 88% 8%, rgba(26, 79, 128, 0.15), transparent 35%);
   }
 
   .surface-grad {
-    background-image: linear-gradient(160deg, rgba(255, 255, 255, 0.95), rgba(239, 246, 255, 0.82));
+    background-image: linear-gradient(160deg, rgba(255, 255, 255, 0.95), rgba(238, 244, 249, 0.84));
   }
 
   .inset-line {
@@ -96,14 +99,19 @@
     @apply rounded-full border border-primary/15 bg-white/80 px-4 py-2 text-sm font-medium text-primary shadow-soft;
   }
 
+  .display-type {
+    font-family: var(--font-display), var(--font-cn), sans-serif;
+    letter-spacing: -0.02em;
+  }
+
   .fade-up {
-    animation: fadeUp 0.45s ease-out both;
+    animation: fadeUp 0.5s ease-out both;
   }
 }
 
 @keyframes fadeUp {
   from {
-    transform: translateY(6px);
+    transform: translateY(8px);
     opacity: 0;
   }
   to {

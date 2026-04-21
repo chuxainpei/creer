@@ -1,4 +1,9 @@
-export type SourceType = 'official' | 'graduate_reference';
+export type SourceType =
+  | 'official'
+  | 'graduate_reference'
+  | 'admission_reference'
+  | 'job_market_signal'
+  | 'model_rule';
 
 export interface SourceTag {
   label: string;
@@ -11,6 +16,23 @@ export interface SourceEvidence {
   snippet: string;
 }
 
+export type ConfidenceLevel = 'high' | 'medium' | 'low';
+
+export interface RecommendationCard {
+  id: string;
+  title: string;
+  fit_reason: string;
+  action: string;
+  risk_hint: string;
+  confidence: ConfidenceLevel;
+}
+
+export interface CredibilityItem {
+  label: string;
+  detail: string;
+  level: 'official' | 'cross_check' | 'experience';
+}
+
 export interface AskRequest {
   question: string;
 }
@@ -20,12 +42,18 @@ export interface AskResponse {
   source_tags: SourceTag[];
   evidence: SourceEvidence[];
   used_official: boolean;
+  recommendations?: RecommendationCard[];
+  credibility?: CredibilityItem[];
+  response_mode?: 'concise_recommendation';
 }
 
 export interface StreamMetadata {
   source_tags: SourceTag[];
   evidence: SourceEvidence[];
   used_official: boolean;
+  recommendations?: RecommendationCard[];
+  credibility?: CredibilityItem[];
+  response_mode?: 'concise_recommendation';
 }
 
 export type MessageRole = 'user' | 'assistant';
@@ -39,6 +67,9 @@ export interface ChatMessage {
   sourceTags?: SourceTag[];
   evidence?: SourceEvidence[];
   usedOfficial?: boolean;
+  recommendations?: RecommendationCard[];
+  credibility?: CredibilityItem[];
+  responseMode?: 'concise_recommendation';
 }
 
 export interface AdminStatus {

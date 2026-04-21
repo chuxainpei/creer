@@ -6,8 +6,8 @@ import SiteHeader from '@/src/components/layout/SiteHeader';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: '就业中心智能问答',
-  description: '官方优先的毕业生就业问答 MVP。',
+  title: '升学与就业决策台',
+  description: '参赛版 AI 决策演示：结论、推荐排序与可信度说明。',
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
