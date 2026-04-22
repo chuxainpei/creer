@@ -2,15 +2,15 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ArrowUpRight, LayoutGrid, MessageSquareText, ShieldCheck, Workflow } from 'lucide-react';
+import { ArrowUpRight, MessageSquareText, ShieldCheck, Sparkles, Workflow } from 'lucide-react';
 
 import { Badge } from '@/src/components/ui/badge';
 import { Button } from '@/src/components/ui/button';
 import { cn } from '@/src/lib/utils';
 
 const navItems = [
-  { href: '/#features', label: '能力亮点', icon: LayoutGrid },
-  { href: '/#capabilities', label: '能力设计', icon: Workflow },
+  { href: '/#contexts', label: '上下文', icon: Workflow },
+  { href: '/#voices', label: '用户声音', icon: Sparkles },
   { href: '/#faq', label: 'FAQ', icon: ShieldCheck },
   { href: '/qa', label: '问答中心', icon: MessageSquareText },
 ];
@@ -26,14 +26,19 @@ export default function SiteHeader() {
             <Workflow className="h-5 w-5" />
           </div>
           <div>
-            <p className="display-type text-sm font-semibold text-foreground">星图决策台</p>
+            <div className="flex items-center gap-2">
+              <p className="display-type text-sm font-semibold text-foreground">星图</p>
+              <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-primary">
+                beta
+              </span>
+            </div>
             <p className="text-xs text-muted-foreground">升学与就业智能决策系统</p>
           </div>
         </Link>
 
         <nav className="hidden items-center gap-2 rounded-full border border-white/80 bg-white/70 p-1 md:flex">
           {navItems.map((item) => {
-            const active = item.href === '/qa' ? pathname === '/qa' : pathname === '/';
+            const active = item.href === '/qa' ? pathname === '/qa' : false;
             const Icon = item.icon;
             return (
               <Link
@@ -54,9 +59,7 @@ export default function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Badge variant="secondary" className="hidden sm:inline-flex">
-            全中文演示版
-          </Badge>
+          <Badge variant="secondary" className="hidden sm:inline-flex">全中文官网演示</Badge>
           <Link href="/qa" className="hidden sm:block">
             <Button size="sm" className="gap-1.5 bg-accent text-accent-foreground hover:bg-accent/90">
               开始演示

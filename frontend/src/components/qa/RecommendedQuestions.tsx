@@ -1,7 +1,5 @@
 import { ArrowUpRight } from 'lucide-react';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/card';
-
 interface RecommendedQuestionsProps {
   questions: string[];
   onPick?: (question: string) => void;
@@ -9,11 +7,11 @@ interface RecommendedQuestionsProps {
 
 export default function RecommendedQuestions({ questions, onPick }: RecommendedQuestionsProps) {
   return (
-    <Card className="neo-panel">
-      <CardHeader className="pb-4">
-        <CardTitle className="text-base">高频决策问题</CardTitle>
-      </CardHeader>
-      <CardContent className="grid gap-3 sm:grid-cols-2">
+    <div className="browser-shell p-4 sm:p-5">
+      <div className="border-b border-white/70 pb-3">
+        <p className="text-sm font-semibold text-foreground">高频决策问题</p>
+      </div>
+      <div className="grid gap-3 pt-4 sm:grid-cols-2">
         {questions.map((question) => (
           <button
             key={question}
@@ -25,7 +23,7 @@ export default function RecommendedQuestions({ questions, onPick }: RecommendedQ
             <ArrowUpRight className="h-4 w-4 text-muted-foreground transition group-hover:text-primary" />
           </button>
         ))}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

@@ -11,33 +11,21 @@ const recommendedQuestions = [
 
 export default function QaPage() {
   return (
-    <main className="page-shell py-8 sm:py-10">
-      <section className="hero-grid mb-6 space-y-4 rounded-[1.7rem] p-5 sm:p-6">
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="command-chip">现场演示模式</span>
-          <span className="rounded-full border border-border bg-white/80 px-3 py-1 text-xs font-semibold text-muted-foreground">Atlas 交互壳体</span>
-          <span className="rounded-full border border-warning/20 bg-warning/10 px-3 py-1 text-xs font-semibold text-warning-foreground">推荐导向回答</span>
-        </div>
-        <div className="space-y-2">
-          <h1 className="display-type text-3xl font-semibold tracking-tight sm:text-4xl">升学与就业决策驾驶舱</h1>
-          <p className="max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base">
-            这一页专门用于路演演示“真实产品感”：输入问题后，系统会先给结论，再展示推荐排序、行动建议、风险提示与可信度说明。
-          </p>
-        </div>
-      </section>
-
-      <section className="mb-6 grid gap-4 lg:grid-cols-3">
-        <div className="neo-panel rounded-[1.2rem] p-4">
-          <p className="text-sm font-semibold text-foreground">演示重点</p>
-          <p className="mt-2 text-xs leading-6 text-muted-foreground">重点展示“推荐排序 + 行动建议 + 风险提示”的完整决策链路。</p>
-        </div>
-        <div className="neo-panel rounded-[1.2rem] p-4">
-          <p className="text-sm font-semibold text-foreground">可信度策略</p>
-          <p className="mt-2 text-xs leading-6 text-muted-foreground">官方口径优先，经验信息仅补充，不替代正式办理或招生要求。</p>
-        </div>
-        <div className="neo-panel rounded-[1.2rem] p-4">
-          <p className="text-sm font-semibold text-foreground">评委观感</p>
-          <p className="mt-2 text-xs leading-6 text-muted-foreground">用结构化答案减少“聊天玩具感”，强调“可落地产品感”。</p>
+    <main className="page-shell space-y-8 py-8 sm:space-y-10 sm:py-10">
+      <section className="hero-grid rounded-[2rem] px-6 py-8 sm:px-8">
+        <div className="space-y-4">
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="command-chip">问任何问题...</span>
+            <span className="rounded-full border border-white/80 bg-white/78 px-3 py-1 text-xs font-semibold text-muted-foreground">
+              产品能力演示页
+            </span>
+          </div>
+          <div className="space-y-2">
+            <h1 className="display-type text-3xl font-semibold tracking-tight sm:text-5xl">把问题交给系统，把路径带走</h1>
+            <p className="max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base">
+              这里保留最低业务能力：输入一个问题，系统理解背景后返回结论、推荐路径、风险提示和可信度说明。
+            </p>
+          </div>
         </div>
       </section>
 

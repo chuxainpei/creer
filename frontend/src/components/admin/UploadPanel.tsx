@@ -92,7 +92,7 @@ export default function UploadPanel({ token }: UploadPanelProps) {
 
   return (
     <div className="grid gap-5 lg:grid-cols-[1.1fr_1.2fr]">
-      <Card className="border-white/80 bg-white/90">
+      <Card className="browser-shell border-none bg-transparent shadow-none">
         <CardHeader>
           <div className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-secondary text-foreground">
@@ -105,19 +105,19 @@ export default function UploadPanel({ token }: UploadPanelProps) {
           </div>
         </CardHeader>
         <CardContent className="grid gap-3 sm:grid-cols-2">
-          <div className="rounded-[1.25rem] border border-border/70 bg-secondary/50 p-4">
+          <div className="rounded-[1.25rem] border border-border/70 bg-white/82 p-4">
             <p className="text-sm text-muted-foreground">官方资料文件</p>
             <p className="mt-2 text-2xl font-semibold">{status.official_files}</p>
           </div>
-          <div className="rounded-[1.25rem] border border-border/70 bg-secondary/50 p-4">
+          <div className="rounded-[1.25rem] border border-border/70 bg-white/82 p-4">
             <p className="text-sm text-muted-foreground">毕业去向文件</p>
             <p className="mt-2 text-2xl font-semibold">{status.graduate_files}</p>
           </div>
-          <div className="rounded-[1.25rem] border border-border/70 bg-secondary/50 p-4">
+          <div className="rounded-[1.25rem] border border-border/70 bg-white/82 p-4">
             <p className="text-sm text-muted-foreground">官方资料切片</p>
             <p className="mt-2 text-2xl font-semibold">{status.official_chunks}</p>
           </div>
-          <div className="rounded-[1.25rem] border border-border/70 bg-secondary/50 p-4">
+          <div className="rounded-[1.25rem] border border-border/70 bg-white/82 p-4">
             <p className="text-sm text-muted-foreground">毕业去向切片</p>
             <p className="mt-2 text-2xl font-semibold">{status.graduate_chunks}</p>
           </div>
@@ -133,7 +133,7 @@ export default function UploadPanel({ token }: UploadPanelProps) {
         </CardContent>
       </Card>
 
-      <Card className="border-white/80 bg-white/90">
+      <Card className="browser-shell border-none bg-transparent shadow-none">
         <CardHeader>
           <CardTitle>资料更新</CardTitle>
           <CardDescription>文件上传完成后，记得执行一次重新索引。</CardDescription>
