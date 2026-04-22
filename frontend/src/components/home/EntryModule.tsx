@@ -1,14 +1,24 @@
 import Link from 'next/link';
 import {
-  ArrowRight,
-  BookText,
-  BriefcaseBusiness,
-  CircleAlert,
-  ClipboardCheck,
-  Radar,
+  BadgeCheck,
+  Bot,
+  BrainCircuit,
+  Cable,
+  CheckCheck,
+  Code2,
+  Database,
+  FileSearch,
+  GraduationCap,
+  Layers3,
+  MessagesSquare,
+  Route,
   ShieldCheck,
   Sparkles,
+  Target,
+  TrendingUp,
+  UserRoundCheck,
   Workflow,
+  ArrowRight,
 } from 'lucide-react';
 
 import { Badge } from '@/src/components/ui/badge';
@@ -19,62 +29,109 @@ interface EntryModuleProps {
   hotTopics: string[];
 }
 
-const trustPoints = [
+const featureCards = [
   {
-    title: '结论先行的输出结构',
-    description: '回答优先交付可执行结论，再展开推荐项与下一步动作。',
-    icon: Workflow,
+    title: '多模型协同',
+    description: '统一接入规则引擎与生成模型，输出更稳定的结构化结论。',
+    icon: Bot,
   },
   {
-    title: '可解释的可信度层',
-    description: '同屏展示官方优先、经验补充与规则引擎，让判断过程透明。',
+    title: '推荐排序引擎',
+    description: '按背景条件生成可执行的院校或岗位推荐，并标注优先级。',
+    icon: TrendingUp,
+  },
+  {
+    title: '材料智能解析',
+    description: '支持对简历、项目描述、成绩信息做快速结构化分析。',
+    icon: FileSearch,
+  },
+  {
+    title: '上下文记忆',
+    description: '连续追问保留上下文，给出连贯而非割裂的决策建议。',
+    icon: BrainCircuit,
+  },
+  {
+    title: '可信度分层',
+    description: '官方信息优先，经验信息补充，清晰展示来源标签。',
     icon: ShieldCheck,
   },
   {
-    title: '双场景一体化承载',
-    description: '同一界面支持升学与就业，适合评审现场连贯展示多个案例。',
-    icon: Radar,
+    title: '流式实时反馈',
+    description: '先返回关键结论，再逐步补齐证据与行动建议，观感更真实。',
+    icon: Workflow,
   },
 ];
 
 const quickStats = [
-  { label: '回答范式', value: '结论 + 排序 + 风险' },
-  { label: '覆盖场景', value: '升学 / 求职双域' },
-  { label: '状态', value: '实时可演示' },
+  { label: '核心场景', value: '升学规划 / 就业决策' },
+  { label: '回答结构', value: '结论 + 推荐 + 风险 + 行动' },
+  { label: '演示状态', value: '在线可交互' },
+];
+
+const integrationItems = ['学校官网公告', '招聘平台职位库', '本地知识库', '管理员后台', '飞书机器人', '企业微信', 'Notion', 'GitHub'];
+
+const plans = [
+  {
+    name: '演示版',
+    price: '¥0',
+    desc: '适合路演与功能验证',
+    features: ['每日 100 次问答', '基础推荐模板', '来源标签展示', '社区支持'],
+    cta: '立即体验',
+    popular: false,
+  },
+  {
+    name: '专业版',
+    price: '¥199/月',
+    desc: '适合学院与小团队',
+    features: ['不限问答次数', '升学+就业双策略', '自定义提示词模板', '接口联调能力', '优先技术支持'],
+    cta: '开始试用',
+    popular: true,
+  },
+  {
+    name: '机构版',
+    price: '定制',
+    desc: '适合学校与企业中心',
+    features: ['私有化部署', '单点登录与权限控制', '专属知识库训练', 'SLA 服务保障'],
+    cta: '联系咨询',
+    popular: false,
+  },
 ];
 
 export default function EntryModule({ hotTopics }: EntryModuleProps) {
   return (
-    <main className="page-shell py-10 sm:py-14">
+    <main className="page-shell space-y-9 py-10 sm:py-14">
       <section className="hero-grid float-in overflow-hidden rounded-[2rem] px-6 py-8 md:px-10 md:py-12">
-        <div className="grid gap-8 lg:grid-cols-[1.25fr_0.95fr]">
+        <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-6">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="command-chip">UI/UX PRO MAX 方案</span>
-              <span className="rounded-full border border-accent/25 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-accent-foreground">
-                竞赛路演版
-              </span>
+              <span className="command-chip">由星图决策引擎驱动</span>
+              <Badge variant="secondary" className="px-3 py-1 text-xs">
+                支持路演全流程演示
+              </Badge>
             </div>
             <div className="space-y-4">
               <h1 className="display-type max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl">
-                把“聊天回答”
+                你的升学与就业
                 <br />
-                升级成“决策驾驶舱”
+                智能决策助手平台
               </h1>
               <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-                通过结构化结论、推荐排序、行动建议和来源可信度，现场直接展示产品真实感，而不是仅展示模型会答题。
+                输入问题后，系统优先给出可执行结论，再呈现推荐排序、风险提示和下一步动作，帮助你把复杂选择变成清晰路径。
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
               <Link href="/qa">
                 <Button size="lg" className="gap-2 bg-primary text-primary-foreground hover:bg-primary/92">
-                  进入决策驾驶舱
+                  立即开始问答
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
-              <Badge variant="secondary" className="px-4 py-3 text-sm">
-                万能回答 + 可解释证据
-              </Badge>
+              <a href="#pricing">
+                <Button size="lg" variant="outline" className="gap-2 border-primary/25 bg-white/80">
+                  查看方案
+                  <Layers3 className="h-4 w-4" />
+                </Button>
+              </a>
             </div>
             <div className="flex flex-wrap gap-3">
               {hotTopics.map((topic) => (
@@ -87,7 +144,7 @@ export default function EntryModule({ hotTopics }: EntryModuleProps) {
               {quickStats.map((item) => (
                 <Card key={item.label} className="border-white/90 bg-white/88">
                   <CardContent className="space-y-1 p-4">
-                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{item.label}</p>
+                    <p className="text-xs font-semibold tracking-[0.14em] text-muted-foreground">{item.label}</p>
                     <p className="text-base font-semibold text-foreground">{item.value}</p>
                   </CardContent>
                 </Card>
@@ -95,100 +152,238 @@ export default function EntryModule({ hotTopics }: EntryModuleProps) {
             </div>
           </div>
 
-          <div className="grid gap-4">
-            {trustPoints.map((point) => {
-              const Icon = point.icon;
-              return (
-                <Card key={point.title} className="neo-panel">
-                  <CardContent className="flex items-start gap-4 p-5">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <div className="space-y-2">
-                      <p className="text-base font-semibold text-foreground">{point.title}</p>
-                      <p className="text-sm leading-6 text-muted-foreground">{point.description}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-
-            <Card className="neo-panel border-accent/20 bg-gradient-to-br from-accent/10 to-white/85">
-              <CardContent className="space-y-3 p-5">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-accent shadow-soft">
-                    <CircleAlert className="h-4 w-4" />
-                  </div>
-                  <p className="text-base font-semibold text-foreground">评审演示顺序建议</p>
+          <Card className="neo-panel">
+            <CardContent className="space-y-4 p-5 sm:p-6">
+              <div className="flex items-center justify-between">
+                <p className="display-type text-lg font-semibold">智能助手在线演示</p>
+                <span className="inline-flex items-center gap-1 rounded-full border border-success/20 bg-success/10 px-2.5 py-1 text-xs font-semibold text-success">
+                  <BadgeCheck className="h-3.5 w-3.5" />
+                  在线
+                </span>
+              </div>
+              <div className="space-y-3 rounded-2xl border border-border/70 bg-white/85 p-4">
+                <div className="rounded-2xl rounded-bl-md border border-border/70 bg-white px-3 py-2 text-sm text-foreground">
+                  你可以帮我规划“保研失败后的秋招路线”吗？
                 </div>
-                <p className="text-sm leading-6 text-muted-foreground">
-                  先演示院校推荐，再切到岗位推荐，最后展示来源和风险提示，三步就能说明“可落地产品能力”。
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+                <div className="rounded-2xl rounded-br-md bg-primary px-3 py-2 text-sm text-primary-foreground">
+                  可以。先给结论：你需要“岗位先定向 + 时间线反推 + 简历专项强化”。我已为你生成三条推荐路径和对应风险点。
+                </div>
+              </div>
+              <div className="grid gap-2 sm:grid-cols-2">
+                <div className="rounded-xl border border-border/70 bg-white/80 p-3">
+                  <p className="text-xs font-semibold text-foreground">推荐路径 A</p>
+                  <p className="mt-1 text-xs leading-6 text-muted-foreground">互联网产品运营方向，强调实习复盘与商业分析案例。</p>
+                </div>
+                <div className="rounded-xl border border-border/70 bg-white/80 p-3">
+                  <p className="text-xs font-semibold text-foreground">推荐路径 B</p>
+                  <p className="mt-1 text-xs leading-6 text-muted-foreground">数据分析方向，强化 SQL、可视化与业务指标拆解能力。</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
-      <section className="mt-6 grid gap-4 lg:grid-cols-2">
+      <section id="features" className="space-y-5">
+        <div className="space-y-2 text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">核心能力</p>
+          <h2 className="display-type text-3xl font-semibold text-foreground sm:text-4xl">为真实决策系统而设计</h2>
+          <p className="mx-auto max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base">
+            从简单问答到复杂决策链路，这一套界面与能力都围绕“可演示、可解释、可执行”构建。
+          </p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {featureCards.map((item) => {
+            const Icon = item.icon;
+            return (
+              <Card key={item.title} className="neo-panel">
+                <CardContent className="space-y-3 p-5">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <p className="text-base font-semibold text-foreground">{item.title}</p>
+                  <p className="text-sm leading-6 text-muted-foreground">{item.description}</p>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      </section>
+
+      <section id="demo" className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
         <Card className="neo-panel">
           <CardContent className="space-y-4 p-5 sm:p-6">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                <BookText className="h-4 w-4" />
-              </div>
-              <h2 className="display-type text-lg font-semibold">演示主线</h2>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">问答演示</span>
+              <span className="rounded-full border border-border bg-white/85 px-3 py-1 text-xs font-semibold text-muted-foreground">岗位规划</span>
+              <span className="rounded-full border border-border bg-white/85 px-3 py-1 text-xs font-semibold text-muted-foreground">院校推荐</span>
             </div>
-            <ol className="space-y-2 text-sm leading-7 text-muted-foreground">
-              <li>1. 提一个推荐类问题，快速拿到结论。</li>
-              <li>2. 展示推荐排序与行动建议的可执行性。</li>
-              <li>3. 通过来源与可信度模块证明答案可解释。</li>
-            </ol>
+            <div className="space-y-3 rounded-2xl border border-border/70 bg-white/88 p-4">
+              <div className="flex items-start gap-2.5">
+                <UserRoundCheck className="mt-1 h-4 w-4 text-muted-foreground" />
+                <p className="text-sm text-foreground">我背景是计算机跨专业，GPA 一般，应该怎么选院校梯度？</p>
+              </div>
+              <div className="flex items-start gap-2.5">
+                <MessagesSquare className="mt-1 h-4 w-4 text-primary" />
+                <div className="space-y-2">
+                  <p className="text-sm text-foreground">建议采用“冲刺 20% + 稳妥 50% + 保底 30%”策略，并优先关注项目实践权重高的院校。</p>
+                  <div className="grid gap-2 sm:grid-cols-3">
+                    <div className="rounded-lg border border-border/70 bg-muted/35 p-2.5 text-xs text-muted-foreground">冲刺层：985 新工科</div>
+                    <div className="rounded-lg border border-border/70 bg-muted/35 p-2.5 text-xs text-muted-foreground">稳妥层：211 应用导向项目</div>
+                    <div className="rounded-lg border border-border/70 bg-muted/35 p-2.5 text-xs text-muted-foreground">保底层：双非强专业院校</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
         <Card className="neo-panel">
           <CardContent className="space-y-4 p-5 sm:p-6">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                <BriefcaseBusiness className="h-4 w-4" />
+            <p className="text-sm font-semibold text-foreground">系统协同视图</p>
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between rounded-xl border border-border/70 bg-white/85 px-3 py-2">
+                <div className="inline-flex items-center gap-2 text-sm text-foreground">
+                  <Database className="h-4 w-4 text-primary" />
+                  官方资料索引
+                </div>
+                <span className="text-xs font-semibold text-success">已同步</span>
               </div>
-              <h2 className="display-type text-lg font-semibold">产品价值</h2>
-            </div>
-            <p className="text-sm leading-7 text-muted-foreground">
-              这个系统的价值不是替代导师，而是把复杂决策拆成“结论-路径-风险”三段，让学生在短时间内获得清晰行动方案。
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="neo-panel">
-          <CardContent className="space-y-4 p-5 sm:p-6">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                <ShieldCheck className="h-4 w-4" />
+              <div className="flex items-center justify-between rounded-xl border border-border/70 bg-white/85 px-3 py-2">
+                <div className="inline-flex items-center gap-2 text-sm text-foreground">
+                  <Route className="h-4 w-4 text-primary" />
+                  推荐规则引擎
+                </div>
+                <span className="text-xs font-semibold text-success">运行中</span>
               </div>
-              <h2 className="display-type text-lg font-semibold">可信度边界</h2>
-            </div>
-            <p className="text-sm leading-7 text-muted-foreground">
-              系统默认官方信息优先，经验信息只作补充，演示用于体现产品能力，正式办理请以最新公告为准。
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="neo-panel">
-          <CardContent className="space-y-4 p-5 sm:p-6">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                <Sparkles className="h-4 w-4" />
+              <div className="flex items-center justify-between rounded-xl border border-border/70 bg-white/85 px-3 py-2">
+                <div className="inline-flex items-center gap-2 text-sm text-foreground">
+                  <Target className="h-4 w-4 text-primary" />
+                  风险提示模块
+                </div>
+                <span className="text-xs font-semibold text-success">已启用</span>
               </div>
-              <h2 className="display-type text-lg font-semibold">后续升级路线</h2>
             </div>
-            <p className="text-sm leading-7 text-muted-foreground">
-              后续可接入真实知识库和用户画像分层推荐，把赛场演示版平滑升级为院校或就业服务的试点产品。
-            </p>
+            <Link href="/qa">
+              <Button className="w-full gap-2 bg-primary text-primary-foreground hover:bg-primary/92">
+                打开真实问答页面
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </section>
+
+      <section id="integrations" className="grid gap-4 lg:grid-cols-[1fr_1fr]">
+        <Card className="neo-panel">
+          <CardContent className="space-y-4 p-5 sm:p-6">
+            <div className="inline-flex items-center gap-2 text-sm font-semibold text-foreground">
+              <Cable className="h-4 w-4 text-primary" />
+              与现有系统快速集成
+            </div>
+            <p className="text-sm leading-7 text-muted-foreground">
+              可对接学校/企业已有数据与协作平台，几分钟内完成演示环境串联，满足比赛现场的稳定展示需求。
+            </p>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              {integrationItems.map((item) => (
+                <div key={item} className="rounded-xl border border-border/70 bg-white/85 px-3 py-2 text-center text-xs font-medium text-foreground">
+                  {item}
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="neo-panel">
+          <CardContent className="space-y-4 p-5 sm:p-6">
+            <div className="inline-flex items-center gap-2 text-sm font-semibold text-foreground">
+              <Code2 className="h-4 w-4 text-primary" />
+              接口调用示例
+            </div>
+            <div className="overflow-hidden rounded-2xl border border-border/70 bg-slate-950 p-4">
+              <pre className="overflow-x-auto text-xs leading-6 text-slate-100">
+                <code>{`import { DecisionClient } from '@xingtu/sdk'
+
+const client = new DecisionClient({
+  apiKey: process.env.XINGTU_API_KEY
+})
+
+const result = await client.ask({
+  scene: 'career',
+  question: '我应该先投产品岗还是数据岗？',
+  stream: true
+})
+
+for await (const chunk of result) {
+  process.stdout.write(chunk.text)
+}`}</code>
+              </pre>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      <section id="pricing" className="space-y-5">
+        <div className="space-y-2 text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">价格方案</p>
+          <h2 className="display-type text-3xl font-semibold text-foreground sm:text-4xl">透明简单，按需升级</h2>
+          <p className="text-sm leading-7 text-muted-foreground">从免费演示到机构部署，都可以根据比赛和落地阶段灵活选择。</p>
+        </div>
+        <div className="grid gap-4 lg:grid-cols-3">
+          {plans.map((plan) => (
+            <Card key={plan.name} className={`neo-panel ${plan.popular ? 'border-primary/30 ring-2 ring-primary/20' : ''}`}>
+              <CardContent className="space-y-4 p-5 sm:p-6">
+                {plan.popular ? (
+                  <span className="inline-flex rounded-full border border-primary/20 bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">
+                    最受欢迎
+                  </span>
+                ) : null}
+                <div>
+                  <p className="text-lg font-semibold text-foreground">{plan.name}</p>
+                  <p className="mt-1 text-3xl font-semibold text-foreground">{plan.price}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{plan.desc}</p>
+                </div>
+                <div className="space-y-2">
+                  {plan.features.map((item) => (
+                    <div key={item} className="inline-flex items-start gap-2 text-sm text-muted-foreground">
+                      <CheckCheck className="mt-0.5 h-4 w-4 text-primary" />
+                      {item}
+                    </div>
+                  ))}
+                </div>
+                <Button className="w-full gap-2 bg-primary text-primary-foreground hover:bg-primary/92">{plan.cta}</Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      <section className="hero-grid rounded-[2rem] px-6 py-8 text-center sm:px-10">
+        <p className="text-sm font-semibold uppercase tracking-[0.14em] text-primary">准备开始</p>
+        <h2 className="display-type mt-2 text-3xl font-semibold text-foreground sm:text-4xl">现在就把你的系统做成可演示产品</h2>
+        <p className="mx-auto mt-3 max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base">
+          用中文叙事、结构化回答和真实业务界面，给评委一个“不是概念图，而是可落地系统”的第一印象。
+        </p>
+        <div className="mt-5 flex flex-wrap justify-center gap-3">
+          <Link href="/qa">
+            <Button size="lg" className="gap-2 bg-primary text-primary-foreground hover:bg-primary/92">
+              进入问答演示
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </Link>
+          <a href="#features">
+            <Button size="lg" variant="outline" className="gap-2 border-primary/25 bg-white/80">
+              查看能力亮点
+              <Sparkles className="h-4 w-4" />
+            </Button>
+          </a>
+        </div>
+        <p className="mt-5 text-xs text-muted-foreground">无需信用卡 · 支持免费演示方案 · 系统状态正常</p>
+      </section>
+
+      <footer className="pb-2 text-center text-xs text-muted-foreground">
+        星图决策平台 © 2026 · 升学与就业双场景智能问答系统
+      </footer>
     </main>
   );
 }

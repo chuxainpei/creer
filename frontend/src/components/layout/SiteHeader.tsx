@@ -2,14 +2,16 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ArrowUpRight, BriefcaseBusiness, MessageSquareText, Workflow } from 'lucide-react';
+import { ArrowUpRight, BookOpenCheck, LayoutGrid, MessageSquareText, Workflow } from 'lucide-react';
 
 import { Badge } from '@/src/components/ui/badge';
 import { Button } from '@/src/components/ui/button';
 import { cn } from '@/src/lib/utils';
 
 const navItems = [
-  { href: '/', label: '首页', icon: BriefcaseBusiness },
+  { href: '/#features', label: '能力亮点', icon: LayoutGrid },
+  { href: '/#demo', label: '演示区', icon: Workflow },
+  { href: '/#pricing', label: '价格方案', icon: BookOpenCheck },
   { href: '/qa', label: '问答中心', icon: MessageSquareText },
 ];
 
@@ -24,14 +26,14 @@ export default function SiteHeader() {
             <Workflow className="h-5 w-5" />
           </div>
           <div>
-            <p className="display-type text-sm font-semibold text-foreground">Decision Atlas</p>
-            <p className="text-xs text-muted-foreground">升学与就业推荐驾驶舱</p>
+            <p className="display-type text-sm font-semibold text-foreground">星图决策平台</p>
+            <p className="text-xs text-muted-foreground">升学与就业智能问答系统</p>
           </div>
         </Link>
 
         <nav className="hidden items-center gap-2 rounded-full border border-white/80 bg-white/70 p-1 md:flex">
           {navItems.map((item) => {
-            const active = pathname === item.href;
+            const active = item.href === '/qa' ? pathname === '/qa' : pathname === '/';
             const Icon = item.icon;
             return (
               <Link
@@ -53,12 +55,11 @@ export default function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <Badge variant="secondary" className="hidden sm:inline-flex">
-            <BriefcaseBusiness className="mr-1 h-3.5 w-3.5" />
-            竞赛演示模式
+            全中文演示版
           </Badge>
           <Link href="/qa" className="hidden sm:block">
             <Button size="sm" className="gap-1.5 bg-accent text-accent-foreground hover:bg-accent/90">
-              进入驾驶舱
+              立即体验
               <ArrowUpRight className="h-4 w-4" />
             </Button>
           </Link>
