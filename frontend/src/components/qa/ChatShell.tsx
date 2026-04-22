@@ -4,7 +4,6 @@ import { FormEvent, useMemo, useState, useTransition } from 'react';
 import {
   FileStack,
   LoaderCircle,
-  MessagesSquare,
   ScanSearch,
   SendHorizonal,
   ShieldCheck,
@@ -15,9 +14,7 @@ import {
 
 import RecommendedQuestions from '@/src/components/qa/RecommendedQuestions';
 import SourceTags from '@/src/components/qa/SourceTags';
-import { Badge } from '@/src/components/ui/badge';
 import { Button } from '@/src/components/ui/button';
-import { Card, CardContent } from '@/src/components/ui/card';
 import { Textarea } from '@/src/components/ui/textarea';
 import { askQuestion, streamQuestion } from '@/src/lib/api';
 import type { ChatMessage } from '@/src/lib/types';
@@ -68,6 +65,7 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
 
     setError('');
     setQuestion('');
+
     const assistantId = `assistant-${Date.now()}`;
     const nextMessages: ChatMessage[] = [
       { id: `user-${Date.now()}`, role: 'user', content: trimmedQuestion, status: 'done' },
@@ -151,21 +149,18 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
   };
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[1.12fr_0.88fr]">
-      <div className="browser-shell overflow-hidden p-4 sm:p-5">
-        <div className="flex items-center gap-2 border-b border-white/70 pb-3">
+    <div className="grid gap-6 xl:grid-cols-[1.08fr_0.92fr]">
+      <div className="tabbit-frame p-4 sm:p-5">
+        <div className="flex items-center gap-2 border-b border-[rgba(17,24,39,0.06)] pb-3">
           <span className="browser-dot bg-[#ff8b7b]" />
           <span className="browser-dot bg-[#ffd86f]" />
           <span className="browser-dot bg-[#6ad39b]" />
-          <div className="ml-2 rounded-full bg-white/70 px-3 py-1 text-[11px] text-muted-foreground">xingtu://assistant/qa</div>
-          <div className="ml-auto flex items-center gap-2 text-[11px] font-semibold text-primary">
-            <MessagesSquare className="h-3.5 w-3.5" />
-            星图助手在线
-          </div>
+          <div className="ml-2 rounded-full bg-[#f5f6f8] px-3 py-1 text-[11px] text-muted-foreground">xingtu://assistant/live</div>
+          <div className="ml-auto rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary">在线演示</div>
         </div>
 
         <div className="space-y-5 pt-4">
-          <div className="rounded-[1.6rem] border border-white/80 bg-white/88 p-4 sm:p-5">
+          <div className="rounded-[1.8rem] border border-[rgba(17,24,39,0.06)] bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(248,246,241,0.9))] p-4 sm:p-5">
             <div className="space-y-4">
               {messages.map((message) => (
                 <div key={message.id} className="space-y-3">
@@ -179,8 +174,8 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
                     <div
                       className={
                         message.role === 'user'
-                          ? 'order-2 flex h-8 w-8 flex-none items-center justify-center rounded-full bg-accent text-accent-foreground'
-                          : 'flex h-8 w-8 flex-none items-center justify-center rounded-full bg-primary/12 text-primary'
+                          ? 'order-2 flex h-9 w-9 flex-none items-center justify-center rounded-full bg-[#ffe0b9] text-accent-foreground'
+                          : 'flex h-9 w-9 flex-none items-center justify-center rounded-full bg-primary/12 text-primary'
                       }
                     >
                       {message.role === 'user' ? <UserRound className="h-4 w-4" /> : <Sparkles className="h-4 w-4" />}
@@ -188,8 +183,8 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
                     <div
                       className={
                         message.role === 'user'
-                          ? 'order-1 rounded-[1.4rem] rounded-br-md bg-accent px-4 py-3 text-sm leading-7 text-accent-foreground'
-                          : 'rounded-[1.4rem] rounded-bl-md border border-border/70 bg-white px-4 py-3 text-sm leading-7 text-foreground shadow-soft'
+                          ? 'order-1 rounded-[1.5rem] rounded-br-md bg-[#ffe8cc] px-4 py-3 text-sm leading-7 text-accent-foreground'
+                          : 'rounded-[1.5rem] rounded-bl-md border border-[rgba(17,24,39,0.06)] bg-white px-4 py-3 text-sm leading-7 text-foreground shadow-soft'
                       }
                     >
                       {message.content || (
@@ -202,11 +197,11 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
                   </div>
 
                   {message.role === 'assistant' && message.recommendations?.length ? (
-                    <div className="ml-11 grid gap-3">
+                    <div className="ml-12 grid gap-3">
                       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">推荐方案</p>
                       <div className="grid gap-3 sm:grid-cols-2">
                         {message.recommendations.map((item) => (
-                          <div key={item.id} className="rounded-2xl border border-border/70 bg-gradient-to-b from-white to-muted/35 p-3">
+                          <div key={item.id} className="tabbit-pane">
                             <div className="flex items-center justify-between gap-2">
                               <p className="text-sm font-semibold text-foreground">{item.title}</p>
                               <span
@@ -225,16 +220,16 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
                   ) : null}
 
                   {message.role === 'assistant' && (message.sourceTags?.length || message.evidence?.length || message.credibility?.length) ? (
-                    <div className="ml-11 space-y-2 rounded-2xl border border-border/70 bg-muted/35 p-3">
+                    <div className="ml-12 space-y-3 rounded-[1.5rem] border border-[rgba(17,24,39,0.06)] bg-[#f6f5f1] p-4">
                       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">来源与可信度</p>
                       {message.sourceTags?.length ? <SourceTags tags={message.sourceTags} /> : null}
                       {message.usedOfficial ? <p className="text-xs text-muted-foreground">该回答已按官方资料优先策略生成。</p> : null}
                       {message.evidence?.length ? (
                         <div className="space-y-2">
                           {message.evidence.map((item) => (
-                            <div key={`${item.source_type}-${item.source_name}-${item.snippet}`} className="space-y-1">
+                            <div key={`${item.source_type}-${item.source_name}-${item.snippet}`} className="rounded-2xl bg-white/88 px-3 py-2.5">
                               <p className="text-xs font-medium text-foreground">{item.source_name}</p>
-                              <p className="text-xs leading-6 text-muted-foreground">{item.snippet}</p>
+                              <p className="mt-1 text-xs leading-6 text-muted-foreground">{item.snippet}</p>
                             </div>
                           ))}
                         </div>
@@ -242,7 +237,7 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
                       {message.credibility?.length ? (
                         <div className="grid gap-2 sm:grid-cols-3">
                           {message.credibility.map((item) => (
-                            <div key={`${item.label}-${item.level}`} className="rounded-xl border border-border/70 bg-white/80 p-2.5">
+                            <div key={`${item.label}-${item.level}`} className="rounded-[1rem] bg-white/88 p-3">
                               <p className="text-xs font-semibold text-foreground">{item.label}</p>
                               <p className="mt-1 text-[11px] leading-5 text-muted-foreground">{item.detail}</p>
                             </div>
@@ -256,7 +251,7 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
             </div>
           </div>
 
-          <form onSubmit={submit} className="rounded-[1.6rem] border border-white/80 bg-white/85 p-4 sm:p-5">
+          <form onSubmit={submit} className="tabbit-pane">
             <label className="sr-only" htmlFor="question-input">
               输入问题
             </label>
@@ -269,7 +264,7 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
             />
             <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm text-muted-foreground">推荐类问题更容易展示完整链路：结论、推荐、风险与可信度。</p>
-              <Button type="submit" className="gap-2 self-start bg-primary text-primary-foreground hover:bg-primary/90 sm:self-auto" disabled={isPending}>
+              <Button type="submit" className="gap-2 rounded-full px-5" disabled={isPending}>
                 {isPending ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <SendHorizonal className="h-4 w-4" />}
                 发送问题
               </Button>
@@ -280,23 +275,23 @@ export default function ChatShell({ initialPrompts }: ChatShellProps) {
       </div>
 
       <div className="space-y-4">
-        <div className="browser-shell p-4 sm:p-5">
-          <div className="flex items-center gap-2 border-b border-white/70 pb-3">
+        <div className="tabbit-frame p-4 sm:p-5">
+          <div className="flex items-center gap-2 border-b border-[rgba(17,24,39,0.06)] pb-3">
             <FileStack className="h-4 w-4 text-primary" />
             <p className="text-sm font-semibold text-foreground">当前可引用上下文</p>
           </div>
           <div className="grid gap-2 pt-4">
-            <div className="rounded-xl bg-white/85 px-3 py-2 text-sm text-foreground">简历.pdf</div>
-            <div className="rounded-xl bg-white/85 px-3 py-2 text-sm text-foreground">院校招生简章</div>
-            <div className="rounded-xl bg-white/85 px-3 py-2 text-sm text-foreground">目标岗位 JD</div>
-            <div className="rounded-xl bg-white/85 px-3 py-2 text-sm text-foreground">毕业去向样例数据</div>
+            <div className="tabbit-pane py-3">简历.pdf</div>
+            <div className="tabbit-pane py-3">院校招生简章</div>
+            <div className="tabbit-pane py-3">目标岗位 JD</div>
+            <div className="tabbit-pane py-3">毕业去向样例数据</div>
           </div>
         </div>
 
         <RecommendedQuestions questions={initialPrompts} onPick={(prompt) => void sendQuestion(prompt)} />
 
-        <div className="browser-shell p-4 sm:p-5">
-          <div className="flex items-center gap-2 border-b border-white/70 pb-3">
+        <div className="tabbit-frame p-4 sm:p-5">
+          <div className="flex items-center gap-2 border-b border-[rgba(17,24,39,0.06)] pb-3">
             <ScanSearch className="h-4 w-4 text-primary" />
             <p className="text-sm font-semibold text-foreground">回答逻辑</p>
           </div>

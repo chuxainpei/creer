@@ -7,8 +7,8 @@ interface RecommendedQuestionsProps {
 
 export default function RecommendedQuestions({ questions, onPick }: RecommendedQuestionsProps) {
   return (
-    <div className="browser-shell p-4 sm:p-5">
-      <div className="border-b border-white/70 pb-3">
+    <div className="tabbit-frame p-4 sm:p-5">
+      <div className="border-b border-[rgba(17,24,39,0.06)] pb-3">
         <p className="text-sm font-semibold text-foreground">高频决策问题</p>
       </div>
       <div className="grid gap-3 pt-4 sm:grid-cols-2">
@@ -17,7 +17,7 @@ export default function RecommendedQuestions({ questions, onPick }: RecommendedQ
             key={question}
             type="button"
             onClick={() => onPick?.(question)}
-            className="group flex items-center justify-between rounded-[1.25rem] border border-border/80 bg-white/85 px-4 py-3 text-left transition hover:-translate-y-0.5 hover:border-primary/20 hover:bg-primary/5"
+            className="group flex items-center justify-between rounded-[1.3rem] border border-[rgba(17,24,39,0.06)] bg-white px-4 py-3 text-left transition hover:-translate-y-0.5 hover:border-primary/20 hover:bg-primary/5"
           >
             <span className="text-sm font-medium text-foreground">{question}</span>
             <ArrowUpRight className="h-4 w-4 text-muted-foreground transition group-hover:text-primary" />

@@ -14,4 +14,5 @@ test('renders demo notice instead of admin console in demo mode', () => {
   process.env.NEXT_PUBLIC_DEMO_MODE = '1';
   render(<AdminPage />);
   expect(screen.getByText('后台在正式部署时启用')).toBeInTheDocument();
+  expect(screen.getByText('规则引擎')).toBeInTheDocument();
 });

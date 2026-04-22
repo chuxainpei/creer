@@ -36,7 +36,7 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
   };
 
   return (
-    <Card className="browser-shell border-none bg-transparent shadow-none">
+    <Card className="tabbit-frame border-none bg-transparent shadow-none">
       <CardHeader>
         <div className="flex items-center gap-3">
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
@@ -60,7 +60,7 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
             />
           </label>
           {error ? <p className="text-sm text-danger">{error}</p> : null}
-          <Button type="submit" disabled={loading} className="bg-primary text-primary-foreground hover:bg-primary/90">
+          <Button type="submit" disabled={loading} className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90">
             {loading ? '登录中…' : '登录'}
           </Button>
         </form>

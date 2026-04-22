@@ -5,28 +5,28 @@
 @layer base {
   :root {
     color-scheme: light;
-    --font-display: 'DIN Condensed', 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
-    --font-cn: 'PingFang SC', 'Hiragino Sans GB', 'Source Han Sans SC', 'Microsoft YaHei', sans-serif;
-    --background: 38 50% 97%;
-    --foreground: 220 30% 12%;
+    --font-display: 'SF Pro Display', 'PingFang SC', 'Hiragino Sans GB', 'Source Han Sans SC', 'Microsoft YaHei', sans-serif;
+    --font-cn: 'SF Pro Text', 'PingFang SC', 'Hiragino Sans GB', 'Source Han Sans SC', 'Microsoft YaHei', sans-serif;
+    --background: 36 48% 97%;
+    --foreground: 220 29% 14%;
     --card: 0 0% 100%;
-    --card-foreground: 220 30% 12%;
-    --primary: 207 74% 35%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 204 34% 92%;
-    --secondary-foreground: 214 24% 24%;
-    --muted: 36 32% 91%;
-    --muted-foreground: 213 14% 36%;
-    --accent: 31 92% 62%;
-    --accent-foreground: 24 80% 18%;
-    --border: 210 22% 84%;
-    --input: 210 22% 84%;
-    --ring: 207 74% 35%;
-    --success: 155 52% 36%;
+    --card-foreground: 220 29% 14%;
+    --primary: 214 72% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 30% 95%;
+    --secondary-foreground: 215 22% 24%;
+    --muted: 40 28% 93%;
+    --muted-foreground: 215 12% 44%;
+    --accent: 30 100% 70%;
+    --accent-foreground: 24 62% 18%;
+    --border: 214 24% 86%;
+    --input: 214 24% 86%;
+    --ring: 214 72% 45%;
+    --success: 148 48% 38%;
     --success-foreground: 0 0% 100%;
-    --warning: 39 90% 49%;
-    --warning-foreground: 216 45% 12%;
-    --danger: 0 76% 49%;
+    --warning: 37 92% 56%;
+    --warning-foreground: 24 62% 18%;
+    --danger: 0 74% 56%;
     --danger-foreground: 0 0% 100%;
   }
 
@@ -41,7 +41,7 @@
 
   body {
     @apply min-h-screen bg-background text-foreground antialiased;
-    font-family: var(--font-cn), 'PingFang SC', 'Hiragino Sans GB', 'Source Han Sans SC', 'Microsoft YaHei', sans-serif;
+    font-family: var(--font-cn), sans-serif;
     margin: 0;
     position: relative;
     overflow-x: hidden;
@@ -52,10 +52,10 @@
     position: fixed;
     inset: 0;
     pointer-events: none;
-    background-image:
-      radial-gradient(circle at 9% 10%, rgba(89, 154, 214, 0.18), transparent 28%),
-      radial-gradient(circle at 95% 16%, rgba(255, 180, 101, 0.24), transparent 29%),
-      radial-gradient(circle at 74% 86%, rgba(94, 132, 169, 0.14), transparent 26%);
+    background:
+      radial-gradient(circle at 8% 10%, rgba(255, 191, 122, 0.22), transparent 28%),
+      radial-gradient(circle at 92% 8%, rgba(92, 143, 214, 0.16), transparent 30%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(249, 246, 241, 0.96));
     z-index: -2;
   }
 
@@ -64,11 +64,9 @@
     position: fixed;
     inset: 0;
     pointer-events: none;
-    background-image:
-      linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
-    background-size: 42px 42px;
-    mask-image: radial-gradient(circle at center, black 58%, transparent 100%);
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.88), transparent 46%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0));
     z-index: -1;
   }
 
@@ -80,78 +78,98 @@
 
 @layer utilities {
   .page-shell {
-    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+    @apply mx-auto w-full max-w-[1240px] px-4 sm:px-6 lg:px-8;
   }
 
   .display-type {
-    font-family: var(--font-display), var(--font-cn), sans-serif;
-    letter-spacing: -0.03em;
+    font-family: var(--font-display), sans-serif;
+    letter-spacing: -0.04em;
   }
 
   .hero-grid {
-    background-image:
-      linear-gradient(120deg, rgba(255, 255, 255, 0.96) 0%, rgba(248, 249, 252, 0.94) 48%, rgba(245, 242, 236, 0.92) 100%),
-      radial-gradient(circle at 84% 10%, rgba(89, 154, 214, 0.16), transparent 34%);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(250, 247, 241, 0.82)),
+      radial-gradient(circle at 84% 16%, rgba(106, 154, 228, 0.12), transparent 28%);
     border: 1px solid rgba(255, 255, 255, 0.9);
     box-shadow:
-      0 42px 90px -52px rgba(55, 83, 116, 0.28),
-      inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      0 36px 90px -52px rgba(60, 84, 120, 0.26),
+      inset 0 1px 0 rgba(255, 255, 255, 0.94);
   }
 
   .surface-grad {
-    background-image: linear-gradient(165deg, rgba(255, 255, 255, 0.94), rgba(237, 243, 246, 0.84));
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(245, 246, 248, 0.88));
   }
 
   .inset-line {
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
   }
 
   .neo-panel {
     border: 1px solid rgba(255, 255, 255, 0.92);
-    background: linear-gradient(160deg, rgba(255, 255, 255, 0.93), rgba(242, 244, 247, 0.84));
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(246, 246, 243, 0.82));
     box-shadow:
-      0 30px 70px -44px rgba(37, 64, 97, 0.24),
-      inset 0 1px 0 rgba(255, 255, 255, 0.94);
+      0 30px 70px -46px rgba(63, 87, 120, 0.24),
+      inset 0 1px 0 rgba(255, 255, 255, 0.95);
   }
 
   .browser-shell {
-    @apply rounded-[1.85rem] border border-white/85 bg-[linear-gradient(180deg,rgba(255,255,255,0.9),rgba(244,247,252,0.86))] shadow-panel backdrop-blur;
+    @apply rounded-[2rem] border border-white/90 bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(248,246,241,0.82))] shadow-panel backdrop-blur;
   }
 
   .browser-dot {
     @apply inline-flex h-2.5 w-2.5 rounded-full;
   }
 
-  .glow-orb {
-    position: absolute;
-    border-radius: 9999px;
-    filter: blur(22px);
-    opacity: 0.8;
-    pointer-events: none;
-  }
-
-  .glow-orb-primary {
-    right: 4%;
-    top: 8%;
-    height: 120px;
-    width: 120px;
-    background: rgba(94, 161, 223, 0.2);
-  }
-
-  .glow-orb-accent {
-    bottom: 8%;
-    left: 2%;
-    height: 108px;
-    width: 108px;
-    background: rgba(255, 191, 117, 0.24);
-  }
-
   .command-chip {
-    @apply rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-primary;
+    @apply rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold tracking-[0.14em] text-primary;
   }
 
   .entry-chip {
-    @apply rounded-full border border-foreground/10 bg-white/85 px-4 py-2 text-sm font-medium text-foreground shadow-soft;
+    @apply rounded-full border border-white/90 bg-white px-4 py-2 text-sm font-medium text-foreground shadow-soft;
+  }
+
+  .tabbit-hero {
+    @apply overflow-hidden rounded-[2.4rem] border border-white/90 bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(248,245,239,0.84))] px-6 py-8 shadow-panel sm:px-8 sm:py-10 lg:px-10 lg:py-12;
+  }
+
+  .tabbit-hero-title {
+    @apply display-type text-[2.8rem] font-semibold leading-[0.98] text-foreground sm:text-[4.5rem] lg:text-[5.25rem];
+  }
+
+  .tabbit-kicker {
+    @apply text-sm font-semibold tracking-[0.02em] text-muted-foreground;
+  }
+
+  .tabbit-section-title {
+    @apply display-type text-3xl font-semibold leading-tight text-foreground sm:text-4xl lg:text-[3.4rem];
+  }
+
+  .tabbit-shortcut {
+    @apply rounded-[1.65rem] border border-white/90 bg-white p-4 shadow-soft transition duration-200 hover:-translate-y-0.5 hover:shadow-panel;
+  }
+
+  .tabbit-info-card {
+    @apply rounded-[1.8rem] border border-white/90 bg-white p-5 shadow-soft;
+  }
+
+  .tabbit-micro-card {
+    @apply flex items-center gap-3 rounded-[1.2rem] border border-white/90 bg-white px-4 py-3 shadow-soft;
+  }
+
+  .tabbit-frame {
+    @apply overflow-hidden rounded-[2rem] border border-white/90 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(246,245,241,0.88))] shadow-panel;
+  }
+
+  .tabbit-nav-link {
+    @apply text-sm font-medium text-muted-foreground transition hover:text-foreground;
+  }
+
+  .tabbit-pill {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/90 bg-white px-4 py-2 text-sm font-medium text-foreground shadow-soft;
+  }
+
+  .tabbit-pane {
+    @apply rounded-[1.6rem] border border-black/5 bg-white p-4 shadow-soft;
   }
 
   .fade-up {
@@ -168,6 +186,7 @@
     transform: translateY(8px);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -179,6 +198,7 @@
     transform: translateY(12px) scale(0.99);
     opacity: 0;
   }
+
   to {
     transform: translateY(0) scale(1);
     opacity: 1;

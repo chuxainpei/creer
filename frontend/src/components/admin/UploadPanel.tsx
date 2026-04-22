@@ -92,7 +92,7 @@ export default function UploadPanel({ token }: UploadPanelProps) {
 
   return (
     <div className="grid gap-5 lg:grid-cols-[1.1fr_1.2fr]">
-      <Card className="browser-shell border-none bg-transparent shadow-none">
+      <Card className="tabbit-frame border-none bg-transparent shadow-none">
         <CardHeader>
           <div className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-secondary text-foreground">
@@ -133,7 +133,7 @@ export default function UploadPanel({ token }: UploadPanelProps) {
         </CardContent>
       </Card>
 
-      <Card className="browser-shell border-none bg-transparent shadow-none">
+      <Card className="tabbit-frame border-none bg-transparent shadow-none">
         <CardHeader>
           <CardTitle>资料更新</CardTitle>
           <CardDescription>文件上传完成后，记得执行一次重新索引。</CardDescription>
