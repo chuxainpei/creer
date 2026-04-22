@@ -4,9 +4,9 @@ import HomePage from '@/app/page';
 
 test('renders homepage hero and entry call to action', () => {
   render(<HomePage />);
-  expect(screen.getByText('由星图决策引擎驱动')).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: '立即开始问答' })).toBeInTheDocument();
-  expect(screen.getByRole('heading', { level: 2, name: '为真实决策系统而设计' })).toBeInTheDocument();
-  expect(screen.getByRole('heading', { level: 2, name: '透明简单，按需升级' })).toBeInTheDocument();
-  expect(screen.getByRole('heading', { level: 2, name: '现在就把你的系统做成可演示产品' })).toBeInTheDocument();
+  expect(screen.getByText('AI 决策系统官网版')).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: '进入问答演示' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { level: 2, name: '你看见的，就是系统的上下文' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { level: 2, name: '和你的项目天然匹配的三种展示方式' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { level: 2, name: '常见问题' })).toBeInTheDocument();
 });

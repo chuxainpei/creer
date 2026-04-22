@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ArrowUpRight, BookOpenCheck, LayoutGrid, MessageSquareText, Workflow } from 'lucide-react';
+import { ArrowUpRight, LayoutGrid, MessageSquareText, ShieldCheck, Workflow } from 'lucide-react';
 
 import { Badge } from '@/src/components/ui/badge';
 import { Button } from '@/src/components/ui/button';
@@ -10,8 +10,8 @@ import { cn } from '@/src/lib/utils';
 
 const navItems = [
   { href: '/#features', label: '能力亮点', icon: LayoutGrid },
-  { href: '/#demo', label: '演示区', icon: Workflow },
-  { href: '/#pricing', label: '价格方案', icon: BookOpenCheck },
+  { href: '/#capabilities', label: '能力设计', icon: Workflow },
+  { href: '/#faq', label: 'FAQ', icon: ShieldCheck },
   { href: '/qa', label: '问答中心', icon: MessageSquareText },
 ];
 
@@ -26,8 +26,8 @@ export default function SiteHeader() {
             <Workflow className="h-5 w-5" />
           </div>
           <div>
-            <p className="display-type text-sm font-semibold text-foreground">星图决策平台</p>
-            <p className="text-xs text-muted-foreground">升学与就业智能问答系统</p>
+            <p className="display-type text-sm font-semibold text-foreground">星图决策台</p>
+            <p className="text-xs text-muted-foreground">升学与就业智能决策系统</p>
           </div>
         </Link>
 
@@ -59,7 +59,7 @@ export default function SiteHeader() {
           </Badge>
           <Link href="/qa" className="hidden sm:block">
             <Button size="sm" className="gap-1.5 bg-accent text-accent-foreground hover:bg-accent/90">
-              立即体验
+              开始演示
               <ArrowUpRight className="h-4 w-4" />
             </Button>
           </Link>

@@ -7,21 +7,21 @@
     color-scheme: light;
     --font-display: 'DIN Condensed', 'Avenir Next Condensed', 'Arial Narrow', sans-serif;
     --font-cn: 'PingFang SC', 'Hiragino Sans GB', 'Source Han Sans SC', 'Microsoft YaHei', sans-serif;
-    --background: 42 42% 95%;
-    --foreground: 216 34% 12%;
+    --background: 38 50% 97%;
+    --foreground: 220 30% 12%;
     --card: 0 0% 100%;
-    --card-foreground: 216 34% 12%;
-    --primary: 188 92% 31%;
+    --card-foreground: 220 30% 12%;
+    --primary: 207 74% 35%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 205 32% 90%;
+    --secondary: 204 34% 92%;
     --secondary-foreground: 214 24% 24%;
-    --muted: 45 24% 88%;
-    --muted-foreground: 213 16% 34%;
-    --accent: 18 88% 58%;
-    --accent-foreground: 23 95% 15%;
-    --border: 210 24% 78%;
-    --input: 210 24% 78%;
-    --ring: 188 92% 31%;
+    --muted: 36 32% 91%;
+    --muted-foreground: 213 14% 36%;
+    --accent: 31 92% 62%;
+    --accent-foreground: 24 80% 18%;
+    --border: 210 22% 84%;
+    --input: 210 22% 84%;
+    --ring: 207 74% 35%;
     --success: 155 52% 36%;
     --success-foreground: 0 0% 100%;
     --warning: 39 90% 49%;
@@ -53,9 +53,9 @@
     inset: 0;
     pointer-events: none;
     background-image:
-      radial-gradient(circle at 8% 8%, rgba(19, 146, 170, 0.2), transparent 33%),
-      radial-gradient(circle at 95% 18%, rgba(247, 142, 69, 0.22), transparent 30%),
-      radial-gradient(circle at 72% 88%, rgba(27, 78, 113, 0.18), transparent 31%);
+      radial-gradient(circle at 9% 10%, rgba(89, 154, 214, 0.18), transparent 28%),
+      radial-gradient(circle at 95% 16%, rgba(255, 180, 101, 0.24), transparent 29%),
+      radial-gradient(circle at 74% 86%, rgba(94, 132, 169, 0.14), transparent 26%);
     z-index: -2;
   }
 
@@ -90,11 +90,11 @@
 
   .hero-grid {
     background-image:
-      linear-gradient(120deg, rgba(255, 255, 255, 0.96) 0%, rgba(245, 248, 251, 0.93) 48%, rgba(234, 245, 247, 0.9) 100%),
-      radial-gradient(circle at 84% 10%, rgba(41, 148, 172, 0.18), transparent 36%);
+      linear-gradient(120deg, rgba(255, 255, 255, 0.96) 0%, rgba(248, 249, 252, 0.94) 48%, rgba(245, 242, 236, 0.92) 100%),
+      radial-gradient(circle at 84% 10%, rgba(89, 154, 214, 0.16), transparent 34%);
     border: 1px solid rgba(255, 255, 255, 0.9);
     box-shadow:
-      0 40px 80px -46px rgba(22, 66, 93, 0.32),
+      0 42px 90px -52px rgba(55, 83, 116, 0.28),
       inset 0 1px 0 rgba(255, 255, 255, 0.95);
   }
 
@@ -108,10 +108,42 @@
 
   .neo-panel {
     border: 1px solid rgba(255, 255, 255, 0.92);
-    background: linear-gradient(160deg, rgba(255, 255, 255, 0.93), rgba(237, 242, 246, 0.84));
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.93), rgba(242, 244, 247, 0.84));
     box-shadow:
-      0 32px 70px -42px rgba(14, 54, 79, 0.34),
+      0 30px 70px -44px rgba(37, 64, 97, 0.24),
       inset 0 1px 0 rgba(255, 255, 255, 0.94);
+  }
+
+  .browser-shell {
+    @apply rounded-[1.85rem] border border-white/85 bg-[linear-gradient(180deg,rgba(255,255,255,0.9),rgba(244,247,252,0.86))] shadow-panel backdrop-blur;
+  }
+
+  .browser-dot {
+    @apply inline-flex h-2.5 w-2.5 rounded-full;
+  }
+
+  .glow-orb {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(22px);
+    opacity: 0.8;
+    pointer-events: none;
+  }
+
+  .glow-orb-primary {
+    right: 4%;
+    top: 8%;
+    height: 120px;
+    width: 120px;
+    background: rgba(94, 161, 223, 0.2);
+  }
+
+  .glow-orb-accent {
+    bottom: 8%;
+    left: 2%;
+    height: 108px;
+    width: 108px;
+    background: rgba(255, 191, 117, 0.24);
   }
 
   .command-chip {

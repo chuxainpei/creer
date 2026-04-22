@@ -1,24 +1,20 @@
 import Link from 'next/link';
 import {
-  BadgeCheck,
+  ArrowRight,
+  BookOpenCheck,
   Bot,
-  BrainCircuit,
-  Cable,
+  BriefcaseBusiness,
+  Building2,
   CheckCheck,
-  Code2,
-  Database,
-  FileSearch,
+  FileStack,
+  FolderKanban,
   GraduationCap,
-  Layers3,
-  MessagesSquare,
-  Route,
+  LayoutTemplate,
+  ScanSearch,
   ShieldCheck,
   Sparkles,
   Target,
-  TrendingUp,
-  UserRoundCheck,
   Workflow,
-  ArrowRight,
 } from 'lucide-react';
 
 import { Badge } from '@/src/components/ui/badge';
@@ -29,110 +25,220 @@ interface EntryModuleProps {
   hotTopics: string[];
 }
 
-const featureCards = [
+const highlightStats = [
+  { label: '支持场景', value: '升学 / 就业双链路' },
+  { label: '回答结构', value: '结论 + 推荐 + 风险 + 下一步' },
+  { label: '演示状态', value: '在线可交互' },
+];
+
+const capabilityCards = [
   {
-    title: '多模型协同',
-    description: '统一接入规则引擎与生成模型，输出更稳定的结构化结论。',
-    icon: Bot,
+    title: '你的资料，就是上下文',
+    description: '把简历、成绩、岗位描述、院校公告和聊天历史放进同一条决策链里，不再来回复制粘贴。',
+    icon: FileStack,
   },
   {
-    title: '推荐排序引擎',
-    description: '按背景条件生成可执行的院校或岗位推荐，并标注优先级。',
-    icon: TrendingUp,
+    title: '推荐不是一句话',
+    description: '系统默认先给结论，再展开推荐排序、适配原因、风险提示和执行动作，看起来更像真实产品。',
+    icon: Target,
   },
   {
-    title: '材料智能解析',
-    description: '支持对简历、项目描述、成绩信息做快速结构化分析。',
-    icon: FileSearch,
-  },
-  {
-    title: '上下文记忆',
-    description: '连续追问保留上下文，给出连贯而非割裂的决策建议。',
-    icon: BrainCircuit,
-  },
-  {
-    title: '可信度分层',
-    description: '官方信息优先，经验信息补充，清晰展示来源标签。',
-    icon: ShieldCheck,
-  },
-  {
-    title: '流式实时反馈',
-    description: '先返回关键结论，再逐步补齐证据与行动建议，观感更真实。',
+    title: '从问答走向执行',
+    description: '不仅回答问题，还帮你拆时间线、补能力项、识别关键卡点，让演示更像“工作流工具”。',
     icon: Workflow,
   },
 ];
 
-const quickStats = [
-  { label: '核心场景', value: '升学规划 / 就业决策' },
-  { label: '回答结构', value: '结论 + 推荐 + 风险 + 行动' },
-  { label: '演示状态', value: '在线可交互' },
-];
-
-const integrationItems = ['学校官网公告', '招聘平台职位库', '本地知识库', '管理员后台', '飞书机器人', '企业微信', 'Notion', 'GitHub'];
-
-const plans = [
+const scenarioCards = [
   {
-    name: '演示版',
-    price: '¥0',
-    desc: '适合路演与功能验证',
-    features: ['每日 100 次问答', '基础推荐模板', '来源标签展示', '社区支持'],
-    cta: '立即体验',
-    popular: false,
+    title: '升学规划',
+    description: '基于 GPA、项目经历、目标城市与预算，生成冲刺/稳妥/保底梯度建议。',
+    icon: GraduationCap,
   },
   {
-    name: '专业版',
-    price: '¥199/月',
-    desc: '适合学院与小团队',
-    features: ['不限问答次数', '升学+就业双策略', '自定义提示词模板', '接口联调能力', '优先技术支持'],
-    cta: '开始试用',
-    popular: true,
+    title: '就业决策',
+    description: '比较岗位方向、安排秋招节奏、生成投递优先级和能力补齐清单。',
+    icon: BriefcaseBusiness,
   },
   {
-    name: '机构版',
-    price: '定制',
-    desc: '适合学校与企业中心',
-    features: ['私有化部署', '单点登录与权限控制', '专属知识库训练', 'SLA 服务保障'],
-    cta: '联系咨询',
-    popular: false,
+    title: '管理后台',
+    description: '可接入公告、知识库和规则配置，演示时能展示“系统不是死模板”。',
+    icon: Building2,
   },
 ];
+
+const faqItems = [
+  {
+    title: '这个系统只能做聊天问答吗？',
+    description: '不是。它的核心价值是把问答升级成决策流程，所以输出会带推荐、风险与行动建议。',
+  },
+  {
+    title: '适合比赛现场怎么演示？',
+    description: '建议先演示一个院校推荐，再切到岗位方向比较，最后展示来源标签和后台能力，完整体现产品闭环。',
+  },
+  {
+    title: '可以接入真实数据吗？',
+    description: '可以，当前前端已经为知识库、规则引擎和后台管理预留了对应展示位，后续可以平滑接入真实服务。',
+  },
+];
+
+function ContextPreview() {
+  return (
+    <div className="browser-shell p-4 sm:p-5">
+      <div className="flex items-center gap-2 border-b border-white/70 pb-3">
+        <span className="browser-dot bg-[#ff8b7b]" />
+        <span className="browser-dot bg-[#ffd86f]" />
+        <span className="browser-dot bg-[#6ad39b]" />
+        <div className="ml-2 rounded-full bg-white/70 px-3 py-1 text-[11px] text-muted-foreground">xingtu://decision/context</div>
+      </div>
+      <div className="grid gap-3 pt-4">
+        <div className="grid gap-3 sm:grid-cols-[1.1fr_0.9fr]">
+          <div className="rounded-[1.35rem] border border-white/70 bg-white/88 p-4 shadow-soft">
+            <div className="flex items-center gap-2 text-xs font-semibold text-primary">
+              <FolderKanban className="h-3.5 w-3.5" />
+              已引用资料
+            </div>
+            <div className="mt-3 grid gap-2">
+              <div className="rounded-xl bg-muted/50 px-3 py-2 text-xs text-foreground">简历.pdf</div>
+              <div className="rounded-xl bg-muted/50 px-3 py-2 text-xs text-foreground">成绩单.xlsx</div>
+              <div className="rounded-xl bg-muted/50 px-3 py-2 text-xs text-foreground">院校招生简章</div>
+              <div className="rounded-xl bg-muted/50 px-3 py-2 text-xs text-foreground">目标岗位 JD</div>
+            </div>
+          </div>
+          <div className="rounded-[1.35rem] border border-white/70 bg-gradient-to-br from-primary/12 to-white p-4 shadow-soft">
+            <div className="flex items-center gap-2 text-xs font-semibold text-primary">
+              <ScanSearch className="h-3.5 w-3.5" />
+              系统理解
+            </div>
+            <div className="mt-3 space-y-2 text-xs leading-6 text-muted-foreground">
+              <p>跨专业背景</p>
+              <p>目标城市偏一线</p>
+              <p>预算敏感</p>
+              <p>更偏执行型岗位</p>
+            </div>
+          </div>
+        </div>
+        <div className="rounded-[1.35rem] border border-white/70 bg-slate-950 px-4 py-3 text-xs leading-6 text-slate-100">
+          @ 简历 @ 成绩单 @ 招生简章 @ 岗位 JD
+          <br />
+          帮我给出「升学优先」和「就业优先」两套策略，并标出风险差异。
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WorkflowPreview() {
+  return (
+    <div className="browser-shell p-4 sm:p-5">
+      <div className="flex items-center justify-between border-b border-white/70 pb-3">
+        <div className="flex items-center gap-2">
+          <span className="browser-dot bg-[#ff8b7b]" />
+          <span className="browser-dot bg-[#ffd86f]" />
+          <span className="browser-dot bg-[#6ad39b]" />
+        </div>
+        <div className="rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary">自动生成推荐链路</div>
+      </div>
+      <div className="grid gap-3 pt-4">
+        <div className="rounded-[1.25rem] border border-white/70 bg-white/90 p-4">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-semibold text-foreground">结论</p>
+            <span className="rounded-full bg-success/10 px-2.5 py-1 text-[11px] font-semibold text-success">高匹配</span>
+          </div>
+          <p className="mt-2 text-sm leading-7 text-muted-foreground">建议优先投递数据分析方向，同时保留一条产品运营保底路径。</p>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div className="rounded-[1.25rem] border border-white/70 bg-white/88 p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">推荐动作</p>
+            <div className="mt-3 space-y-2 text-xs leading-6 text-foreground">
+              <p>1. 补 SQL 与可视化项目</p>
+              <p>2. 重写简历项目描述</p>
+              <p>3. 两周内完成首轮投递</p>
+            </div>
+          </div>
+          <div className="rounded-[1.25rem] border border-white/70 bg-white/88 p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">风险提示</p>
+            <div className="mt-3 space-y-2 text-xs leading-6 text-foreground">
+              <p>跨专业需要补硬技能证明</p>
+              <p>投递窗口过晚会降低通过率</p>
+              <p>作品集要避免泛泛而谈</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TrustPreview() {
+  return (
+    <div className="browser-shell p-4 sm:p-5">
+      <div className="flex items-center justify-between border-b border-white/70 pb-3">
+        <p className="text-sm font-semibold text-foreground">来源与可信度</p>
+        <span className="rounded-full bg-warning/10 px-2.5 py-1 text-[11px] font-semibold text-warning-foreground">官方优先</span>
+      </div>
+      <div className="space-y-3 pt-4">
+        <div className="rounded-[1.2rem] border border-white/70 bg-white/88 p-4">
+          <p className="text-xs font-semibold text-primary">来源标签</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <span className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary">官方公告</span>
+            <span className="rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-[11px] font-semibold text-accent-foreground">规则引擎</span>
+            <span className="rounded-full border border-border bg-white px-3 py-1 text-[11px] font-semibold text-muted-foreground">经验补充</span>
+          </div>
+        </div>
+        <div className="rounded-[1.2rem] border border-white/70 bg-white/88 p-4">
+          <p className="text-xs font-semibold text-primary">可信度说明</p>
+          <div className="mt-3 grid gap-2 sm:grid-cols-3">
+            <div className="rounded-xl bg-muted/45 px-3 py-2 text-[11px] leading-5 text-foreground">结论把握：高</div>
+            <div className="rounded-xl bg-muted/45 px-3 py-2 text-[11px] leading-5 text-foreground">信息时效：需复核本年度公告</div>
+            <div className="rounded-xl bg-muted/45 px-3 py-2 text-[11px] leading-5 text-foreground">执行难度：中等</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function EntryModule({ hotTopics }: EntryModuleProps) {
   return (
-    <main className="page-shell space-y-9 py-10 sm:py-14">
-      <section className="hero-grid float-in overflow-hidden rounded-[2rem] px-6 py-8 md:px-10 md:py-12">
-        <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+    <main className="page-shell space-y-10 py-10 sm:space-y-14 sm:py-14">
+      <section className="hero-grid relative overflow-hidden rounded-[2.2rem] px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
+        <div className="grid gap-8 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
           <div className="space-y-6">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="command-chip">由星图决策引擎驱动</span>
+              <span className="command-chip">AI 决策系统官网版</span>
               <Badge variant="secondary" className="px-3 py-1 text-xs">
-                支持路演全流程演示
+                全中文 · 面向比赛演示
               </Badge>
             </div>
             <div className="space-y-4">
-              <h1 className="display-type max-w-3xl text-4xl font-semibold leading-tight sm:text-5xl">
-                你的升学与就业
+              <h1 className="display-type max-w-4xl text-4xl font-semibold leading-tight text-foreground sm:text-5xl lg:text-6xl">
+                理解你的背景
                 <br />
-                智能决策助手平台
+                帮你组织信息
+                <br />
+                再给出清晰决策
               </h1>
               <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
-                输入问题后，系统优先给出可执行结论，再呈现推荐排序、风险提示和下一步动作，帮助你把复杂选择变成清晰路径。
+                这不是普通聊天框，而是面向升学与就业场景的智能决策系统。它会整合资料、分析上下文，并生成更像真实产品的推荐与执行路径。
               </p>
             </div>
+
             <div className="flex flex-wrap gap-3">
               <Link href="/qa">
                 <Button size="lg" className="gap-2 bg-primary text-primary-foreground hover:bg-primary/92">
-                  立即开始问答
+                  进入问答演示
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
-              <a href="#pricing">
-                <Button size="lg" variant="outline" className="gap-2 border-primary/25 bg-white/80">
-                  查看方案
-                  <Layers3 className="h-4 w-4" />
+              <a href="#capabilities">
+                <Button size="lg" variant="outline" className="gap-2 border-white/80 bg-white/75">
+                  查看能力设计
+                  <LayoutTemplate className="h-4 w-4" />
                 </Button>
               </a>
             </div>
+
             <div className="flex flex-wrap gap-3">
               {hotTopics.map((topic) => (
                 <div key={topic} className="entry-chip">
@@ -140,60 +246,40 @@ export default function EntryModule({ hotTopics }: EntryModuleProps) {
                 </div>
               ))}
             </div>
+
             <div className="grid gap-3 sm:grid-cols-3">
-              {quickStats.map((item) => (
-                <Card key={item.label} className="border-white/90 bg-white/88">
+              {highlightStats.map((item) => (
+                <Card key={item.label} className="border-white/90 bg-white/85 shadow-soft">
                   <CardContent className="space-y-1 p-4">
                     <p className="text-xs font-semibold tracking-[0.14em] text-muted-foreground">{item.label}</p>
-                    <p className="text-base font-semibold text-foreground">{item.value}</p>
+                    <p className="text-sm font-semibold text-foreground">{item.value}</p>
                   </CardContent>
                 </Card>
               ))}
             </div>
           </div>
 
-          <Card className="neo-panel">
-            <CardContent className="space-y-4 p-5 sm:p-6">
-              <div className="flex items-center justify-between">
-                <p className="display-type text-lg font-semibold">智能助手在线演示</p>
-                <span className="inline-flex items-center gap-1 rounded-full border border-success/20 bg-success/10 px-2.5 py-1 text-xs font-semibold text-success">
-                  <BadgeCheck className="h-3.5 w-3.5" />
-                  在线
-                </span>
-              </div>
-              <div className="space-y-3 rounded-2xl border border-border/70 bg-white/85 p-4">
-                <div className="rounded-2xl rounded-bl-md border border-border/70 bg-white px-3 py-2 text-sm text-foreground">
-                  你可以帮我规划“保研失败后的秋招路线”吗？
-                </div>
-                <div className="rounded-2xl rounded-br-md bg-primary px-3 py-2 text-sm text-primary-foreground">
-                  可以。先给结论：你需要“岗位先定向 + 时间线反推 + 简历专项强化”。我已为你生成三条推荐路径和对应风险点。
-                </div>
-              </div>
-              <div className="grid gap-2 sm:grid-cols-2">
-                <div className="rounded-xl border border-border/70 bg-white/80 p-3">
-                  <p className="text-xs font-semibold text-foreground">推荐路径 A</p>
-                  <p className="mt-1 text-xs leading-6 text-muted-foreground">互联网产品运营方向，强调实习复盘与商业分析案例。</p>
-                </div>
-                <div className="rounded-xl border border-border/70 bg-white/80 p-3">
-                  <p className="text-xs font-semibold text-foreground">推荐路径 B</p>
-                  <p className="mt-1 text-xs leading-6 text-muted-foreground">数据分析方向，强化 SQL、可视化与业务指标拆解能力。</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="relative">
+            <div className="glow-orb glow-orb-primary" />
+            <div className="glow-orb glow-orb-accent" />
+            <div className="relative">
+              <ContextPreview />
+            </div>
+          </div>
         </div>
       </section>
 
-      <section id="features" className="space-y-5">
+      <section id="capabilities" className="space-y-5">
         <div className="space-y-2 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">核心能力</p>
-          <h2 className="display-type text-3xl font-semibold text-foreground sm:text-4xl">为真实决策系统而设计</h2>
+          <h2 className="display-type text-3xl font-semibold text-foreground sm:text-4xl">你看见的，就是系统的上下文</h2>
           <p className="mx-auto max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base">
-            从简单问答到复杂决策链路，这一套界面与能力都围绕“可演示、可解释、可执行”构建。
+            我们把 Tabbit 那种“围绕上下文展开”的体验，适配成你的升学与就业产品形态，让页面一眼就更像成熟系统。
           </p>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {featureCards.map((item) => {
+
+        <div className="grid gap-4 md:grid-cols-3">
+          {capabilityCards.map((item) => {
             const Icon = item.icon;
             return (
               <Card key={item.title} className="neo-panel">
@@ -210,180 +296,159 @@ export default function EntryModule({ hotTopics }: EntryModuleProps) {
         </div>
       </section>
 
-      <section id="demo" className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-        <Card className="neo-panel">
-          <CardContent className="space-y-4 p-5 sm:p-6">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">问答演示</span>
-              <span className="rounded-full border border-border bg-white/85 px-3 py-1 text-xs font-semibold text-muted-foreground">岗位规划</span>
-              <span className="rounded-full border border-border bg-white/85 px-3 py-1 text-xs font-semibold text-muted-foreground">院校推荐</span>
-            </div>
-            <div className="space-y-3 rounded-2xl border border-border/70 bg-white/88 p-4">
-              <div className="flex items-start gap-2.5">
-                <UserRoundCheck className="mt-1 h-4 w-4 text-muted-foreground" />
-                <p className="text-sm text-foreground">我背景是计算机跨专业，GPA 一般，应该怎么选院校梯度？</p>
-              </div>
-              <div className="flex items-start gap-2.5">
-                <MessagesSquare className="mt-1 h-4 w-4 text-primary" />
-                <div className="space-y-2">
-                  <p className="text-sm text-foreground">建议采用“冲刺 20% + 稳妥 50% + 保底 30%”策略，并优先关注项目实践权重高的院校。</p>
-                  <div className="grid gap-2 sm:grid-cols-3">
-                    <div className="rounded-lg border border-border/70 bg-muted/35 p-2.5 text-xs text-muted-foreground">冲刺层：985 新工科</div>
-                    <div className="rounded-lg border border-border/70 bg-muted/35 p-2.5 text-xs text-muted-foreground">稳妥层：211 应用导向项目</div>
-                    <div className="rounded-lg border border-border/70 bg-muted/35 p-2.5 text-xs text-muted-foreground">保底层：双非强专业院校</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="neo-panel">
-          <CardContent className="space-y-4 p-5 sm:p-6">
-            <p className="text-sm font-semibold text-foreground">系统协同视图</p>
-            <div className="space-y-2.5">
-              <div className="flex items-center justify-between rounded-xl border border-border/70 bg-white/85 px-3 py-2">
-                <div className="inline-flex items-center gap-2 text-sm text-foreground">
-                  <Database className="h-4 w-4 text-primary" />
-                  官方资料索引
-                </div>
-                <span className="text-xs font-semibold text-success">已同步</span>
-              </div>
-              <div className="flex items-center justify-between rounded-xl border border-border/70 bg-white/85 px-3 py-2">
-                <div className="inline-flex items-center gap-2 text-sm text-foreground">
-                  <Route className="h-4 w-4 text-primary" />
-                  推荐规则引擎
-                </div>
-                <span className="text-xs font-semibold text-success">运行中</span>
-              </div>
-              <div className="flex items-center justify-between rounded-xl border border-border/70 bg-white/85 px-3 py-2">
-                <div className="inline-flex items-center gap-2 text-sm text-foreground">
-                  <Target className="h-4 w-4 text-primary" />
-                  风险提示模块
-                </div>
-                <span className="text-xs font-semibold text-success">已启用</span>
-              </div>
-            </div>
-            <Link href="/qa">
-              <Button className="w-full gap-2 bg-primary text-primary-foreground hover:bg-primary/92">
-                打开真实问答页面
-                <ArrowRight className="h-4 w-4" />
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
-      </section>
-
-      <section id="integrations" className="grid gap-4 lg:grid-cols-[1fr_1fr]">
-        <Card className="neo-panel">
-          <CardContent className="space-y-4 p-5 sm:p-6">
-            <div className="inline-flex items-center gap-2 text-sm font-semibold text-foreground">
-              <Cable className="h-4 w-4 text-primary" />
-              与现有系统快速集成
-            </div>
-            <p className="text-sm leading-7 text-muted-foreground">
-              可对接学校/企业已有数据与协作平台，几分钟内完成演示环境串联，满足比赛现场的稳定展示需求。
-            </p>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-              {integrationItems.map((item) => (
-                <div key={item} className="rounded-xl border border-border/70 bg-white/85 px-3 py-2 text-center text-xs font-medium text-foreground">
-                  {item}
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="neo-panel">
-          <CardContent className="space-y-4 p-5 sm:p-6">
-            <div className="inline-flex items-center gap-2 text-sm font-semibold text-foreground">
-              <Code2 className="h-4 w-4 text-primary" />
-              接口调用示例
-            </div>
-            <div className="overflow-hidden rounded-2xl border border-border/70 bg-slate-950 p-4">
-              <pre className="overflow-x-auto text-xs leading-6 text-slate-100">
-                <code>{`import { DecisionClient } from '@xingtu/sdk'
-
-const client = new DecisionClient({
-  apiKey: process.env.XINGTU_API_KEY
-})
-
-const result = await client.ask({
-  scene: 'career',
-  question: '我应该先投产品岗还是数据岗？',
-  stream: true
-})
-
-for await (const chunk of result) {
-  process.stdout.write(chunk.text)
-}`}</code>
-              </pre>
-            </div>
-          </CardContent>
-        </Card>
-      </section>
-
-      <section id="pricing" className="space-y-5">
-        <div className="space-y-2 text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">价格方案</p>
-          <h2 className="display-type text-3xl font-semibold text-foreground sm:text-4xl">透明简单，按需升级</h2>
-          <p className="text-sm leading-7 text-muted-foreground">从免费演示到机构部署，都可以根据比赛和落地阶段灵活选择。</p>
+      <section className="grid gap-5 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        <div className="space-y-4">
+          <Badge variant="secondary" className="w-fit px-3 py-1">
+            Step 1 · 资料理解
+          </Badge>
+          <h2 className="display-type text-3xl font-semibold text-foreground sm:text-4xl">把分散信息收束成一条决策线</h2>
+          <p className="text-sm leading-7 text-muted-foreground sm:text-base">
+            参考站的强项是把“你眼前看到的一切”变成 AI 可用上下文。放到你的项目里，就是把简历、成绩、公告、岗位要求和聊天记录汇成统一输入。
+          </p>
+          <div className="space-y-2 text-sm leading-7 text-muted-foreground">
+            <p>1. 支持引入本地材料、后台规则和历史对话。</p>
+            <p>2. 自动提炼用户目标、背景差异与限制条件。</p>
+            <p>3. 为后续推荐排序和风险判断打底。</p>
+          </div>
         </div>
-        <div className="grid gap-4 lg:grid-cols-3">
-          {plans.map((plan) => (
-            <Card key={plan.name} className={`neo-panel ${plan.popular ? 'border-primary/30 ring-2 ring-primary/20' : ''}`}>
-              <CardContent className="space-y-4 p-5 sm:p-6">
-                {plan.popular ? (
-                  <span className="inline-flex rounded-full border border-primary/20 bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">
-                    最受欢迎
-                  </span>
-                ) : null}
-                <div>
-                  <p className="text-lg font-semibold text-foreground">{plan.name}</p>
-                  <p className="mt-1 text-3xl font-semibold text-foreground">{plan.price}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">{plan.desc}</p>
+        <ContextPreview />
+      </section>
+
+      <section className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+        <WorkflowPreview />
+        <div className="space-y-4">
+          <Badge variant="secondary" className="w-fit px-3 py-1">
+            Step 2 · 自主拆解
+          </Badge>
+          <h2 className="display-type text-3xl font-semibold text-foreground sm:text-4xl">问题不只被回答，而是被拆成可执行动作</h2>
+          <p className="text-sm leading-7 text-muted-foreground sm:text-base">
+            我们把参考站那种“任务，自主执行”的感觉，改造成更适合你系统的“决策，自主拆解”。这样用户看到的不再是空泛答复，而是一份可落实的建议清单。
+          </p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Card className="border-white/80 bg-white/82 shadow-soft">
+              <CardContent className="space-y-2 p-4">
+                <p className="text-sm font-semibold text-foreground">升学侧</p>
+                <p className="text-xs leading-6 text-muted-foreground">给出冲刺/稳妥/保底层次和材料准备优先级。</p>
+              </CardContent>
+            </Card>
+            <Card className="border-white/80 bg-white/82 shadow-soft">
+              <CardContent className="space-y-2 p-4">
+                <p className="text-sm font-semibold text-foreground">就业侧</p>
+                <p className="text-xs leading-6 text-muted-foreground">给出岗位方向比较、投递时间线和能力补齐建议。</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      <section className="grid gap-5 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        <div className="space-y-4">
+          <Badge variant="secondary" className="w-fit px-3 py-1">
+            Step 3 · 可信输出
+          </Badge>
+          <h2 className="display-type text-3xl font-semibold text-foreground sm:text-4xl">产品最像真的地方，是它敢把依据一起亮出来</h2>
+          <p className="text-sm leading-7 text-muted-foreground sm:text-base">
+            这一层是你项目最应该强化的差异点。参考站给人强烈“不是玩具”的感觉，其中一个关键就是信息组织和控制感。你这里则可以把它体现成来源标签、可信度说明和风险边界。
+          </p>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <div className="rounded-[1.2rem] border border-white/80 bg-white/82 p-4 shadow-soft">
+              <ShieldCheck className="h-5 w-5 text-primary" />
+              <p className="mt-3 text-sm font-semibold text-foreground">官方优先</p>
+            </div>
+            <div className="rounded-[1.2rem] border border-white/80 bg-white/82 p-4 shadow-soft">
+              <BookOpenCheck className="h-5 w-5 text-primary" />
+              <p className="mt-3 text-sm font-semibold text-foreground">经验补充</p>
+            </div>
+            <div className="rounded-[1.2rem] border border-white/80 bg-white/82 p-4 shadow-soft">
+              <Bot className="h-5 w-5 text-primary" />
+              <p className="mt-3 text-sm font-semibold text-foreground">规则引擎</p>
+            </div>
+          </div>
+        </div>
+        <TrustPreview />
+      </section>
+
+      <section className="space-y-5">
+        <div className="space-y-2 text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">适配场景</p>
+          <h2 className="display-type text-3xl font-semibold text-foreground sm:text-4xl">和你的项目天然匹配的三种展示方式</h2>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          {scenarioCards.map((item) => {
+            const Icon = item.icon;
+            return (
+              <Card key={item.title} className="neo-panel">
+                <CardContent className="space-y-3 p-5">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <p className="text-base font-semibold text-foreground">{item.title}</p>
+                  <p className="text-sm leading-6 text-muted-foreground">{item.description}</p>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="hero-grid overflow-hidden rounded-[2rem] px-6 py-8 sm:px-8 sm:py-10">
+        <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr] lg:items-center">
+          <div className="space-y-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">开始演示</p>
+            <h2 className="display-type text-3xl font-semibold text-foreground sm:text-4xl">把一个聊天 Demo，做成像真正产品官网的第一印象</h2>
+            <p className="text-sm leading-7 text-muted-foreground sm:text-base">
+              现在这套首页会更接近 Tabbit 那种高级、轻盈、产品化的官网表达，但内容全部是你的系统逻辑，不会看起来像换了个壳。
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/qa">
+                <Button size="lg" className="gap-2 bg-primary text-primary-foreground hover:bg-primary/92">
+                  进入问答页
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+              <a href="#faq">
+                <Button size="lg" variant="outline" className="gap-2 border-white/80 bg-white/75">
+                  查看 FAQ
+                  <Sparkles className="h-4 w-4" />
+                </Button>
+              </a>
+            </div>
+          </div>
+          <div className="rounded-[1.8rem] border border-white/85 bg-white/80 p-5 shadow-panel backdrop-blur">
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="rounded-[1.25rem] bg-muted/45 p-4">
+                <p className="text-xs font-semibold text-primary">前端观感</p>
+                <p className="mt-2 text-sm leading-6 text-foreground">官网式叙事结构 + 产品截图感卡片</p>
+              </div>
+              <div className="rounded-[1.25rem] bg-muted/45 p-4">
+                <p className="text-xs font-semibold text-primary">评委感受</p>
+                <p className="mt-2 text-sm leading-6 text-foreground">更像成熟 SaaS，而不是单页聊天原型</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" className="space-y-4 pb-4">
+        <div className="space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">FAQ</p>
+          <h2 className="display-type text-3xl font-semibold text-foreground sm:text-4xl">常见问题</h2>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3">
+          {faqItems.map((item) => (
+            <Card key={item.title} className="border-white/80 bg-white/82 shadow-soft">
+              <CardContent className="space-y-3 p-5">
+                <p className="text-base font-semibold text-foreground">{item.title}</p>
+                <p className="text-sm leading-6 text-muted-foreground">{item.description}</p>
+                <div className="inline-flex items-center gap-2 text-xs font-semibold text-primary">
+                  <CheckCheck className="h-3.5 w-3.5" />
+                  已适配当前项目
                 </div>
-                <div className="space-y-2">
-                  {plan.features.map((item) => (
-                    <div key={item} className="inline-flex items-start gap-2 text-sm text-muted-foreground">
-                      <CheckCheck className="mt-0.5 h-4 w-4 text-primary" />
-                      {item}
-                    </div>
-                  ))}
-                </div>
-                <Button className="w-full gap-2 bg-primary text-primary-foreground hover:bg-primary/92">{plan.cta}</Button>
               </CardContent>
             </Card>
           ))}
         </div>
       </section>
-
-      <section className="hero-grid rounded-[2rem] px-6 py-8 text-center sm:px-10">
-        <p className="text-sm font-semibold uppercase tracking-[0.14em] text-primary">准备开始</p>
-        <h2 className="display-type mt-2 text-3xl font-semibold text-foreground sm:text-4xl">现在就把你的系统做成可演示产品</h2>
-        <p className="mx-auto mt-3 max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base">
-          用中文叙事、结构化回答和真实业务界面，给评委一个“不是概念图，而是可落地系统”的第一印象。
-        </p>
-        <div className="mt-5 flex flex-wrap justify-center gap-3">
-          <Link href="/qa">
-            <Button size="lg" className="gap-2 bg-primary text-primary-foreground hover:bg-primary/92">
-              进入问答演示
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
-          <a href="#features">
-            <Button size="lg" variant="outline" className="gap-2 border-primary/25 bg-white/80">
-              查看能力亮点
-              <Sparkles className="h-4 w-4" />
-            </Button>
-          </a>
-        </div>
-        <p className="mt-5 text-xs text-muted-foreground">无需信用卡 · 支持免费演示方案 · 系统状态正常</p>
-      </section>
-
-      <footer className="pb-2 text-center text-xs text-muted-foreground">
-        星图决策平台 © 2026 · 升学与就业双场景智能问答系统
-      </footer>
     </main>
   );
 }
