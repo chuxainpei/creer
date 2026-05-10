@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import type { Message } from "./chat-workspace";
 
 interface ChatMessageProps {
@@ -65,7 +66,6 @@ function renderContent(content: string): React.ReactNode {
         i++;
       }
 
-      // Parse table
       const headerRow = tableRows[0];
       const separatorRow = tableRows[1];
       const dataRows = tableRows.slice(2);
@@ -102,7 +102,6 @@ function renderContent(content: string): React.ReactNode {
           </div>
         );
       } else {
-        // Not a valid table, render as text
         for (const row of tableRows) {
           elements.push(<p key={`${i}-${row}`} className="text-sm font-mono text-text-secondary/70">{row}</p>);
         }
@@ -112,7 +111,6 @@ function renderContent(content: string): React.ReactNode {
 
     // Bold (**text**)
     let processed = line;
-    // Process bold
     const parts = processed.split(/(\*\*[^*]+\*\*)/g);
     const children: React.ReactNode[] = [];
     parts.forEach((part, pi) => {
@@ -160,16 +158,24 @@ function renderContent(content: string): React.ReactNode {
 export default function ChatMessage({ message }: ChatMessageProps) {
   const isUser = message.role === "user";
 
+  // Memoize content rendering — only re-render when content changes,
+  // avoiding redundant parsing during streaming or parent re-renders
+  const renderedContent = useMemo(
+    () => (isUser ? null : renderContent(message.content)),
+    [message.content, message.id, isUser]
+  );
+
   return (
     <div className={`flex gap-3 ${isUser ? "justify-end" : "justify-start"}`}>
-      {/* Avatar */}
       {!isUser && (
-        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-accent-navy/10 flex items-center justify-center text-sm mt-1">
+        <div
+          className="flex-shrink-0 w-8 h-8 rounded-full bg-accent-navy/10 flex items-center justify-center text-sm mt-1"
+          aria-hidden="true"
+        >
           🎓
         </div>
       )}
 
-      {/* Content */}
       <div
         className={`max-w-[85%] sm:max-w-[75%] ${
           isUser
@@ -183,17 +189,19 @@ export default function ChatMessage({ message }: ChatMessageProps) {
           </p>
         ) : (
           <div className="chat-markdown text-[15px] leading-relaxed text-text-primary">
-            {renderContent(message.content)}
+            {renderedContent}
             {message.isStreaming && (
-              <span className="inline-block w-1.5 h-4 bg-accent-navy/50 animate-pulse ml-0.5 align-text-bottom" />
+              <span className="inline-block w-1.5 h-4 bg-accent-navy/50 animate-pulse ml-0.5 align-text-bottom" aria-hidden="true" />
             )}
           </div>
         )}
       </div>
 
-      {/* User avatar */}
       {isUser && (
-        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-accent-amber/15 flex items-center justify-center text-sm mt-1">
+        <div
+          className="flex-shrink-0 w-8 h-8 rounded-full bg-accent-amber/15 flex items-center justify-center text-sm mt-1"
+          aria-hidden="true"
+        >
           👤
         </div>
       )}

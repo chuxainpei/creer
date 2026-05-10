@@ -9,24 +9,24 @@ interface NavbarProps {
 
 export default function Navbar({ links }: NavbarProps) {
   const [visible, setVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollYRef = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentY = window.scrollY;
       if (currentY <= 60) {
         setVisible(true);
-      } else if (currentY > lastScrollY && currentY > 100) {
+      } else if (currentY > lastScrollYRef.current && currentY > 100) {
         setVisible(false);
-      } else if (currentY < lastScrollY) {
+      } else if (currentY < lastScrollYRef.current) {
         setVisible(true);
       }
-      setLastScrollY(currentY);
+      lastScrollYRef.current = currentY;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, []); // No state dependency — uses ref for tracking
 
   const defaultLinks = links || [
     { label: "产品价值", href: "#values" },
@@ -45,7 +45,6 @@ export default function Navbar({ links }: NavbarProps) {
           className="fixed top-0 left-0 right-0 z-50 bg-bg-warm/80 backdrop-blur-sm border-b border-border"
         >
           <div className="mx-auto max-w-[1200px] px-6 h-16 flex items-center justify-between">
-            {/* Logo */}
             <a href="/" className="flex items-center gap-3 group">
               <span className="font-serif font-bold text-2xl text-text-primary tracking-wide">
                 Creator
@@ -55,7 +54,6 @@ export default function Navbar({ links }: NavbarProps) {
               </span>
             </a>
 
-            {/* Links */}
             <div className="flex items-center gap-6 md:gap-8 text-sm md:text-base text-text-secondary">
               {defaultLinks.map((link) => (
                 <a

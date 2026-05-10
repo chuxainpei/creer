@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, useId } from "react";
 
 interface ChatComposerProps {
   onSend: (content: string) => void;
@@ -17,6 +17,7 @@ export default function ChatComposer({
 }: ChatComposerProps) {
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const inputId = useId();
 
   // Auto-resize textarea
   useEffect(() => {
@@ -30,7 +31,6 @@ export default function ChatComposer({
     if (!input.trim() || isStreaming) return;
     onSend(input);
     setInput("");
-    // Reset textarea height
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
     }
@@ -49,20 +49,23 @@ export default function ChatComposer({
   return (
     <div className="py-3 sm:py-4">
       <div className="flex items-end gap-3 bg-white border border-border/60 px-4 py-2">
-        {/* Textarea */}
+        <label htmlFor={inputId} className="sr-only">
+          输入你的问题
+        </label>
         <textarea
           ref={textareaRef}
+          id={inputId}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           rows={1}
+          maxLength={8000}
           className="flex-1 resize-none bg-transparent text-[15px] text-text-primary placeholder:text-text-secondary/40
             outline-none py-2 leading-relaxed max-h-[160px]"
           disabled={isStreaming}
         />
 
-        {/* Send / Stop button */}
         <div className="flex-shrink-0 pb-1">
           {isStreaming ? (
             <button
@@ -70,6 +73,7 @@ export default function ChatComposer({
               className="w-9 h-9 flex items-center justify-center border border-accent-navy/30
                 text-accent-navy hover:bg-accent-navy/5 transition-colors"
               title="停止生成"
+              aria-label="停止生成"
             >
               <span className="block w-3 h-3 bg-accent-navy" />
             </button>
@@ -81,6 +85,7 @@ export default function ChatComposer({
                 text-accent-navy hover:bg-accent-navy hover:text-white transition-all duration-200
                 disabled:opacity-30 disabled:cursor-not-allowed"
               title="发送 (Enter)"
+              aria-label="发送消息"
             >
               <svg
                 width="16"
@@ -100,7 +105,6 @@ export default function ChatComposer({
         </div>
       </div>
 
-      {/* Hint */}
       <p className="text-xs text-text-secondary/30 font-mono mt-2 text-center">
         Enter 发送 · Shift+Enter 换行
       </p>

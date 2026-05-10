@@ -4,9 +4,6 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { heroSlides } from "@/lib/landing-data";
 
-/* ─────────────────────────────────────────────
-   Magnetic Button — cursor-attracted micro-interaction
-   ───────────────────────────────────────────── */
 function MagneticButton({
   children,
   href,
@@ -50,13 +47,12 @@ function MagneticButton({
   );
 }
 
-/* ─────────────────────────────────────────────
-   Hero Banner — with slide carousel & parallax
-   ───────────────────────────────────────────── */
 export default function HeroBanner() {
   const [current, setCurrent] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number | null>(null);
+  const latestMouseRef = useRef({ x: 0, y: 0 });
 
   // Auto advance
   useEffect(() => {
@@ -66,17 +62,28 @@ export default function HeroBanner() {
     return () => clearInterval(timer);
   }, []);
 
-  // Mouse parallax
+  // Mouse parallax — throttled via requestAnimationFrame
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;
-      setMousePos({ x, y });
+      latestMouseRef.current = { x, y };
+
+      if (!rafRef.current) {
+        rafRef.current = requestAnimationFrame(() => {
+          setMousePos({ ...latestMouseRef.current });
+          rafRef.current = null;
+        });
+      }
     };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   const slide = heroSlides[current];
@@ -87,11 +94,13 @@ export default function HeroBanner() {
     <div
       ref={containerRef}
       className="relative h-screen w-full overflow-hidden"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="产品介绍轮播"
     >
       {/* Background gradient layers */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-bg-warm" />
-        {/* Floating orbs for depth */}
         <motion.div
           animate={{
             x: mousePos.x * -30,
@@ -104,11 +113,11 @@ export default function HeroBanner() {
             x: mousePos.x * 20,
             y: mousePos.y * 20,
           }}
+          transition={{ duration: 0 }}
           className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full bg-accent-amber/8 blur-3xl"
         />
       </div>
 
-      {/* Top half subtle gradient for depth */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -126,13 +135,14 @@ export default function HeroBanner() {
       >
         <AnimatePresence mode="wait">
           <motion.div
-            key={slide.id}
+            key={`slide-${slide.id}`}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+            aria-roledescription="slide"
+            aria-label={`第 ${current + 1} 张，共 ${heroSlides.length} 张`}
           >
-            {/* Product name */}
             <motion.span
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -142,19 +152,16 @@ export default function HeroBanner() {
               Creator Career Guidance
             </motion.span>
 
-            {/* Tagline */}
             <h1 className="font-serif font-bold text-[clamp(42px,5.5vw,80px)] leading-[1.12] text-text-primary mb-4">
               {slide.tagline}
               <br />
               <span className={accentColor}>{slide.taglineEmphasis}</span>
             </h1>
 
-            {/* Description */}
             <p className="text-lg md:text-xl text-text-secondary max-w-xl mx-auto mb-10 leading-relaxed">
               {slide.description}
             </p>
 
-            {/* CTA buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <MagneticButton href="/chat" accent={slide.accent}>
                 进入 AI 规划工作台
@@ -172,11 +179,14 @@ export default function HeroBanner() {
       </motion.div>
 
       {/* Slide indicators */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-10">
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-10" role="tablist">
         {heroSlides.map((_, i) => (
           <button
-            key={i}
+            key={`dot-${i}`}
             onClick={() => setCurrent(i)}
+            role="tab"
+            aria-selected={i === current}
+            aria-label={`跳转到第 ${i + 1} 张轮播`}
             className={`w-2.5 h-2.5 rounded-full transition-all duration-500 ${
               i === current
                 ? "bg-accent-navy scale-125"

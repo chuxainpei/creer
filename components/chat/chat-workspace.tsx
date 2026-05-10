@@ -9,7 +9,6 @@ import ChatComposer from "./chat-composer";
 import ModeSwitcher from "./mode-switcher";
 import QuickPrompts from "./quick-prompts";
 
-// ── Message type ──
 export interface Message {
   id: string;
   role: "user" | "assistant";
@@ -17,7 +16,6 @@ export interface Message {
   isStreaming?: boolean;
 }
 
-// ── SSE event types ──
 interface SSEChunk {
   type: "chunk" | "done" | "error";
   content?: string;
@@ -49,9 +47,14 @@ export default function ChatWorkspace({ initialMode }: { initialMode?: ChatMode 
     setMessages([]);
   }, [isStreaming]);
 
-  // Send a message
+  // Send a message — captures current messages via callback ref pattern
+  const messagesRef = useRef(messages);
+  useEffect(() => { messagesRef.current = messages; }, [messages]);
+
   const handleSend = useCallback(async (content: string) => {
     if (!content.trim() || isStreaming) return;
+
+    const currentMessages = messagesRef.current;
 
     const userMsg: Message = {
       id: crypto.randomUUID(),
@@ -73,13 +76,29 @@ export default function ChatWorkspace({ initialMode }: { initialMode?: ChatMode 
     const controller = new AbortController();
     abortRef.current = controller;
 
+    // Throttle: batch SSE chunks at ~30fps for performance
+    let pendingContent = "";
+    let lastFlush = 0;
+    const THROTTLE_MS = 50;
+
+    function flushContent() {
+      if (!pendingContent) return;
+      const c = pendingContent;
+      pendingContent = "";
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id === assistantMsg.id ? { ...m, content: m.content + c } : m
+        )
+      );
+    }
+
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           mode,
-          messages: [...messages, userMsg].map((m) => ({
+          messages: currentMessages.map((m) => ({
             id: m.id,
             role: m.role,
             content: m.content,
@@ -95,7 +114,6 @@ export default function ChatWorkspace({ initialMode }: { initialMode?: ChatMode 
 
       const decoder = new TextDecoder();
       let buffer = "";
-      let fullContent = "";
 
       while (true) {
         const { done, value } = await reader.read();
@@ -113,25 +131,15 @@ export default function ChatWorkspace({ initialMode }: { initialMode?: ChatMode 
             const data: SSEChunk = JSON.parse(trimmed.slice(6));
 
             if (data.type === "chunk" && data.content) {
-              fullContent += data.content;
-              setMessages((prev) =>
-                prev.map((m) =>
-                  m.id === assistantMsg.id
-                    ? { ...m, content: fullContent }
-                    : m
-                )
-              );
-            } else if (data.type === "done") {
-              // Streaming complete
+              pendingContent += data.content;
+              const now = Date.now();
+              if (now - lastFlush >= THROTTLE_MS) {
+                flushContent();
+                lastFlush = now;
+              }
             } else if (data.type === "error") {
-              fullContent = data.content || "处理出错，请重试。";
-              setMessages((prev) =>
-                prev.map((m) =>
-                  m.id === assistantMsg.id
-                    ? { ...m, content: fullContent, isStreaming: false }
-                    : m
-                )
-              );
+              pendingContent = data.content || "处理出错，请重试。";
+              flushContent();
             }
           } catch {
             // Skip unparseable lines
@@ -139,22 +147,23 @@ export default function ChatWorkspace({ initialMode }: { initialMode?: ChatMode 
         }
       }
 
+      // Final flush
+      flushContent();
+
       // Mark as complete
       setMessages((prev) =>
         prev.map((m) =>
           m.id === assistantMsg.id
-            ? { ...m, content: fullContent, isStreaming: false }
+            ? { ...m, isStreaming: false }
             : m
         )
       );
     } catch (error: unknown) {
       if (error instanceof Error && error.name === "AbortError") {
-        // User stopped generation
+        flushContent();
         setMessages((prev) =>
           prev.map((m) =>
-            m.id === assistantMsg.id
-              ? { ...m, isStreaming: false }
-              : m
+            m.id === assistantMsg.id ? { ...m, isStreaming: false } : m
           )
         );
       } else {
@@ -175,7 +184,7 @@ export default function ChatWorkspace({ initialMode }: { initialMode?: ChatMode 
       setStreamingId(null);
       abortRef.current = null;
     }
-  }, [messages, mode, isStreaming]);
+  }, [mode, isStreaming]); // Removed messages dependency — uses ref instead
 
   // Stop generation
   const handleStop = useCallback(() => {
@@ -194,9 +203,9 @@ export default function ChatWorkspace({ initialMode }: { initialMode?: ChatMode 
 
   return (
     <div className="flex flex-col h-screen bg-bg-warm">
-      {/* Top bar: mode switcher + actions */}
+      {/* Top bar */}
       <header className="flex-shrink-0 border-b border-border bg-bg-warm/80 backdrop-blur-sm z-10">
-        <div className="mx-auto max-w-[1200px] px-4 sm:px-6 h-14 flex items-center justify-between">
+        <div className="mx-auto max-w-[900px] px-4 sm:px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <a href="/" className="font-serif font-bold text-xl text-text-primary hover:text-accent-navy transition-colors">
               Creator
@@ -226,14 +235,12 @@ export default function ChatWorkspace({ initialMode }: { initialMode?: ChatMode 
       <div className="flex-1 overflow-y-auto">
         <div className="mx-auto max-w-[900px] px-4 sm:px-6">
           {messages.length === 0 ? (
-            /* Empty state */
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               className="py-16 sm:py-24"
             >
-              {/* Mode info */}
               <div className="text-center mb-10">
                 <span className="text-4xl mb-4 block">{config.icon}</span>
                 <h1 className="font-serif font-bold text-[clamp(28px,3.5vw,44px)] leading-[1.2] text-text-primary mb-3">
@@ -244,10 +251,8 @@ export default function ChatWorkspace({ initialMode }: { initialMode?: ChatMode 
                 </p>
               </div>
 
-              {/* Quick prompts */}
               <QuickPrompts prompts={config.quickPrompts} onSelect={handleSend} />
 
-              {/* Recommended actions */}
               <div className="mt-10">
                 <span className="text-xs font-mono text-text-secondary/40 uppercase tracking-wider mb-3 block text-center">
                   建议先做
@@ -265,7 +270,6 @@ export default function ChatWorkspace({ initialMode }: { initialMode?: ChatMode 
               </div>
             </motion.div>
           ) : (
-            /* Messages */
             <div className="py-6 space-y-6">
               <AnimatePresence>
                 {messages.map((msg) => (

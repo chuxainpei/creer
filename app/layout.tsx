@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     siteName: "Creator Career Guidance",
     type: "website",
   },
+  icons: {
+    icon: "/visuals/favicon.svg",
+  },
 };
 
 export const viewport: Viewport = {
