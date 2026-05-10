@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import type { Message } from "./chat-workspace";
+import type { Message } from "@/lib/types";
 
 interface ChatMessageProps {
   message: Message;

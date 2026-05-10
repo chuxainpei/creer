@@ -3,23 +3,11 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { modeDefinitions } from "@/lib/chat-content";
-import type { ChatMode } from "@/lib/chat-content";
+import type { ChatMode, Message, SSEChunk } from "@/lib/types";
 import ChatMessage from "./chat-message";
 import ChatComposer from "./chat-composer";
 import ModeSwitcher from "./mode-switcher";
 import QuickPrompts from "./quick-prompts";
-
-export interface Message {
-  id: string;
-  role: "user" | "assistant";
-  content: string;
-  isStreaming?: boolean;
-}
-
-interface SSEChunk {
-  type: "chunk" | "done" | "error";
-  content?: string;
-}
 
 export default function ChatWorkspace({ initialMode }: { initialMode?: ChatMode }) {
   const [mode, setMode] = useState<ChatMode>(initialMode || "postgraduate");

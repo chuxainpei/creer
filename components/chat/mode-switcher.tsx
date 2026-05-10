@@ -3,7 +3,7 @@
 import { useId } from "react";
 import { motion } from "framer-motion";
 import { modeDefinitions } from "@/lib/chat-content";
-import type { ChatMode } from "@/lib/chat-content";
+import type { ChatMode } from "@/lib/types";
 
 interface ModeSwitcherProps {
   currentMode: ChatMode;

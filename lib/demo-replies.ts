@@ -1,4 +1,4 @@
-import type { ChatMode } from "./chat-content";
+import type { ChatMode } from "./types";
 
 // ── Demo reply chunks ──
 // These are streamed character-by-character when no AI key is present.

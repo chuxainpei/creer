@@ -3,7 +3,7 @@
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import ChatWorkspace from "@/components/chat/chat-workspace";
-import type { ChatMode } from "@/lib/chat-content";
+import type { ChatMode } from "@/lib/types";
 
 function ChatContent() {
   const searchParams = useSearchParams();

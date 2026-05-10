@@ -1,5 +1,4 @@
-// ── Chat Mode Types ──
-export type ChatMode = "postgraduate" | "employment";
+import type { ChatMode } from "./types";
 
 // ── Mode Definition ──
 export interface ModeDefinition {

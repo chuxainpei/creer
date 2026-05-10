@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { modeDefinitions } from "@/lib/chat-content";
 import { getDemoReply, chunkDemoReply } from "@/lib/demo-replies";
-import type { ChatMode } from "@/lib/chat-content";
+import type { ChatMode } from "@/lib/types";
 
 // ── Message types for the chat API ──
 interface ChatMessage {

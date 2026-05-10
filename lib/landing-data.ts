@@ -160,6 +160,54 @@ export const faqData = [
   },
 ];
 
+// ── Target Audience (适用对象) ──
+export const targetAudiences = [
+  {
+    title: "在校学生",
+    icon: "👨‍🎓",
+    description:
+      "正在准备研究生申请或求职的本科生、研究生，需要把模糊目标拆成可执行的阶段计划。",
+  },
+  {
+    title: "升学指导中心",
+    icon: "🏫",
+    description:
+      "高校就业办、招生就业处、学院辅导员团队，需要一个可信的 AI 工具来辅助学生的一对一规划咨询。",
+  },
+  {
+    title: "教育咨询机构",
+    icon: "💡",
+    description:
+      "留学中介、职业规划顾问、教育培训机构，可以用 Creator 为客户提供结构化的规划建议框架。",
+  },
+  {
+    title: "职业发展课程",
+    icon: "📚",
+    description:
+      "高校职业生涯规划课程教师，可以借助 AI 生成的规划模板设计课堂案例和分组讨论素材。",
+  },
+];
+
+// ── Output Samples (输出样例) ──
+export const outputSamples = [
+  {
+    label: "结论先行",
+    content: "你现在最应该先做的是：锁定目标专业方向，并倒推出申请时间线。",
+  },
+  {
+    label: "判断维度",
+    content: "从专业匹配度、硬性条件门槛、软性背景深度、时间节奏、财务准备五个维度评估准备度。",
+  },
+  {
+    label: "执行计划",
+    content: "第1-2周锁定方向 → 第3-4周条件扫描 → 第2-3月背景提升 → 第4-6月材料准备 → 第7-8月提交与跟进。",
+  },
+  {
+    label: "下一步",
+    content: "写下你的目标专业方向和当前最大的不确定性，告诉 Creator，获得更精准的定位分析。",
+  },
+];
+
 // Footer links
 export const footerLinks = {
   product: [
