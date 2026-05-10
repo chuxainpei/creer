@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 import { heroSlides } from "@/lib/landing-data";
 
 function MagneticButton({
@@ -13,7 +14,7 @@ function MagneticButton({
   href: string;
   accent?: "navy" | "amber";
 }) {
-  const ref = useRef<HTMLAnchorElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
@@ -32,18 +33,22 @@ function MagneticButton({
       : "border-accent-navy text-accent-navy hover:bg-accent-navy/10";
 
   return (
-    <motion.a
+    <motion.div
       ref={ref}
-      href={href}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       animate={{ x: pos.x, y: pos.y }}
       transition={{ type: "spring", stiffness: 250, damping: 20 }}
-      className={`inline-flex items-center gap-2 border px-8 py-4 text-base font-medium
-        transition-colors duration-300 cursor-pointer ${accentColors}`}
+      className="inline-block"
     >
-      {children}
-    </motion.a>
+      <Link
+        href={href}
+        className={`inline-flex items-center gap-2 border px-8 py-4 text-base font-medium
+        transition-colors duration-300 cursor-pointer ${accentColors}`}
+      >
+        {children}
+      </Link>
+    </motion.div>
   );
 }
 

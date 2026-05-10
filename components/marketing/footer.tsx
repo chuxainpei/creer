@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { footerLinks } from "@/lib/landing-data";
 
 function FooterColumn({
@@ -15,12 +16,12 @@ function FooterColumn({
       <ul className="space-y-3">
         {links.map((link) => (
           <li key={link.label}>
-            <a
+            <Link
               href={link.href}
               className="text-base text-text-secondary hover:text-text-primary transition-colors duration-200"
             >
               {link.label}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

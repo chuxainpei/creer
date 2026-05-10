@@ -2,7 +2,9 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 import { modeDefinitions } from "@/lib/chat-content";
+import { getDemoReply, chunkDemoReply } from "@/lib/demo-replies";
 import type { ChatMode, Message, SSEChunk } from "@/lib/types";
 import ChatMessage from "./chat-message";
 import ChatComposer from "./chat-composer";
@@ -155,15 +157,27 @@ export default function ChatWorkspace({ initialMode }: { initialMode?: ChatMode 
           )
         );
       } else {
+        // API unavailable → fall back to client-side demo streaming
+        const demoText = getDemoReply(mode);
+        const chunks = chunkDemoReply(demoText);
+
+        for (const chunk of chunks) {
+          if (controller.signal.aborted) break;
+          pendingContent += chunk;
+          const now = Date.now();
+          if (now - lastFlush >= THROTTLE_MS) {
+            flushContent();
+            lastFlush = now;
+          }
+          // Simulate natural typing delay
+          const delay = chunk.length <= 2 ? 15 : 25 + Math.random() * 20;
+          await new Promise((resolve) => setTimeout(resolve, delay));
+        }
+
+        flushContent();
         setMessages((prev) =>
           prev.map((m) =>
-            m.id === assistantMsg.id
-              ? {
-                  ...m,
-                  content: "抱歉，处理请求时出现错误。请稍后重试。",
-                  isStreaming: false,
-                }
-              : m
+            m.id === assistantMsg.id ? { ...m, isStreaming: false } : m
           )
         );
       }
@@ -195,9 +209,9 @@ export default function ChatWorkspace({ initialMode }: { initialMode?: ChatMode 
       <header className="flex-shrink-0 border-b border-border bg-bg-warm/80 backdrop-blur-sm z-10">
         <div className="mx-auto max-w-[900px] px-4 sm:px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <a href="/" className="font-serif font-bold text-xl text-text-primary hover:text-accent-navy transition-colors">
+            <Link href="/" className="font-serif font-bold text-xl text-text-primary hover:text-accent-navy transition-colors">
               Creator
-            </a>
+            </Link>
             <ModeSwitcher currentMode={mode} onSwitch={handleModeSwitch} />
           </div>
           <div className="flex items-center gap-3">
@@ -209,12 +223,12 @@ export default function ChatWorkspace({ initialMode }: { initialMode?: ChatMode 
                 新对话
               </button>
             )}
-            <a
+            <Link
               href="/"
               className="text-sm text-text-secondary/40 hover:text-text-secondary transition-colors hidden sm:inline"
             >
               ← 返回首页
-            </a>
+            </Link>
           </div>
         </div>
       </header>

@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import Link from "next/link";
 import { scenes, comparisonData } from "@/lib/landing-data";
 
 export default function SceneSection() {
@@ -85,7 +86,7 @@ export default function SceneSection() {
                   </div>
 
                   {/* CTA */}
-                  <a
+                  <Link
                     href={`/chat?mode=${scene.id}`}
                     className={`inline-flex items-center gap-2 border px-6 py-3 text-sm font-medium
                       transition-all duration-300 group-hover:scale-[1.02]
@@ -97,7 +98,7 @@ export default function SceneSection() {
                   >
                     {scene.cta}
                     <span className="text-base">→</span>
-                  </a>
+                  </Link>
                 </div>
               </motion.div>
             );
