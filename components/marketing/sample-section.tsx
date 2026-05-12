@@ -12,7 +12,7 @@ export default function SampleSection() {
     <div ref={ref}>
       {/* Intro */}
       <p className="text-lg text-text-secondary mb-10 max-w-2xl">
-        Creator 的每一次回答都遵循统一的规划模板，确保你得到的不是零散建议，而是一份可执行的结构化计划：
+        智升学 的每一次回答都遵循统一的规划模板，确保你得到的不是零散建议，而是一份可执行的结构化计划：
       </p>
 
       {/* Sample cards */}

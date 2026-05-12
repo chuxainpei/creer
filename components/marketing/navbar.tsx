@@ -48,7 +48,7 @@ export default function Navbar({ links }: NavbarProps) {
           <div className="mx-auto max-w-[1200px] px-6 h-16 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-3 group">
               <span className="font-serif font-bold text-2xl text-text-primary tracking-wide">
-                Creator
+                智升学
               </span>
               <span className="hidden sm:inline text-sm text-text-secondary/60 font-mono">
                 升学就业规划

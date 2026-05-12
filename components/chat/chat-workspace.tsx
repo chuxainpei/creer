@@ -210,7 +210,7 @@ export default function ChatWorkspace({ initialMode }: { initialMode?: ChatMode 
         <div className="mx-auto max-w-[900px] px-4 sm:px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link href="/" className="font-serif font-bold text-xl text-text-primary hover:text-accent-navy transition-colors">
-              Creator
+              智升学
             </Link>
             <ModeSwitcher currentMode={mode} onSwitch={handleModeSwitch} />
           </div>

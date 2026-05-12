@@ -112,7 +112,7 @@ export default function SceneSection() {
           transition={{ duration: 0.6, delay: 0.5 }}
         >
           <h3 className="font-serif font-bold text-2xl text-text-primary mb-6">
-            Creator vs 通用 AI 聊天
+            智升学 vs 通用 AI 聊天
           </h3>
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
@@ -125,7 +125,7 @@ export default function SceneSection() {
                     通用 AI
                   </th>
                   <th className="text-left p-4 text-sm font-mono text-accent-navy/70 uppercase tracking-wider w-1/3">
-                    Creator
+                    智升学
                   </th>
                 </tr>
               </thead>
@@ -140,7 +140,7 @@ export default function SceneSection() {
                     </td>
                     <td className="p-4 text-base text-text-secondary">{row.generic}</td>
                     <td className="p-4 text-base text-accent-navy font-medium">
-                      {row.creator}
+                      {row.zhishengxue}
                     </td>
                   </tr>
                 ))}

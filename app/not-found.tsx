@@ -11,7 +11,7 @@ export default function NotFound() {
           页面未找到
         </h1>
         <p className="text-text-secondary mb-8 leading-relaxed">
-          你访问的页面不存在，或者已经被移动。请返回首页继续使用 Creator。
+          你访问的页面不存在，或者已经被移动。请返回首页继续使用 智升学。
         </p>
         <Link
           href="/"

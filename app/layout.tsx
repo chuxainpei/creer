@@ -2,14 +2,14 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Creator Career Guidance — AI 升学与就业规划工作台",
+  title: "智升学 — AI 升学与就业规划工作台",
   description:
-    "Creator 是一个 AI 升学与就业规划工作台，帮助学生和顾问把复杂决策整理成结构化、可执行的行动计划。涵盖研究生申请、实习校招、简历优化和面试准备。",
+    "智升学是一个 AI 升学与就业规划工作台，帮助学生和顾问把复杂决策整理成结构化、可执行的行动计划。涵盖研究生申请、实习校招、简历优化和面试准备。",
   openGraph: {
-    title: "Creator — 把复杂决策变成清晰规划",
+    title: "智升学 — 把复杂决策变成清晰规划",
     description:
       "AI 升学与就业规划工作台。判断框架 × 行动计划 × 可信表达。",
-    siteName: "Creator Career Guidance",
+    siteName: "智升学",
     type: "website",
   },
   icons: {

@@ -154,7 +154,7 @@ export default function HeroBanner() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="inline-block text-sm font-mono text-accent-navy/50 uppercase tracking-[0.2em] mb-6"
             >
-              Creator Career Guidance
+              智升学 Career Guidance
             </motion.span>
 
             <h1 className="font-serif font-bold text-[clamp(42px,5.5vw,80px)] leading-[1.12] text-text-primary mb-4">

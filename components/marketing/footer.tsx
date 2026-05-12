@@ -37,7 +37,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div>
             <span className="font-serif font-bold text-3xl text-text-primary">
-              Creator
+              智升学
             </span>
             <span className="ml-3 text-sm font-mono text-text-secondary/40 tracking-wider">
               Career Guidance
@@ -57,9 +57,9 @@ export default function Footer() {
 
         {/* Disclaimers */}
         <div className="border-t border-border pt-6 space-y-2 text-sm text-text-secondary/50 leading-relaxed">
-          <p>© 2026 Creator Career Guidance</p>
+          <p>© 2026 智升学</p>
           <p>
-            免责声明：Creator 提供的规划建议基于 AI 生成，仅供参考。重要的升学和就业决策请结合多方信息综合判断。AI 不承诺任何录取、入职或收入结果。
+            免责声明：智升学提供的规划建议基于 AI 生成，仅供参考。重要的升学和就业决策请结合多方信息综合判断。AI 不承诺任何录取、入职或收入结果。
           </p>
           <p>
             本产品由 DeepSeek API 驱动，您可以在项目根目录的{" "}

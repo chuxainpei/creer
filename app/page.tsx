@@ -30,7 +30,7 @@ export default function Home() {
       <Section
         number="03"
         title="适用对象"
-        subtitle="无论是学生、高校就业办还是教育咨询机构，Creator 都能提供针对性的规划支持。"
+        subtitle="无论是学生、高校就业办还是教育咨询机构，智升学 都能提供针对性的规划支持。"
         id="audience"
       >
         <AudienceSection />
